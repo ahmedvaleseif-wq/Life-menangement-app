@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة الحياة</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f5f9;
+      color: #1e293b;
+    }
+    header {
+      background: #173b57;
+      color: white;
+      padding: 25px 18px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 10px; }
+    header p { margin: 0; color: #d5e5f2; }
+    main {
+      max-width: 850px;
+      margin: 24px auto;
+      padding: 0 15px;
+    }
+    .welcome, .card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 3px 12px #0000000b;
+    }
+    .welcome h2 { color: #173b57; margin-top: 0; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    .stat {
+      background: #edf4f8;
+      border-radius: 12px;
+      padding: 18px 10px;
+      text-align: center;
+    }
+    .stat strong {
+      display: block;
+      font-size: 25px;
+      color: #176b59;
+      margin-bottom: 8px;
+    }
+    input, button {
+      font: inherit;
+      padding: 12px;
+      border-radius: 8px;
+    }
+    input {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 10px;
+    }
+    button {
+      border: none;
+      background: #176b59;
+      color: white;
+      cursor: pointer;
+    }
+    ul { padding-right: 22px; }
+    li { margin: 12px 0; }
+    .done { text-decoration: line-through; color: #64748b; }
+    .delete {
+      background: #b42318;
+      padding: 6px 10px;
+      margin-right: 8px;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>إدارة الحياة</h1>
+    <p>نظّم يومك، تابع أهدافك، وابنِ عاداتك</p>
+  </header>  <main>
+    <section class="welcome">
+      <h2>مرحبًا بك في مساحتك الشخصية</h2>
+      <p>خطوة صغيرة كل يوم تصنع فرقًا كبيرًا مع الوقت.</p>
+    </section><section class="card">
+  <h2>لوحة المتابعة</h2>
+  <div class="grid">
+    <div class="stat">
+      <strong id="total">0</strong>
+      إجمالي المهام
+    </div>
+    <div class="stat">
+      <strong id="completed">0</strong>
+      المهام المنجزة
+    </div>
+    <div class="stat">
+      <strong id="remaining">0</strong>
+      المهام المتبقية
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>مهامي اليومية</h2>
+  <form id="taskForm">
+    <input id="taskInput" type="text"
+      placeholder="اكتب مهمة جديدة..." required>
+    <button type="submit">إضافة المهمة</button>
+  </form>
+  <ul id="taskList"></ul>
+</section>
+
+  </main>  <footer>إدارة الحياة © 2026</footer>  <script>
+    const form = document.getElementById('taskForm');
+    const input = document.getElementById('taskInput');
+    const list = document.getElementById('taskList');
+    let tasks = [];
+
+    function updateStats() {
+      const completed = tasks.filter(task => task.done).length;
+      document.getElementById('total').textContent = tasks.length;
+      document.getElementById('completed').textContent = completed;
+      document.getElementById('remaining').textContent =
+        tasks.length - completed;
+    }
+
+    function renderTasks() {
+      list.innerHTML = '';
+      tasks.forEach((task, index) => {
+        const item = document.createElement('li');
+        const label = document.createElement('span');
+        label.textContent = task.text;
+        if (task.done) label.className = 'done';
+
+        const check = document.createElement('input');
+        check.type = 'checkbox';
+        check.checked = task.done;
+        check.style.width = 'auto';
+        check.addEventListener('change', () => {
+          tasks[index].done = check.checked;
+          renderTasks();
+        });
+
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'delete';
+        remove.textContent = 'حذف';
+        remove.addEventListener('click', () => {
+          tasks.splice(index, 1);
+          renderTasks();
+        });
+
+        item.append(check, label, remove);
+        list.appendChild(item);
+      });
+      updateStats();
+    }
+
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      tasks.push({ text, done: false });
+      input.value = '';
+      renderTasks();
+    });
+  </script></body>
+</html>
