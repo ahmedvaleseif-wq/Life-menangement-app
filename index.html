@@ -1,174 +1,345 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>إدارة الحياة</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f3f5f9;
-      color: #1e293b;
-    }
-    header {
-      background: #173b57;
-      color: white;
-      padding: 25px 18px;
-      text-align: center;
-    }
-    header h1 { margin: 0 0 10px; }
-    header p { margin: 0; color: #d5e5f2; }
-    main {
-      max-width: 850px;
-      margin: 24px auto;
-      padding: 0 15px;
-    }
-    .welcome, .card {
-      background: white;
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 3px 12px #0000000b;
-    }
-    .welcome h2 { color: #173b57; margin-top: 0; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-    }
-    .stat {
-      background: #edf4f8;
-      border-radius: 12px;
-      padding: 18px 10px;
-      text-align: center;
-    }
-    .stat strong {
-      display: block;
-      font-size: 25px;
-      color: #176b59;
-      margin-bottom: 8px;
-    }
-    input, button {
-      font: inherit;
-      padding: 12px;
-      border-radius: 8px;
-    }
-    input {
-      width: 100%;
-      border: 1px solid #cbd5e1;
-      margin-bottom: 10px;
-    }
-    button {
-      border: none;
-      background: #176b59;
-      color: white;
-      cursor: pointer;
-    }
-    ul { padding-right: 22px; }
-    li { margin: 12px 0; }
-    .done { text-decoration: line-through; color: #64748b; }
-    .delete {
-      background: #b42318;
-      padding: 6px 10px;
-      margin-right: 8px;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #64748b;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#173b32">
+<title>إدارة الحياة | Life Manager</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f5f4;color:#24352f}
+header{background:#173b32;color:white;padding:22px 18px;border-radius:0 0 22px 22px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+h1{font-size:23px;margin:8px 0}
+header p{color:#d6e6de;font-size:14px}
+button,input,select{font:inherit}
+button{cursor:pointer;border:0;border-radius:10px;padding:11px 14px}
+.lang{background:white;color:#173b32;font-weight:bold}
+main{padding:16px;max-width:800px;margin:auto;padding-bottom:90px}
+.welcome{background:white;padding:18px;border-radius:16px;margin:16px 0}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.stat,.card{background:white;padding:16px;border-radius:15px;margin-bottom:12px}
+.stat strong{font-size:24px;color:#237657;display:block;margin-top:8px}
+nav{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;justify-content:space-around;padding:9px 2px;box-shadow:0 -3px 12px #0001;z-index:5}
+nav button{background:transparent;padding:8px 5px;font-size:12px;color:#52635c}
+nav button.active{background:#e2eee8;color:#173b32;font-weight:bold}
+h2{font-size:20px}
+h3{font-size:16px;margin-top:0}
+input,select{width:100%;padding:12px;border:1px solid #d5ded9;border-radius:10px;margin:7px 0 12px;background:white}
+.primary{background:#237657;color:white;width:100%;margin-top:5px}
+.row{display:flex;gap:8px;align-items:center}
+.row input{flex:1;min-width:0}
+.row button{white-space:nowrap}
+.item{display:flex;align-items:center;gap:9px;padding:12px 0;border-bottom:1px solid #edf0ee}
+.item span{flex:1;overflow-wrap:anywhere}
+.item input{width:auto;margin:0}
+.item button{padding:7px 10px;background:#fce8e6;color:#a52b24}
+.done{text-decoration:line-through;color:#87918b}
+.muted{color:#728078;font-size:13px}
+.progress{height:9px;background:#e5ebe7;border-radius:10px;overflow:hidden;margin:10px 0}
+.progress div{height:100%;background:#29936a;width:0}
+.hidden{display:none!important}
+footer{text-align:center;color:#87918b;font-size:12px;margin-top:25px}
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>إدارة الحياة</h1>
-    <p>نظّم يومك، تابع أهدافك، وابنِ عاداتك</p>
-  </header>  <main>
-    <section class="welcome">
-      <h2>مرحبًا بك في مساحتك الشخصية</h2>
-      <p>خطوة صغيرة كل يوم تصنع فرقًا كبيرًا مع الوقت.</p>
-    </section><section class="card">
-  <h2>لوحة المتابعة</h2>
-  <div class="grid">
-    <div class="stat">
-      <strong id="total">0</strong>
-      إجمالي المهام
+<header>
+  <div class="top">
+    <div>
+      <div id="brand">منظّم الحياة</div>
+      <h1 id="title">خطّط ليومك، وابنِ مستقبلك</h1>
     </div>
-    <div class="stat">
-      <strong id="completed">0</strong>
-      المهام المنجزة
-    </div>
-    <div class="stat">
-      <strong id="remaining">0</strong>
-      المهام المتبقية
-    </div>
+    <button class="lang" id="languageButton" onclick="toggleLanguage()">Français</button>
   </div>
-</section>
+  <p id="subtitle">مكان واحد لتنظيم دراستك وأهدافك وعاداتك.</p>
+</header>
 
-<section class="card">
-  <h2>مهامي اليومية</h2>
-  <form id="taskForm">
-    <input id="taskInput" type="text"
-      placeholder="اكتب مهمة جديدة..." required>
-    <button type="submit">إضافة المهمة</button>
-  </form>
-  <ul id="taskList"></ul>
-</section>
+<main>
+  <section id="home">
+    <div class="welcome">
+      <h2 data-t="welcome">مرحبًا بك في مساحتك الخاصة</h2>
+      <p data-t="welcomeText">ابدأ بخطوة صغيرة اليوم، وواصل التقدم نحو أهدافك.</p>
+      <div class="progress"><div id="homeProgress"></div></div>
+      <p class="muted" id="progressText">إنجاز المهام: 0%</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><span data-t="tasks">المهام</span><strong id="taskCount">0</strong></div>
+      <div class="stat"><span data-t="goals">الأهداف</span><strong id="goalCount">0</strong></div>
+      <div class="stat"><span data-t="bac">البكالوريا</span><strong>6</strong><span class="muted" data-t="subjects">مواد دراسية</span></div>
+      <div class="stat"><span data-t="reading">القراءة</span><strong id="readingCount">0</strong><span class="muted" data-t="books">كتابًا مسجلًا</span></div>
+    </div>
+    <h2 data-t="today">أولوياتك اليوم</h2>
+    <div class="card">
+      <h3 data-t="priority">الأولوية الأولى: البكالوريا</h3>
+      <p data-t="priorityText">خصّص وقتًا ثابتًا للمراجعة، ولو كان قصيرًا.</p>
+      <button class="primary" onclick="showPage('bac')" data-t="startStudy">انتقل إلى الدراسة</button>
+    </div>
+  </section>
 
-  </main>  <footer>إدارة الحياة © 2026</footer>  <script>
-    const form = document.getElementById('taskForm');
-    const input = document.getElementById('taskInput');
-    const list = document.getElementById('taskList');
-    let tasks = [];
+  <section id="bac" class="hidden">
+    <h2 data-t="bacTitle">متابعة البكالوريا</h2>
+    <p class="muted" data-t="bacText">شعبة الآداب الأصلية — سجّل الدروس التي تراجعها.</p>
+    <div class="card">
+      <h3 data-t="subjectsTitle">المواد الدراسية</h3>
+      <div id="subjectsList"></div>
+    </div>
+    <div class="card">
+      <h3 data-t="lessonTitle">تسجيل درس راجعته</h3>
+      <label data-t="chooseSubject">المادة</label>
+      <select id="subjectSelect"></select>
+      <label data-t="lessonName">اسم الدرس</label>
+      <input id="lessonInput" placeholder="اكتب اسم الدرس">
+      <button class="primary" onclick="addLesson()" data-t="saveLesson">حفظ الدرس</button>
+      <div id="lessonList"></div>
+    </div>
+  </section>
 
-    function updateStats() {
-      const completed = tasks.filter(task => task.done).length;
-      document.getElementById('total').textContent = tasks.length;
-      document.getElementById('completed').textContent = completed;
-      document.getElementById('remaining').textContent =
-        tasks.length - completed;
-    }
+  <section id="tasks" class="hidden">
+    <h2 data-t="tasksTitle">إدارة المهام</h2>
+    <div class="card">
+      <label data-t="newTask">مهمة جديدة</label>
+      <div class="row">
+        <input id="taskInput" placeholder="اكتب المهمة">
+        <button class="primary" onclick="addTask()" data-t="add">إضافة</button>
+      </div>
+      <div id="taskList"></div>
+    </div>
+  </section>
 
-    function renderTasks() {
-      list.innerHTML = '';
-      tasks.forEach((task, index) => {
-        const item = document.createElement('li');
-        const label = document.createElement('span');
-        label.textContent = task.text;
-        if (task.done) label.className = 'done';
+  <section id="goals" class="hidden">
+    <h2 data-t="goalsTitle">أهدافك</h2>
+    <div class="card">
+      <label data-t="newGoal">هدف جديد</label>
+      <div class="row">
+        <input id="goalInput" placeholder="اكتب هدفك">
+        <button class="primary" onclick="addGoal()" data-t="add">إضافة</button>
+      </div>
+      <div id="goalList"></div>
+    </div>
+  </section>
 
-        const check = document.createElement('input');
-        check.type = 'checkbox';
-        check.checked = task.done;
-        check.style.width = 'auto';
-        check.addEventListener('change', () => {
-          tasks[index].done = check.checked;
-          renderTasks();
-        });
+  <section id="more" class="hidden">
+    <h2 data-t="personal">التطوير الشخصي</h2>
+    <div class="card">
+      <h3 data-t="readingTitle">📚 القراءة</h3>
+      <label data-t="bookName">اسم الكتاب</label>
+      <div class="row">
+        <input id="bookInput" placeholder="اسم الكتاب">
+        <button class="primary" onclick="addBook()" data-t="add">إضافة</button>
+      </div>
+      <div id="bookList"></div>
+    </div>
+    <div class="card">
+      <h3 data-t="quranTitle">📖 القرآن الكريم</h3>
+      <label data-t="dailyReading">الورد اليومي (بالأحزاب)</label>
+      <input id="quranInput" type="number" min="0" max="60" value="2">
+      <button class="primary" onclick="saveQuran()" data-t="save">حفظ</button>
+      <p id="quranStatus" class="muted"></p>
+    </div>
+    <div class="card">
+      <h3 data-t="settings">الإعدادات</h3>
+      <p data-t="languageSetting">لغة التطبيق</p>
+      <button onclick="toggleLanguage()" id="settingsLanguage" class="primary">العربية / Français</button>
+    </div>
+  </section>
 
-        const remove = document.createElement('button');
-        remove.type = 'button';
-        remove.className = 'delete';
-        remove.textContent = 'حذف';
-        remove.addEventListener('click', () => {
-          tasks.splice(index, 1);
-          renderTasks();
-        });
+  <footer>Life Manager · Version 1.0</footer>
+</main>
 
-        item.append(check, label, remove);
-        list.appendChild(item);
-      });
-      updateStats();
-    }
+<nav>
+  <button class="active" data-page="home" onclick="showPage('home')">🏠 <span data-t="navHome">الرئيسية</span></button>
+  <button data-page="bac" onclick="showPage('bac')">🎓 <span data-t="navBac">البكالوريا</span></button>
+  <button data-page="tasks" onclick="showPage('tasks')">✅ <span data-t="navTasks">المهام</span></button>
+  <button data-page="goals" onclick="showPage('goals')">🎯 <span data-t="navGoals">الأهداف</span></button>
+  <button data-page="more" onclick="showPage('more')">📚 <span data-t="navMore">المزيد</span></button>
+</nav>
 
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      const text = input.value.trim();
-      if (!text) return;
-      tasks.push({ text, done: false });
-      input.value = '';
-      renderTasks();
-    });
-  </script></body>
+<script>
+const translations = {
+ar: {
+brand:"منظّم الحياة",title:"خطّط ليومك، وابنِ مستقبلك",
+subtitle:"مكان واحد لتنظيم دراستك وأهدافك وعاداتك.",
+welcome:"مرحبًا بك في مساحتك الخاصة",
+welcomeText:"ابدأ بخطوة صغيرة اليوم، وواصل التقدم نحو أهدافك.",
+tasks:"المهام",goals:"الأهداف",bac:"البكالوريا",subjects:"مواد دراسية",
+reading:"القراءة",books:"كتابًا مسجلًا",today:"أولوياتك اليوم",
+priority:"الأولوية الأولى: البكالوريا",
+priorityText:"خصّص وقتًا ثابتًا للمراجعة، ولو كان قصيرًا.",
+startStudy:"انتقل إلى الدراسة",bacTitle:"متابعة البكالوريا",
+bacText:"شعبة الآداب الأصلية — سجّل الدروس التي تراجعها.",
+subjectsTitle:"المواد الدراسية",lessonTitle:"تسجيل درس راجعته",
+chooseSubject:"المادة",lessonName:"اسم الدرس",saveLesson:"حفظ الدرس",
+tasksTitle:"إدارة المهام",newTask:"مهمة جديدة",add:"إضافة",
+goalsTitle:"أهدافك",newGoal:"هدف جديد",personal:"التطوير الشخصي",
+readingTitle:"📚 القراءة",bookName:"اسم الكتاب",quranTitle:"📖 القرآن الكريم",
+dailyReading:"الورد اليومي (بالأحزاب)",save:"حفظ",settings:"الإعدادات",
+languageSetting:"لغة التطبيق",navHome:"الرئيسية",navBac:"البكالوريا",
+navTasks:"المهام",navGoals:"الأهداف",navMore:"المزيد",
+done:"مكتمل",delete:"حذف",empty:"لا توجد عناصر بعد.",
+lessonPlaceholder:"اكتب اسم الدرس",taskPlaceholder:"اكتب المهمة",
+goalPlaceholder:"اكتب هدفك",bookPlaceholder:"اسم الكتاب",
+quranSaved:"تم حفظ الورد اليومي: ",chapter:"حزب",
+completed:"منجز",remaining:"متبقٍ",progress:"إنجاز المهام: "
+},
+fr: {
+brand:"Gestion de vie",title:"Planifiez votre journée, construisez votre avenir",
+subtitle:"Un espace pour vos études, objectifs et habitudes.",
+welcome:"Bienvenue dans votre espace personnel",
+welcomeText:"Faites un petit pas aujourd’hui et avancez vers vos objectifs.",
+tasks:"Tâches",goals:"Objectifs",bac:"Baccalauréat",subjects:"matières",
+reading:"Lecture",books:"livres enregistrés",today:"Vos priorités du jour",
+priority:"Priorité numéro un : le bac",
+priorityText:"Réservez un moment régulier à la révision, même court.",
+startStudy:"Accéder aux études",bacTitle:"Suivi du baccalauréat",
+bacText:"Littérature originale — enregistrez les leçons révisées.",
+subjectsTitle:"Matières",lessonTitle:"Enregistrer une leçon",
+chooseSubject:"Matière",lessonName:"Nom de la leçon",saveLesson:"Enregistrer",
+tasksTitle:"Gestion des tâches",newTask:"Nouvelle tâche",add:"Ajouter",
+goalsTitle:"Vos objectifs",newGoal:"Nouvel objectif",personal:"Développement personnel",
+readingTitle:"📚 Lecture",bookName:"Titre du livre",quranTitle:"📖 Coran",
+dailyReading:"Lecture quotidienne (en hizb)",save:"Enregistrer",
+settings:"Paramètres",languageSetting:"Langue de l’application",
+navHome:"Accueil",navBac:"Bac",navTasks:"Tâches",navGoals:"Objectifs",navMore:"Plus",
+done:"Terminé",delete:"Supprimer",empty:"Aucun élément pour le moment.",
+lessonPlaceholder:"Nom de la leçon",taskPlaceholder:"Saisir une tâche",
+goalPlaceholder:"Saisir un objectif",bookPlaceholder:"Titre du livre",
+quranSaved:"Lecture quotidienne enregistrée : ",chapter:"hizb",
+completed:"Terminées",remaining:"Restantes",progress:"Tâches terminées : "
+},
+};
+
+let lang = localStorage.getItem("lm_lang") || "ar";
+const subjects = {
+ar:["التشريع (فقه وأصول)","الفكر الإسلامي","اللغة العربية","التاريخ والجغرافيا","القرآن والحديث","اللغة الفرنسية"],
+fr:["Législation (fiqh et fondements)","Pensée islamique","Langue arabe","Histoire et géographie","Coran et hadith","Langue française"]
+};
+
+function t(key){return translations[lang][key] || key}
+function getData(key, fallback=[]){
+ try{return JSON.parse(localStorage.getItem("lm_"+key)) ?? fallback}
+ catch(e){return fallback}
+}
+function setData(key,value){localStorage.setItem("lm_"+key,JSON.stringify(value))}
+
+function toggleLanguage(){
+ lang = lang==="ar" ? "fr" : "ar";
+ localStorage.setItem("lm_lang",lang);
+ renderLanguage();
+}
+function renderLanguage(){
+ document.documentElement.lang=lang;
+ document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+ document.querySelectorAll("[data-t]").forEach(el=>el.textContent=t(el.dataset.t));
+ document.getElementById("brand").textContent=t("brand");
+ document.getElementById("title").textContent=t("title");
+ document.getElementById("subtitle").textContent=t("subtitle");
+ document.getElementById("languageButton").textContent=lang==="ar"?"Français":"العربية";
+ document.getElementById("settingsLanguage").textContent=lang==="ar"?"العربية / Français":"Français / العربية";
+ document.getElementById("taskInput").placeholder=t("taskPlaceholder");
+ document.getElementById("goalInput").placeholder=t("goalPlaceholder");
+ document.getElementById("bookInput").placeholder=t("bookPlaceholder");
+ document.getElementById("lessonInput").placeholder=t("lessonPlaceholder");
+ renderSubjects();renderTasks();renderGoals();renderLessons();renderBooks();renderQuran();updateStats();
+}
+function showPage(id){
+ document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+}
+function renderSubjects(){
+ const list=document.getElementById("subjectsList");
+ const select=document.getElementById("subjectSelect");
+ list.innerHTML="";select.innerHTML="";
+ subjects[lang].forEach((s,i)=>{
+ let div=document.createElement("div");div.className="item";
+ div.innerHTML="<span>"+(i+1)+". "+s+"</span>";
+ list.appendChild(div);
+ let opt=document.createElement("option");opt.value=s;opt.textContent=s;select.appendChild(opt);
+ });
+}
+function addTask(){
+ let input=document.getElementById("taskInput"),v=input.value.trim();if(!v)return;
+ let a=getData("tasks");a.push({text:v,done:false});setData("tasks",a);input.value="";renderTasks();updateStats();
+}
+function renderTasks(){
+ let list=document.getElementById("taskList");list.innerHTML="";
+ let a=getData("tasks");
+ if(!a.length)list.textContent=t("empty");
+ a.forEach((x,i)=>{
+ let d=document.createElement("div");d.className="item";
+ let cb=document.createElement("input");cb.type="checkbox";cb.checked=x.done;
+ cb.onchange=()=>{a[i].done=cb.checked;setData("tasks",a);renderTasks();updateStats()};
+ let s=document.createElement("span");s.textContent=x.text;if(x.done)s.className="done";
+ let b=document.createElement("button");b.textContent=t("delete");b.onclick=()=>{a.splice(i,1);setData("tasks",a);renderTasks();updateStats()};
+ d.append(cb,s,b);list.appendChild(d);
+ });
+}
+function addGoal(){
+ let input=document.getElementById("goalInput"),v=input.value.trim();if(!v)return;
+ let a=getData("goals");a.push({text:v,done:false});setData("goals",a);input.value="";renderGoals();updateStats();
+}
+function renderGoals(){
+ let list=document.getElementById("goalList");list.innerHTML="";
+ let a=getData("goals");if(!a.length)list.textContent=t("empty");
+ a.forEach((x,i)=>{
+ let d=document.createElement("div");d.className="item";
+ let cb=document.createElement("input");cb.type="checkbox";cb.checked=x.done;
+ cb.onchange=()=>{a[i].done=cb.checked;setData("goals",a);renderGoals();updateStats()};
+ let s=document.createElement("span");s.textContent=x.text;if(x.done)s.className="done";
+ let b=document.createElement("button");b.textContent=t("delete");b.onclick=()=>{a.splice(i,1);setData("goals",a);renderGoals();updateStats()};
+ d.append(cb,s,b);list.appendChild(d);
+ });
+}
+function addLesson(){
+ let input=document.getElementById("lessonInput"),v=input.value.trim();if(!v)return;
+ let a=getData("lessons");a.push({subject:document.getElementById("subjectSelect").value,text:v});
+ setData("lessons",a);input.value="";renderLessons();
+}
+function renderLessons(){
+ let list=document.getElementById("lessonList");list.innerHTML="";
+ let a=getData("lessons");if(!a.length)list.textContent=t("empty");
+ a.forEach((x,i)=>{
+ let d=document.createElement("div");d.className="item";
+ let s=document.createElement("span");s.textContent=x.subject+" — "+x.text;
+ let b=document.createElement("button");b.textContent=t("delete");b.onclick=()=>{a.splice(i,1);setData("lessons",a);renderLessons()};
+ d.append(s,b);list.appendChild(d);
+ });
+}
+function addBook(){
+ let input=document.getElementById("bookInput"),v=input.value.trim();if(!v)return;
+ let a=getData("books");a.push(v);setData("books",a);input.value="";renderBooks();updateStats();
+}
+function renderBooks(){
+ let list=document.getElementById("bookList");list.innerHTML="";
+ let a=getData("books");if(!a.length)list.textContent=t("empty");
+ a.forEach((x,i)=>{
+ let d=document.createElement("div");d.className="item";
+ let s=document.createElement("span");s.textContent=x;
+ let b=document.createElement("button");b.textContent=t("delete");b.onclick=()=>{a.splice(i,1);setData("books",a);renderBooks();updateStats()};
+ d.append(s,b);list.appendChild(d);
+ });
+}
+function saveQuran(){
+ let n=Math.max(0,Math.min(60,Number(document.getElementById("quranInput").value)||0));
+ setData("quran",n);renderQuran();
+}
+function renderQuran(){
+ let n=getData("quran",2);
+ document.getElementById("quranInput").value=n;
+ document.getElementById("quranStatus").textContent=t("quranSaved")+n+" "+t("chapter");
+}
+function updateStats(){
+ let tasks=getData("tasks"),goals=getData("goals"),books=getData("books");
+ document.getElementById("taskCount").textContent=tasks.filter(x=>!x.done).length;
+ document.getElementById("goalCount").textContent=goals.length;
+ document.getElementById("readingCount").textContent=books.length;
+ let pct=tasks.length?Math.round(tasks.filter(x=>x.done).length/tasks.length*100):0;
+ document.getElementById("homeProgress").style.width=pct+"%";
+ document.getElementById("progressText").textContent=t("progress")+pct+"%";
+}
+renderLanguage();
+</script>
+</body>
 </html>
