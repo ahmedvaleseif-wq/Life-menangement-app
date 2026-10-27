@@ -997,4 +997,25 @@
         }
 
         function resetData() {
-            if (confirm('هل أنت متأكد من رغبتك في إعادة ضبط جميع البيانات
+            if (confirm('هل أنت متأكد من رغبتك في إعادة ضبط جميع البيانات؟')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        }
+
+        function initApp() {
+            loadData();
+            initHeader();
+            applyBgStyle();
+            renderTasks();
+            renderPlanner();
+            renderSubjects();
+            renderFinance();
+            renderLibrary();
+            updateStats();
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
