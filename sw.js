@@ -1,4 +1,4 @@
-const CACHE_NAME = 'midad-cache-v2';
+const CACHE_NAME = 'midad-cache-v3';
 const urlsToCache = [
   './',
   './index.html',
