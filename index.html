@@ -26,15 +26,18 @@
 </head>
 <body class="text-gray-800 min-h-screen flex flex-col">
 
-    <!-- شريط التنقل العلوي -->
+    <!-- شريط التنقل العلوي مع زر القائمة العمودية -->
     <header class="glass shadow-sm sticky top-0 z-50 border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="p-2 text-emerald-700 hover:bg-emerald-50 rounded-xl transition text-xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
                 <div class="bg-emerald-600 text-white p-2 rounded-xl shadow">
                     <i class="fa-solid fa-feather-pointed text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold text-gray-900 leading-tight">مشروع مِداد</h1>
+                    <h1 class="text-base md:text-lg font-bold text-gray-900 leading-tight">مشروع مِداد</h1>
                     <p class="text-xs text-gray-500">إدارة الحياة • البكالوريا • المالية</p>
                 </div>
             </div>
@@ -50,8 +53,53 @@
         </div>
     </header>
 
+    <!-- القائمة الجانبية العمودية المنسدلة للهاتف -->
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/40 z-40 hidden transition-opacity"></div>
+    <aside id="sidebar" class="fixed top-0 right-0 bottom-0 w-72 glass shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col p-5 border-l border-gray-200">
+        <div class="flex justify-between items-center mb-6 pb-3 border-b border-gray-200">
+            <div class="flex items-center gap-2">
+                <div class="bg-emerald-600 text-white p-1.5 rounded-lg">
+                    <i class="fa-solid fa-feather-pointed"></i>
+                </div>
+                <span class="font-bold text-gray-900 text-sm">قائمة التطبيق</span>
+            </div>
+            <button onclick="toggleSidebar()" class="text-gray-500 hover:text-red-500 p-1 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- خيارات القائمة العمودية -->
+        <div class="flex flex-col space-y-2 flex-grow">
+            <button onclick="switchTab('home'); toggleSidebar();" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-house w-5 text-emerald-600"></i> الرئيسية
+            </button>
+            <button onclick="switchTab('tasks'); toggleSidebar();" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-list-check w-5 text-emerald-600"></i> المهام اليومية
+            </button>
+            <button onclick="switchTab('bac'); toggleSidebar();" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-graduation-cap w-5 text-blue-600"></i> البكالوريا والمواد
+            </button>
+            <button onclick="switchTab('finance'); toggleSidebar();" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-wallet w-5 text-emerald-700"></i> الجانب المالي (MRU)
+            </button>
+            <button onclick="switchTab('library'); toggleSidebar();" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-book w-5 text-purple-600"></i> المكتبة والمراجع
+            </button>
+            <button onclick="switchTab('notifications'); toggleSidebar();" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-bell w-5 text-amber-600"></i> الإشعارات
+            </button>
+            <button onclick="switchTab('settings'); toggleSidebar();" class="sidebar-btn flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-gear w-5 text-gray-600"></i> الإعدادات والمظهر
+            </button>
+        </div>
+
+        <div class="pt-4 border-t border-gray-200 text-center text-xs text-gray-400">
+            مشروع مِداد الإصدار 2.0
+        </div>
+    </aside>
+
     <!-- المحتوى الرئيسي -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 pb-28">
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
         
         <!-- 1. لوحة التحكم الرئيسية -->
         <section id="tab-home" class="tab-content space-y-6">
@@ -373,32 +421,6 @@
 
     </main>
 
-    <!-- شريط التنقل السفلي المحدث والمنظم للهاتف -->
-    <nav class="glass border-t border-gray-200 fixed bottom-0 left-0 right-0 z-50 shadow-lg py-1">
-        <div class="max-w-md mx-auto grid grid-cols-5 gap-1 px-1">
-            <button onclick="switchTab('home')" id="nav-home" class="nav-btn flex flex-col items-center py-1 text-emerald-600 text-[10px] md:text-xs font-bold transition">
-                <i class="fa-solid fa-house text-base mb-0.5"></i>
-                <span>الرئيسية</span>
-            </button>
-            <button onclick="switchTab('tasks')" id="nav-tasks" class="nav-btn flex flex-col items-center py-1 text-gray-500 text-[10px] md:text-xs font-bold transition">
-                <i class="fa-solid fa-list-check text-base mb-0.5"></i>
-                <span>المهام</span>
-            </button>
-            <button onclick="switchTab('bac')" id="nav-bac" class="nav-btn flex flex-col items-center py-1 text-gray-500 text-[10px] md:text-xs font-bold transition">
-                <i class="fa-solid fa-graduation-cap text-base mb-0.5"></i>
-                <span>البكالوريا</span>
-            </button>
-            <button onclick="switchTab('finance')" id="nav-finance" class="nav-btn flex flex-col items-center py-1 text-gray-500 text-[10px] md:text-xs font-bold transition">
-                <i class="fa-solid fa-wallet text-base mb-0.5"></i>
-                <span>المالية</span>
-            </button>
-            <button onclick="switchTab('library')" id="nav-library" class="nav-btn flex flex-col items-center py-1 text-gray-500 text-[10px] md:text-xs font-bold transition">
-                <i class="fa-solid fa-book text-base mb-0.5"></i>
-                <span>المكتبة</span>
-            </button>
-        </div>
-    </nav>
-
     <!-- جافاسكريبت التطبيق -->
     <script>
         const STORAGE_KEY = 'midad_app_data_v1';
@@ -445,29 +467,25 @@
             updateStats();
         }
 
+        // فتح وإغلاق القائمة الجانبية العمودية
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar.classList.contains('translate-x-full')) {
+                sidebar.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
         function switchTab(tabId) {
-            // إخفاء جميع الأقسام
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            
-            // إظهار القسم المطلوب
             const targetTab = document.getElementById('tab-' + tabId);
             if (targetTab) {
                 targetTab.classList.remove('hidden');
             }
-            
-            // إعادة ضبط ألوان جميع أزرار التنقل
-            document.querySelectorAll('.nav-btn').forEach(el => {
-                el.classList.remove('text-emerald-600');
-                el.classList.add('text-gray-500');
-            });
-            
-            // تفعيل لون الزر النشط
-            const activeNav = document.getElementById('nav-' + tabId);
-            if (activeNav) {
-                activeNav.classList.remove('text-gray-500');
-                activeNav.classList.add('text-emerald-600');
-            }
-            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1023,4 +1041,4 @@
         window.onload = initApp;
     </script>
 </body>
-</html>
+</html> 
