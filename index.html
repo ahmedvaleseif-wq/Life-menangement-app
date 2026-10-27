@@ -434,4 +434,750 @@
             subjects: [
                 { id: 1, name: 'اللغة العربية', lessons: [] },
                 { id: 2, name: 'التشريع (فقه وأصول)', lessons: [] },
-                { id: 3
+                { id: 3, name: 'الفكر الإسلامي', lessons: [] },
+                { id: 4, name: 'التاريخ والجغرافيا', lessons: [] },
+                { id: 5, name: 'القرآن والحديث', lessons: [] },
+                { id: 6, name: 'اللغة الفرنسية', lessons: [] }
+            ],
+            planner: [],
+            events: [],
+            books: [],
+            finance: {
+                transactions: [],
+                goals: [],
+                debts: []
+            },
+            settings: { bg: 'default' }
+        };
+
+        const expenseCategories = ['طعام ومؤونة', 'مواصلات', 'سكن وفواتير', 'دراسة وكتب', 'صحة وعلاج', 'أسرة وهدايا', 'أخرى'];
+        const incomeCategories = ['راتب/دخل شهري', 'عمل إضافي', 'مساعدة/منحة', 'أخرى'];
+
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    appData = { ...appData, ...parsed };
+                    if (!appData.planner) appData.planner = [];
+                    if (!appData.events) appData.events = [];
+                    if (!appData.finance) appData.finance = { transactions: [], goals: [], debts: [] };
+                } catch (e) {
+                    console.error('خطأ في قراءة البيانات', e);
+                }
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+            updateStats();
+            renderNotifications();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar.style.transform === 'translateX(0px)') {
+                sidebar.style.transform = 'translateX(100%)';
+                overlay.classList.add('hidden');
+            } else {
+                sidebar.style.transform = 'translateX(0px)';
+                overlay.classList.remove('hidden');
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const targetTab = document.getElementById('tab-' + tabId);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function initHeader() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const todayStr = new Date().toLocaleDateString('ar-MR', options);
+            const dateEl = document.getElementById('currentDateDisplay');
+            if (dateEl) dateEl.textContent = todayStr;
+            updateCategories();
+        }
+
+        // --- مؤقت التركيز (Pomodoro) ---
+        let timerInterval = null;
+        let timerSeconds = 25 * 60;
+        let isTimerRunning = false;
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timerSeconds / 60);
+            const secs = timerSeconds % 60;
+            document.getElementById('timerDisplay').textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (isTimerRunning) return;
+            isTimerRunning = true;
+            timerInterval = setInterval(() => {
+                if (timerSeconds > 0) {
+                    timerSeconds--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    isTimerRunning = false;
+                    alert('انتهت جلسة التركيز! خذ قسطاً من الراحة.');
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timerSeconds = 25 * 60;
+            updateTimerDisplay();
+        }
+
+        // المهام
+        function addTask(e) {
+            e.preventDefault();
+            const input = document.getElementById('taskInput');
+            const priority = document.getElementById('taskPriority').value;
+            if (!input.value.trim()) return;
+
+            appData.tasks.push({ id: Date.now(), text: input.value.trim(), priority, completed: false });
+            input.value = '';
+            saveData();
+            renderTasks();
+        }
+
+        function toggleTask(id) {
+            const task = appData.tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                saveData();
+                renderTasks();
+            }
+        }
+
+        function deleteTask(id) {
+            appData.tasks = appData.tasks.filter(t => t.id !== id);
+            saveData();
+            renderTasks();
+        }
+
+        function clearCompletedTasks() {
+            appData.tasks = appData.tasks.filter(t => !t.completed);
+            saveData();
+            renderTasks();
+        }
+
+        function renderTasks() {
+            const list = document.getElementById('tasksList');
+            const homeList = document.getElementById('homeTasksList');
+            if (!list || !homeList) return;
+
+            if (!appData.tasks.length) {
+                list.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">لا توجد مهام مضافة حالياً.</p>`;
+                homeList.innerHTML = `<p class="text-xs text-gray-400">لا توجد مهام اليوم.</p>`;
+                return;
+            }
+
+            let html = '';
+            let homeHtml = '';
+            appData.tasks.slice(-5).reverse().forEach(t => {
+                const itemHtml = `
+                    <div class="flex items-center justify-between p-3 rounded-xl border ${t.completed ? 'bg-gray-50 border-gray-200 opacity-60 line-through' : 'bg-white border-gray-200'}">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" ${t.completed ? 'checked' : ''} onclick="toggleTask(${t.id})" class="w-4 h-4 text-emerald-600 rounded">
+                            <span class="text-sm ${t.priority === 'high' ? 'font-bold text-red-600' : ''}">${t.text}</span>
+                        </div>
+                        <button onclick="deleteTask(${t.id})" class="text-gray-400 hover:text-red-500 text-xs"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                if (t.completed === false) homeHtml += itemHtml;
+                html += itemHtml;
+            });
+
+            list.innerHTML = html;
+            homeList.innerHTML = homeHtml || `<p class="text-xs text-gray-400">أحسنت! أكملت جميع المهام.</p>`;
+        }
+
+        // جدول المراجعة
+        function addPlannerItem() {
+            const day = document.getElementById('plannerDay').value;
+            const task = document.getElementById('plannerTask').value.trim();
+            if (!task) return;
+            appData.planner.push({ id: Date.now(), day, task });
+            document.getElementById('plannerTask').value = '';
+            saveData();
+            renderPlanner();
+        }
+
+        function deletePlannerItem(id) {
+            appData.planner = appData.planner.filter(p => p.id !== id);
+            saveData();
+            renderPlanner();
+        }
+
+        function renderPlanner() {
+            const container = document.getElementById('plannerContainer');
+            if (!container) return;
+            if (!appData.planner.length) {
+                container.innerHTML = `<p class="text-xs text-gray-400 text-center py-2 col-span-2">لم تتم إضافة عناصر للجدول بعد.</p>`;
+                return;
+            }
+            let html = '';
+            appData.planner.forEach(p => {
+                html += `
+                    <div class="bg-white border border-indigo-100 p-3 rounded-xl text-xs flex justify-between items-start">
+                        <div>
+                            <span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-bold">${p.day}</span>
+                            <p class="mt-1 text-gray-800 font-medium">${p.task}</p>
+                        </div>
+                        <button onclick="deletePlannerItem(${p.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // التقويم والمواعيد
+        function addEvent(e) {
+            e.preventDefault();
+            const title = document.getElementById('eventTitle').value.trim();
+            const date = document.getElementById('eventDate').value;
+            if (!title || !date) return;
+            appData.events.push({ id: Date.now(), title, date });
+            document.getElementById('eventForm').reset();
+            saveData();
+            renderEvents();
+        }
+
+        function deleteEvent(id) {
+            appData.events = appData.events.filter(ev => ev.id !== id);
+            saveData();
+            renderEvents();
+        }
+
+        function renderEvents() {
+            const container = document.getElementById('eventsList');
+            if (!container) return;
+            if (!appData.events.length) {
+                container.innerHTML = `<p class="text-xs text-gray-400 text-center py-2">لا توجد مواعيد مضافة في التقويم.</p>`;
+                return;
+            }
+            let html = '';
+            appData.events.sort((a,b) => new Date(a.date) - new Date(b.date)).forEach(ev => {
+                html += `
+                    <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-200 text-xs">
+                        <div>
+                            <span class="font-bold text-indigo-800">${ev.title}</span>
+                            <p class="text-[11px] text-gray-500"><i class="fa-solid fa-clock ml-1"></i>${ev.date}</p>
+                        </div>
+                        <button onclick="deleteEvent(${ev.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // المواد والدروس
+        function addSubject() {
+            const input = document.getElementById('newSubjectInput');
+            if (!input.value.trim()) return;
+            appData.subjects.push({ id: Date.now(), name: input.value.trim(), lessons: [] });
+            input.value = '';
+            saveData();
+            renderSubjects();
+        }
+
+        function addLesson(subjectId) {
+            const input = document.getElementById(`lesson-input-${subjectId}`);
+            if (!input || !input.value.trim()) return;
+            const subject = appData.subjects.find(s => s.id === subjectId);
+            if (subject) {
+                subject.lessons.push({ id: Date.now(), name: input.value.trim(), status: 'لم يبدأ' });
+                input.value = '';
+                saveData();
+                renderSubjects();
+            }
+        }
+
+        function cycleLessonStatus(subjectId, lessonId) {
+            const subject = appData.subjects.find(s => s.id === subjectId);
+            if (subject) {
+                const lesson = subject.lessons.find(l => l.id === lessonId);
+                if (lesson) {
+                    if (lesson.status === 'لم يبدأ') lesson.status = 'قيد الدراسة';
+                    else if (lesson.status === 'قيد الدراسة') lesson.status = 'تمت مراجعته';
+                    else lesson.status = 'لم يبدأ';
+                    saveData();
+                    renderSubjects();
+                }
+            }
+        }
+
+        function deleteLesson(subjectId, lessonId) {
+            const subject = appData.subjects.find(s => s.id === subjectId);
+            if (subject) {
+                subject.lessons = subject.lessons.filter(l => l.id !== lessonId);
+                saveData();
+                renderSubjects();
+            }
+        }
+
+        function renderSubjects() {
+            const container = document.getElementById('subjectsContainer');
+            const homeProg = document.getElementById('homeBacProgress');
+            if (!container || !homeProg) return;
+
+            let html = '';
+            let homeProgHtml = '';
+
+            appData.subjects.forEach(sub => {
+                const totalLessons = sub.lessons.length;
+                const completedLessons = sub.lessons.filter(l => l.status === 'تمت مراجعته').length;
+                const percent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+
+                homeProgHtml += `
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>${sub.name}</span>
+                            <span>${percent}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                            <div class="bg-blue-600 h-full" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+
+                let lessonsHtml = '';
+                sub.lessons.forEach(l => {
+                    let badgeColor = 'bg-gray-200 text-gray-700';
+                    if (l.status === 'قيد الدراسة') badgeColor = 'bg-amber-100 text-amber-700';
+                    if (l.status === 'تمت مراجعته') badgeColor = 'bg-emerald-100 text-emerald-700';
+
+                    lessonsHtml += `
+                        <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-gray-100 text-xs">
+                            <span class="font-medium">${l.name}</span>
+                            <div class="flex items-center gap-2">
+                                <button onclick="cycleLessonStatus(${sub.id}, ${l.id})" class="px-2.5 py-1 rounded-lg ${badgeColor} font-semibold transition">${l.status}</button>
+                                <button onclick="deleteLesson(${sub.id}, ${l.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                    <div class="bg-white border border-gray-200 p-4 rounded-2xl space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-gray-800 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-book-open text-blue-600"></i> ${sub.name}
+                                <span class="text-xs font-normal text-gray-500">(${completedLessons}/${totalLessons})</span>
+                            </h3>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="lesson-input-${sub.id}" placeholder="إضافة درس..." class="flex-grow px-3 py-1.5 rounded-xl border border-gray-300 text-xs bg-white">
+                            <button onclick="addLesson(${sub.id})" class="bg-blue-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold">إضافة</button>
+                        </div>
+                        <div class="space-y-1.5 mt-2">
+                            ${lessonsHtml || '<p class="text-xs text-gray-400 text-center py-2">لا توجد دروس مضافة.</p>'}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            homeProg.innerHTML = homeProgHtml || '<p class="text-xs text-gray-400">لا توجد مواد مضافة.</p>';
+        }
+
+        // المالية والتقارير المتقدمة
+        function updateCategories() {
+            const type = document.getElementById('transType').value;
+            const catSelect = document.getElementById('transCategory');
+            if (!catSelect) return;
+            catSelect.innerHTML = '';
+            const cats = type === 'expense' ? expenseCategories : incomeCategories;
+            cats.forEach(c => {
+                catSelect.innerHTML += `<option value="${c}">${c}</option>`;
+            });
+        }
+
+        function addTransaction(e) {
+            e.preventDefault();
+            const type = document.getElementById('transType').value;
+            const amount = parseFloat(document.getElementById('transAmount').value);
+            const category = document.getElementById('transCategory').value;
+            const account = document.getElementById('transAccount').value;
+            const note = document.getElementById('transNote').value.trim();
+
+            if (!amount || amount <= 0) return;
+            appData.finance.transactions.push({ id: Date.now(), type, amount, category, account, note, date: new Date().toLocaleDateString('ar-MR') });
+            document.getElementById('transForm').reset();
+            updateCategories();
+            saveData();
+            renderFinance();
+        }
+
+        function deleteTransaction(id) {
+            appData.finance.transactions = appData.finance.transactions.filter(t => t.id !== id);
+            saveData();
+            renderFinance();
+        }
+
+        function addFinancialGoal(e) {
+            e.preventDefault();
+            const title = document.getElementById('goalTitle').value.trim();
+            const target = parseFloat(document.getElementById('goalTarget').value);
+            const current = parseFloat(document.getElementById('goalCurrent').value) || 0;
+            if (!title || !target) return;
+            appData.finance.goals.push({ id: Date.now(), title, target, current });
+            document.getElementById('goalForm').reset();
+            saveData();
+            renderFinance();
+        }
+
+        function deleteGoal(id) {
+            appData.finance.goals = appData.finance.goals.filter(g => g.id !== id);
+            saveData();
+            renderFinance();
+        }
+
+        function addDebtItem(e) {
+            e.preventDefault();
+            const type = document.getElementById('debtType').value;
+            const person = document.getElementById('debtPerson').value.trim();
+            const amount = parseFloat(document.getElementById('debtAmount').value);
+            if (!person || !amount) return;
+            appData.finance.debts.push({ id: Date.now(), type, person, amount });
+            document.getElementById('debtForm').reset();
+            saveData();
+            renderFinance();
+        }
+
+        function deleteDebt(id) {
+            appData.finance.debts = appData.finance.debts.filter(d => d.id !== id);
+            saveData();
+            renderFinance();
+        }
+
+        function renderFinance() {
+            let totalIncome = 0, totalExpense = 0;
+            let categorySums = {};
+
+            appData.finance.transactions.forEach(t => {
+                if (t.type === 'income') totalIncome += t.amount;
+                if (t.type === 'expense') {
+                    totalExpense += t.amount;
+                    categorySums[t.category] = (categorySums[t.category] || 0) + t.amount;
+                }
+            });
+
+            const netBalance = totalIncome - totalExpense;
+            document.getElementById('financeIncomeSum').textContent = `${totalIncome} MRU`;
+            document.getElementById('financeExpenseSum').textContent = `${totalExpense} MRU`;
+            document.getElementById('homeTotalBalance').textContent = `${netBalance} MRU`;
+
+            // تقرير الفئات
+            const catReport = document.getElementById('categoryReportContainer');
+            if (catReport) {
+                if (totalExpense === 0) {
+                    catReport.innerHTML = `<p class="text-xs text-gray-400 text-center py-2">لا توجد مصروفات مسجلة بعد لعرض التقرير.</p>`;
+                } else {
+                    let html = '';
+                    for (const [cat, sum] of Object.entries(categorySums)) {
+                        const pct = Math.round((sum / totalExpense) * 100);
+                        html += `
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span>${cat}</span>
+                                    <span>${sum} MRU (${pct}%)</span>
+                                </div>
+                                <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-emerald-600 h-full" style="width: ${pct}%"></div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    catReport.innerHTML = html;
+                }
+            }
+
+            const transList = document.getElementById('transactionsList');
+            if (transList) {
+                if (!appData.finance.transactions.length) {
+                    transList.innerHTML = `<p class="text-xs text-gray-400 text-center py-2">لا توجد عمليات مالية.</p>`;
+                } else {
+                    let html = '';
+                    appData.finance.transactions.slice(-6).reverse().forEach(t => {
+                        const isIncome = t.type === 'income';
+                        html += `
+                            <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-gray-100 text-xs">
+                                <div>
+                                    <span class="font-bold ${isIncome ? 'text-emerald-600' : 'text-red-600'}">${isIncome ? '+' : '-'}${t.amount} MRU</span>
+                                    <span class="text-gray-500 mr-2">(${t.category} • ${t.account})</span>
+                                </div>
+                                <button onclick="deleteTransaction(${t.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        `;
+                    });
+                    transList.innerHTML = html;
+                }
+            }
+
+            let totalSavings = 0;
+            const goalsList = document.getElementById('financialGoalsList');
+            if (goalsList) {
+                if (!appData.finance.goals.length) {
+                    goalsList.innerHTML = `<p class="text-xs text-gray-400 text-center py-1">لا توجد أهداف.</p>`;
+                } else {
+                    let html = '';
+                    appData.finance.goals.forEach(g => {
+                        totalSavings += g.current;
+                        const percent = Math.min(100, Math.round((g.current / g.target) * 100));
+                        html += `
+                            <div class="bg-white p-2.5 rounded-xl border border-gray-100 text-xs space-y-1">
+                                <div class="flex justify-between font-bold">
+                                    <span>${g.title}</span>
+                                    <span>${g.current} / ${g.target} MRU (${percent}%)</span>
+                                </div>
+                                <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-purple-600 h-full" style="width: ${percent}%"></div>
+                                </div>
+                                <div class="flex justify-end"><button onclick="deleteGoal(${g.id})" class="text-[10px] text-red-500 hover:underline">حذف</button></div>
+                            </div>
+                        `;
+                    });
+                    goalsList.innerHTML = html;
+                }
+            }
+            document.getElementById('financeSavingsSum').textContent = `${totalSavings} MRU`;
+
+            let netDebts = 0;
+            const debtsList = document.getElementById('debtsList');
+            if (debtsList) {
+                if (!appData.finance.debts.length) {
+                    debtsList.innerHTML = `<p class="text-xs text-gray-400 text-center py-1">لا توجد ديون.</p>`;
+                } else {
+                    let html = '';
+                    appData.finance.debts.forEach(d => {
+                        const isUponMe = d.type === 'upon_me';
+                        if (isUponMe) netDebts -= d.amount;
+                        else netDebts += d.amount;
+                        html += `
+                            <div class="flex justify-between items-center bg-white p-2 rounded-xl border border-gray-100 text-xs">
+                                <div>
+                                    <span class="font-bold ${isUponMe ? 'text-red-600' : 'text-emerald-600'}">${isUponMe ? 'عليّ' : 'لي'}: ${d.amount} MRU</span>
+                                    <span class="text-gray-600 font-medium mr-1">(${d.person})</span>
+                                </div>
+                                <button onclick="deleteDebt(${d.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        `;
+                    });
+                    debtsList.innerHTML = html;
+                }
+            }
+            document.getElementById('financeDebtsSum').textContent = `${netDebts} MRU`;
+        }
+
+        // المكتبة
+        function addBook(e) {
+            e.preventDefault();
+            const title = document.getElementById('bookTitle').value;
+            const category = document.getElementById('bookCategory').value;
+            const link = document.getElementById('bookLink').value;
+            const notes = document.getElementById('bookNotes').value;
+            appData.books.push({ id: Date.now(), title, category, link, notes });
+            document.getElementById('bookForm').reset();
+            saveData();
+            renderLibrary();
+        }
+
+        function deleteBook(id) {
+            appData.books = appData.books.filter(b => b.id !== id);
+            saveData();
+            renderLibrary();
+        }
+
+        function renderLibrary() {
+            const queryField = document.getElementById('bookSearch');
+            const catFilter = document.getElementById('bookFilterCategory');
+            const grid = document.getElementById('booksGrid');
+            if (!grid) return;
+
+            const query = queryField ? queryField.value.toLowerCase() : '';
+            const selectedCat = catFilter ? catFilter.value : 'all';
+
+            const filtered = appData.books.filter(b => {
+                const matchesQuery = b.title.toLowerCase().includes(query) || b.category.toLowerCase().includes(query);
+                const matchesCat = selectedCat === 'all' || b.category === selectedCat;
+                return matchesQuery && matchesCat;
+            });
+
+            if (!filtered.length) {
+                grid.innerHTML = `<p class="text-xs text-gray-400 text-center py-4 col-span-2">لا توجد كتب مطابقة.</p>`;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(b => {
+                html += `
+                    <div class="bg-white border border-gray-200 p-4 rounded-2xl flex flex-col justify-between space-y-2 text-xs">
+                        <div>
+                            <span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-md font-semibold">${b.category}</span>
+                            <h4 class="font-bold text-gray-900 text-sm mt-1">${b.title}</h4>
+                            ${b.notes ? `<p class="text-gray-600 mt-1">${b.notes}</p>` : ''}
+                        </div>
+                        <div class="flex justify-between items-center pt-2 border-t border-gray-100">
+                            ${b.link ? `<a href="${b.link}" target="_blank" class="text-blue-600 hover:underline flex items-center gap-1"><i class="fa-solid fa-external-link"></i> فتح الرابط</a>` : '<span></span>'}
+                            <button onclick="deleteBook(${b.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i> حذف</button>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        // الإشعارات
+        function renderNotifications() {
+            const container = document.getElementById('notificationsContainer');
+            const badge = document.getElementById('notifBadge');
+            if (!container) return;
+
+            let notifs = [];
+            const uncompletedTasks = appData.tasks.filter(t => !t.completed).length;
+            if (uncompletedTasks > 0) {
+                notifs.push({ title: 'مهام اليوم', desc: `لديك ${uncompletedTasks} مهام غير مكتملة اليوم.` });
+            }
+
+            if (appData.events.length > 0) {
+                notifs.push({ title: 'مواعيد التقويم', desc: `لديك ${appData.events.length} مواعيد مسجلة قادمة.` });
+            }
+
+            badge.textContent = notifs.length;
+            if (notifs.length > 0) badge.classList.remove('hidden');
+            else badge.classList.add('hidden');
+
+            let html = '';
+            if (notifs.length === 0) {
+                html = `<div class="p-3 bg-white/60 rounded-xl border border-gray-200 text-sm text-gray-600">لا توجد إشعارات جديدة حالياً. كل أمورك منظمة!</div>`;
+            } else {
+                notifs.forEach(n => {
+                    html += `
+                        <div class="p-3 bg-white rounded-xl border border-gray-200 text-xs space-y-1">
+                            <h4 class="font-bold text-emerald-800">${n.title}</h4>
+                            <p class="text-gray-600">${n.desc}</p>
+                        </div>
+                    `;
+                });
+            }
+            container.innerHTML = html;
+        }
+
+        // الإعدادات والخلفيات
+        function setBg(bgValue) {
+            appData.settings.bg = bgValue;
+            saveData();
+            applyBgStyle();
+        }
+
+        function applyCustomBg() {
+            const input = document.getElementById('customBgInput');
+            if (!input) return;
+            const url = input.value.trim();
+            if (url) { setBg(url); input.value = ''; }
+        }
+
+        function applyBgStyle() {
+            const bg = appData.settings.bg;
+            if (bg === 'default') {
+                document.body.style.backgroundImage = 'none';
+                document.body.style.backgroundColor = '#f3f4f6';
+            } else {
+                document.body.style.backgroundImage = `url('${bg}')`;
+            }
+        }
+
+        function updateStats() {
+            const completedTasks = appData.tasks.filter(t => t.completed).length;
+            const statTasks = document.getElementById('statTasks');
+            if (statTasks) statTasks.textContent = `${completedTasks} / ${appData.tasks.length}`;
+            
+            let completedLessonsCount = 0;
+            appData.subjects.forEach(s => {
+                completedLessonsCount += s.lessons.filter(l => l.status === 'تمت مراجعته').length;
+            });
+            const statLessons = document.getElementById('statLessons');
+            if (statLessons) statLessons.textContent = completedLessonsCount;
+            
+            const statBooks = document.getElementById('statBooks');
+            if (statBooks) statBooks.textContent = appData.books.length;
+
+            const bacDate = new Date('2027-06-01');
+            const diffTime = bacDate - new Date();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const statDays = document.getElementById('statDays');
+            if (statDays) statDays.textContent = diffDays > 0 ? diffDays : 'قريب جداً';
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `midad_backup_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    appData = JSON.parse(event.target.result);
+                    saveData();
+                    initApp();
+                    alert('تم استعادة البيانات بنجاح!');
+                } catch (err) {
+                    alert('ملف غير صالح.');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetData() {
+            if (confirm('هل أنت متأكد من رغبتك في إعادة ضبط البيانات؟')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        }
+
+        function initApp() {
+            loadData();
+            initHeader();
+            applyBgStyle();
+            renderTasks();
+            renderPlanner();
+            renderEvents();
+            renderSubjects();
+            renderFinance();
+            renderLibrary();
+            renderNotifications();
+            updateStats();
+            updateTimerDisplay();
+            switchTab('home');
+            
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.style.transform = 'translateX(100%)';
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
