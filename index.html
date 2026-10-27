@@ -23,18 +23,6 @@
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            emerald: '#059669',
-                            olive: '#556b2f',
-                            royal: '#1e40af',
-                            warm: '#8b4513'
-                        }
-                    }
-                }
-            }
         }
     </script>
     <!-- FontAwesome للأيقونات -->
@@ -52,11 +40,16 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
-        /* الثيمات المخصصة */
-        body.theme-emerald { --primary-color: #059669; }
-        body.theme-olive { --primary-color: #4d7c0f; }
-        body.theme-royal { --primary-color: #1d4ed8; }
-        body.theme-warm { --primary-color: #9a3412; }
+
+        /* الثيمات اللونية المخصصة */
+        body.theme-emerald { --accent-bg: #059669; --accent-gradient: linear-gradient(to right, #047857, #0f766e); }
+        body.theme-olive { --accent-bg: #4d7c0f; --accent-gradient: linear-gradient(to right, #3f6212, #365314); }
+        body.theme-royal { --accent-bg: #1d4ed8; --accent-gradient: linear-gradient(to right, #1e40af, #1e3a8a); }
+        body.theme-warm { --accent-bg: #9a3412; --accent-gradient: linear-gradient(to right, #7c2d12, #431407); }
+
+        .dynamic-header-bg {
+            background: var(--accent-gradient, linear-gradient(to right, #047857, #0f766e));
+        }
 
         /* شاشة الترحيب */
         #splash-screen {
@@ -77,7 +70,7 @@
     </div>
 
     <!-- شريط التنقل العلوي -->
-    <header class="bg-white/90 dark:bg-gray-800/90 card-box shadow-sm sticky top-0 z-40 border-b border-gray-200 dark:border-gray-700">
+    <header class="bg-white/95 dark:bg-gray-800/95 card-box shadow-sm sticky top-0 z-40 border-b border-gray-200 dark:border-gray-700">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <button onclick="toggleSidebar()" class="p-2 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 rounded-xl transition text-lg active:scale-95">
@@ -92,7 +85,6 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <!-- زر تبديل الوضع الليلي -->
                 <button onclick="toggleDarkMode()" class="p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 transition">
                     <i id="darkModeIcon" class="fa-solid fa-moon text-xl"></i>
                 </button>
@@ -155,7 +147,7 @@
     </div>
 
     <!-- زر الإضافة السريعة العائم (FAB) -->
-    <button onclick="openQuickAddModal()" class="fixed bottom-6 left-6 bg-emerald-600 hover:bg-emerald-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl z-30 transition hover:scale-110 active:scale-95">
+    <button onclick="openQuickAddModal()" class="fixed bottom-6 left-6 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl z-30 transition hover:scale-110 active:scale-95 dynamic-header-bg">
         <i class="fa-solid fa-plus"></i>
     </button>
 
@@ -178,13 +170,25 @@
     <!-- المحتوى الرئيسي -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
         
-        <!-- 1. لوحة التحكم -->
+        <!-- 1. لوحة التحكم المطورة -->
         <section id="tab-home" class="tab-content space-y-6">
-            <div class="bg-gradient-to-r from-emerald-700 to-teal-800 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
-                <div class="relative z-10">
-                    <h2 class="text-2xl font-black mb-1">أهلاً بك يا أخي</h2>
-                    <p id="currentDateDisplay" class="text-emerald-100 text-sm mb-4"></p>
-                    <blockquote class="bg-black/20 p-3 rounded-xl text-sm italic border-r-4 border-emerald-400">
+            <div class="dynamic-header-bg text-white p-6 rounded-3xl shadow-xl relative overflow-hidden border border-white/10">
+                <div class="absolute -left-6 -bottom-6 opacity-10 text-9xl">
+                    <i class="fa-solid fa-feather-pointed"></i>
+                </div>
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md">شعبة الآداب الأصلية 📚</span>
+                            <span class="bg-black/20 px-3 py-1 rounded-full text-xs backdrop-blur-md" id="currentDateDisplay"></span>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-black mb-1">أهلاً بك، بطل البكالوريا! ✨</h2>
+                        <p class="text-emerald-100 text-xs md:text-sm font-medium">كل خطوة خطوتها اليوم تقربك أكثر من منصة النجاح والتميز.</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-white/15">
+                    <blockquote class="text-xs md:text-sm italic font-light text-emerald-50 flex items-center gap-2">
+                        <i class="fa-solid fa-quote-right text-emerald-300 text-base"></i>
                         "من طلب العلا سهر الليالي.. اصبر وتنظم، فما بقي إلا القليل لتنال البكالوريا وتستقر حياتك."
                     </blockquote>
                 </div>
@@ -268,7 +272,7 @@
                 </div>
                 <div class="flex justify-center gap-2">
                     <button onclick="startTimer()" class="bg-emerald-600 text-white px-5 py-2 rounded-xl text-xs font-bold shadow hover:bg-emerald-700">تشغيل</button>
-                    <button onclick="pauseTimer()" class="bg-amber-500 text-white px-5 py-2 rounded-xl text-xs font-bold shadow hover:bg-amber-600">إوقاف مؤقت</button>
+                    <button onclick="pauseTimer()" class="bg-amber-500 text-white px-5 py-2 rounded-xl text-xs font-bold shadow hover:bg-amber-600">إيقاف مؤقت</button>
                     <button onclick="resetTimer()" class="bg-gray-400 text-white px-4 py-2 rounded-xl text-xs font-bold shadow hover:bg-gray-500">إعادة ضبط</button>
                 </div>
             </div>
@@ -468,16 +472,16 @@
                 <div class="space-y-2">
                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">اختر النمط المفضل لونيًا للواجهة:</label>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                        <button onclick="setTheme('emerald')" class="p-3 rounded-xl border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold flex items-center justify-center gap-2">
+                        <button onclick="setTheme('emerald')" class="p-3 rounded-xl border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold flex items-center justify-center gap-2 shadow-sm active:scale-95 transition">
                             <span class="w-3 h-3 rounded-full bg-emerald-600"></span> الزمردي الراقي
                         </button>
-                        <button onclick="setTheme('olive')" class="p-3 rounded-xl border border-lime-600 bg-lime-50 dark:bg-lime-950/40 text-lime-800 dark:text-lime-300 text-xs font-bold flex items-center justify-center gap-2">
+                        <button onclick="setTheme('olive')" class="p-3 rounded-xl border border-lime-600 bg-lime-50 dark:bg-lime-950/40 text-lime-800 dark:text-lime-300 text-xs font-bold flex items-center justify-center gap-2 shadow-sm active:scale-95 transition">
                             <span class="w-3 h-3 rounded-full bg-lime-700"></span> الأخضر الزيتوني
                         </button>
-                        <button onclick="setTheme('royal')" class="p-3 rounded-xl border border-blue-600 bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 text-xs font-bold flex items-center justify-center gap-2">
+                        <button onclick="setTheme('royal')" class="p-3 rounded-xl border border-blue-600 bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 text-xs font-bold flex items-center justify-center gap-2 shadow-sm active:scale-95 transition">
                             <span class="w-3 h-3 rounded-full bg-blue-700"></span> الأزرق الملكي
                         </button>
-                        <button onclick="setTheme('warm')" class="p-3 rounded-xl border border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-300 text-xs font-bold flex items-center justify-center gap-2">
+                        <button onclick="setTheme('warm')" class="p-3 rounded-xl border border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-300 text-xs font-bold flex items-center justify-center gap-2 shadow-sm active:scale-95 transition">
                             <span class="w-3 h-3 rounded-full bg-amber-800"></span> البني الخشبي
                         </button>
                     </div>
@@ -609,7 +613,8 @@
 
         function applyThemeClass() {
             document.body.classList.remove('theme-emerald', 'theme-olive', 'theme-royal', 'theme-warm');
-            document.body.classList.add(`theme-${appData.settings.theme || 'emerald'}`);
+            const activeTheme = appData.settings.theme || 'emerald';
+            document.body.classList.add(`theme-${activeTheme}`);
         }
 
         function applyTheme() {
@@ -1278,7 +1283,7 @@
                 setTimeout(() => {
                     splash.style.opacity = '0';
                     splash.style.visibility = 'hidden';
-                }, 1200);
+                }, 1000);
             }
         }
 
