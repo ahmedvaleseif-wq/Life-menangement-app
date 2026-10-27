@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مداد — نظام إدارة الحياة والدراسة والمالية</title>
+    
+    <!-- ربط ملف الـ PWA و Service Worker -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#059669">
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker Registered!', reg))
+            .catch(err => console.error('Service Worker Registration Failed!', err));
+        });
+      }
+    </script>
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -514,7 +528,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // تحكم نافذة الإضافة السريعة (FAB)
         function openQuickAddModal() {
             document.getElementById('quickAddModal').classList.remove('hidden');
         }
@@ -526,7 +539,6 @@
             switchTab(tabId);
         }
 
-        // تحكم الوضع الليلي والنهاري
         function toggleDarkMode() {
             appData.settings.darkMode = !appData.settings.darkMode;
             saveData();
@@ -552,7 +564,6 @@
             updateCategories();
         }
 
-        // مؤقت التركيز (Pomodoro)
         let timerInterval = null;
         let timerSeconds = 25 * 60;
         let isTimerRunning = false;
@@ -590,7 +601,6 @@
             updateTimerDisplay();
         }
 
-        // المهام
         function addTask(e) {
             e.preventDefault();
             const input = document.getElementById('taskInput');
@@ -655,7 +665,6 @@
             homeList.innerHTML = homeHtml || `<p class="text-xs text-gray-400">أحسنت! أكملت جميع المهام.</p>`;
         }
 
-        // جدول المراجعة
         function addPlannerItem() {
             const day = document.getElementById('plannerDay').value;
             const task = document.getElementById('plannerTask').value.trim();
@@ -694,7 +703,6 @@
             container.innerHTML = html;
         }
 
-        // التقويم والمواعيد
         function addEvent(e) {
             e.preventDefault();
             const title = document.getElementById('eventTitle').value.trim();
@@ -734,7 +742,6 @@
             container.innerHTML = html;
         }
 
-        // المواد والدروس
         function addSubject() {
             const input = document.getElementById('newSubjectInput');
             if (!input.value.trim()) return;
@@ -844,7 +851,6 @@
             homeProg.innerHTML = homeProgHtml || '<p class="text-xs text-gray-400">لا توجد مواد مضافة.</p>';
         }
 
-        // المالية والتقارير
         function updateCategories() {
             const type = document.getElementById('transType').value;
             const catSelect = document.getElementById('transCategory');
@@ -1032,7 +1038,6 @@
             document.getElementById('financeDebtsSum').textContent = `${netDebts} MRU`;
         }
 
-        // المكتبة
         function addBook(e) {
             e.preventDefault();
             const title = document.getElementById('bookTitle').value;
@@ -1090,7 +1095,6 @@
             grid.innerHTML = html;
         }
 
-        // الإشعارات
         function renderNotifications() {
             const container = document.getElementById('notificationsContainer');
             const badge = document.getElementById('notifBadge');
@@ -1126,7 +1130,6 @@
             container.innerHTML = html;
         }
 
-        // الخلفيات
         function setBg(bgValue) {
             appData.settings.bg = bgValue;
             saveData();
