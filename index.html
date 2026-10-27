@@ -1,366 +1,137 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#173b32">
-<title>إدارة الحياة | Life Manager</title>
-
+<title>مداد | إدارة الحياة والدراسة</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f3f5f4;color:#24352f}
-header{background:#173b32;color:white;padding:22px 18px;border-radius:0 0 22px 22px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
-h1{font-size:23px;margin:8px 0}
-header p{color:#d6e6de;font-size:14px}
-button,input,select{font:inherit}
-button{cursor:pointer;border:0;border-radius:10px;padding:11px 14px}
-.lang{background:white;color:#173b32;font-weight:bold}
-main{padding:16px;max-width:800px;margin:auto;padding-bottom:90px}
-.welcome{background:white;padding:18px;border-radius:16px;margin:16px 0}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.stat,.card{background:white;padding:16px;border-radius:15px;margin-bottom:12px}
-.stat strong{font-size:24px;color:#237657;display:block;margin-top:8px}
-nav{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;justify-content:space-around;padding:9px 2px;box-shadow:0 -3px 12px #0001;z-index:5}
-nav button{background:transparent;padding:8px 5px;font-size:12px;color:#52635c}
-nav button.active{background:#e2eee8;color:#173b32;font-weight:bold}
-h2{font-size:20px}
-h3{font-size:16px;margin-top:0}
-input,select{width:100%;padding:12px;border:1px solid #d5ded9;border-radius:10px;margin:7px 0 12px;background:white}
-.primary{background:#237657;color:white;width:100%;margin-top:5px}
-.row {
-  display: flex;
-  gap: 10px;
-  align-items: stretch;
-  width: 100%;
-}
-
-.row input {
-  flex: 1;
-  width: 0;
-  min-width: 0;
-  margin: 0;
-}
-
-.row button {
-  width: auto;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-.row .primary {
-  width: auto;
-  margin: 0;
-}
-.item{display:flex;align-items:center;gap:9px;padding:12px 0;border-bottom:1px solid #edf0ee}
-.item span{flex:1;overflow-wrap:anywhere}
-.item input{width:auto;margin:0}
-.item button{padding:7px 10px;background:#fce8e6;color:#a52b24}
-.done{text-decoration:line-through;color:#87918b}
-.muted{color:#728078;font-size:13px}
-.progress{height:9px;background:#e5ebe7;border-radius:10px;overflow:hidden;margin:10px 0}
-.progress div{height:100%;background:#29936a;width:0}
-.hidden{display:none!important}
-footer{text-align:center;color:#87918b;font-size:12px;margin-top:25px}
+:root{--bg:#f4f7f5;--card:#fff;--ink:#18332b;--muted:#64756e;--line:#dce6e0;--green:#17634b;--green2:#e4f2eb;--red:#a13e35;--amber:#8b641d;--shadow:0 4px 18px #173b3210}
+[data-theme="dark"]{--bg:#101a17;--card:#1a2823;--ink:#e6f1eb;--muted:#a8bbb1;--line:#30453b;--green:#7bc6a4;--green2:#203b30;--red:#ff938a;--amber:#e9c16f;--shadow:0 4px 18px #0003}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;line-height:1.55}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 13px;background:var(--green);color:#fff}button.secondary{background:var(--green2);color:var(--ink);border:1px solid var(--line)}button.danger{background:var(--red);color:#fff}button.small{padding:6px 9px;font-size:.9rem}.wrap{max-width:980px;margin:auto;padding:14px 14px 100px}.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:6px 0 16px}.brand{font-size:1.45rem;font-weight:800}.sub{color:var(--muted);font-size:.9rem}.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0;box-shadow:var(--shadow)}h1,h2,h3,p{margin-top:0}h2{font-size:1.2rem;margin-bottom:8px}h3{font-size:1rem;margin-bottom:6px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.row>*{min-width:0}.row input,.row select{flex:1;min-width:130px}input,select,textarea{width:100%;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px}label{display:block;font-size:.9rem;color:var(--muted);margin:8px 0 4px}.field{margin-bottom:8px}.hidden{display:none!important}.nav{position:fixed;z-index:10;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;gap:5px;padding:8px 4px calc(8px + env(safe-area-inset-bottom))}.nav button{background:transparent;color:var(--muted);padding:8px 10px;flex:1;max-width:150px;font-size:.85rem}.nav button.active{background:var(--green2);color:var(--ink);font-weight:700}.stat{padding:13px;border:1px solid var(--line);border-radius:12px}.stat strong{display:block;font-size:1.5rem}.progress{height:9px;background:var(--line);border-radius:20px;overflow:hidden}.progress span{display:block;height:100%;background:var(--green);width:0}.item{border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}.itemhead{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.badge{font-size:.78rem;border-radius:30px;padding:3px 8px;background:var(--green2);white-space:nowrap}.badge.warn{background:#fff1d6;color:#795411}.badge.red{background:#ffe4e1;color:#8a3028}.empty{color:var(--muted);padding:12px;text-align:center}.tiny{font-size:.82rem}.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:500px){.split{grid-template-columns:1fr}.top{align-items:flex-start}.nav button{font-size:.75rem;padding:8px 3px}}.checkline{display:flex;gap:8px;align-items:center}.checkline input{width:auto}.notice{background:var(--green2);padding:12px;border-radius:12px}.footer{font-size:.8rem;color:var(--muted);text-align:center;margin-top:24px}
 </style>
 </head>
-
 <body>
-<header>
-  <div class="top">
-    <div>
-      <div id="brand">منظّم الحياة</div>
-      <h1 id="title">خطّط ليومك، وابنِ مستقبلك</h1>
-    </div>
-    <button class="lang" id="languageButton" onclick="toggleLanguage()">Français</button>
-  </div>
-  <p id="subtitle">مكان واحد لتنظيم دراستك وأهدافك وعاداتك.</p>
-</header>
+<div class="wrap">
+<header class="top"><div><div class="brand">مداد <span class="sub">| الدراسة والحياة</span></div><div class="sub" id="todayLine"></div></div><div class="row"><button class="secondary small" id="langBtn" onclick="toggleLang()">FR</button><button class="secondary small" onclick="toggleTheme()" id="themeBtn" aria-label="تغيير المظهر">◐</button></div></header>
 
-<main>
-  <section id="home">
-    <div class="welcome">
-      <h2 data-t="welcome">مرحبًا بك في مساحتك الخاصة</h2>
-      <p data-t="welcomeText">ابدأ بخطوة صغيرة اليوم، وواصل التقدم نحو أهدافك.</p>
-      <div class="progress"><div id="homeProgress"></div></div>
-      <p class="muted" id="progressText">إنجاز المهام: 0%</p>
-    </div>
-    <div class="stats">
-      <div class="stat"><span data-t="tasks">المهام</span><strong id="taskCount">0</strong></div>
-      <div class="stat"><span data-t="goals">الأهداف</span><strong id="goalCount">0</strong></div>
-      <div class="stat"><span data-t="bac">البكالوريا</span><strong>6</strong><span class="muted" data-t="subjects">مواد دراسية</span></div>
-      <div class="stat"><span data-t="reading">القراءة</span><strong id="readingCount">0</strong><span class="muted" data-t="books">كتابًا مسجلًا</span></div>
-    </div>
-    <h2 data-t="today">أولوياتك اليوم</h2>
-    <div class="card">
-      <h3 data-t="priority">الأولوية الأولى: البكالوريا</h3>
-      <p data-t="priorityText">خصّص وقتًا ثابتًا للمراجعة، ولو كان قصيرًا.</p>
-      <button class="primary" onclick="showPage('bac')" data-t="startStudy">انتقل إلى الدراسة</button>
-    </div>
-  </section>
+<section id="home" class="page">
+<div class="panel"><h2 data-i18n="welcome">خطوتك اليومية نحو البكالوريا</h2><p class="muted" data-i18n="welcomeSub">خطة بسيطة قابلة للتعديل، تحفظ تقدمك على هذا الجهاز.</p><div class="grid">
+<div class="stat"><span class="muted" data-i18n="daysLeft">الأيام المتبقية</span><strong id="homeDays">—</strong><span class="tiny muted" data-i18n="toBac">حتى موعد البكالوريا</span></div>
+<div class="stat"><span class="muted" data-i18n="overall">إتقان المنهج</span><strong id="homeProgress">0%</strong><div class="progress"><span id="homeProgressBar"></span></div></div>
+<div class="stat"><span class="muted" data-i18n="lessonsCount">الدروس المسجلة</span><strong id="homeLessons">0</strong><span class="tiny muted" data-i18n="lessonsHint">في جميع المواد</span></div>
+</div></div>
+<div class="panel"><h2 data-i18n="todayPlan">درس اليوم</h2><div id="homeDaily"></div><button onclick="showPage('daily')" data-i18n="openDaily">فتح خطة اليوم</button></div>
+<div class="panel"><h2 data-i18n="subjectProgress">التقدم حسب المادة</h2><div id="homeSubjects"></div></div>
+</section>
 
-  <section id="bac" class="hidden">
-    <h2 data-t="bacTitle">متابعة البكالوريا</h2>
-    <p class="muted" data-t="bacText">شعبة الآداب الأصلية — سجّل الدروس التي تراجعها.</p>
-    <div class="card">
-      <h3 data-t="subjectsTitle">المواد الدراسية</h3>
-      <div id="subjectsList"></div>
-    </div>
-    <div class="card">
-      <h3 data-t="lessonTitle">تسجيل درس راجعته</h3>
-      <label data-t="chooseSubject">المادة</label>
-      <select id="subjectSelect"></select>
-      <label data-t="lessonName">اسم الدرس</label>
-      <input id="lessonInput" placeholder="اكتب اسم الدرس">
-      <button class="primary" onclick="addLesson()" data-t="saveLesson">حفظ الدرس</button>
-      <div id="lessonList"></div>
-    </div>
-  </section>
+<section id="curriculum" class="page hidden">
+<div class="panel"><h2 data-i18n="curriculumTitle">خريطة المنهج</h2><p class="muted" data-i18n="curriculumIntro">أضف الدروس من كتبك المقررة. لا تُنشأ دروس المنهج تلقائياً حتى لا نضع عناوين غير دقيقة.</p>
+<div class="field"><label data-i18n="subject">المادة</label><select id="subjectFilter" onchange="renderCurriculum()"></select></div>
+<div class="grid"><div class="field"><label data-i18n="topicName">اسم المحور / الوحدة</label><input id="newTopic" placeholder="مثال: النهضة الأدبية"></div><div class="field"><label data-i18n="topicSource">المرجع أو الصفحات (اختياري)</label><input id="topicSource" placeholder="اسم الكتاب، ص 10–15"></div></div>
+<button onclick="addTopic()" data-i18n="addTopic">إضافة محور</button>
+<div class="divider"></div><div id="curriculumList"></div>
+<div class="panel"><h3 data-i18n="addLessonTitle">إضافة درس إلى محور</h3><div class="field"><label data-i18n="chooseTopic">المحور</label><select id="lessonTopic"></select></div><div class="field"><label data-i18n="lessonName">عنوان الدرس</label><input id="newLesson" placeholder="اكتب العنوان كما ورد في المرجع"></div><div class="grid"><div class="field"><label data-i18n="source">المرجع</label><input id="lessonSource"></div><div class="field"><label data-i18n="pages">الصفحات</label><input id="lessonPages" placeholder="مثال: 24-31"></div></div><div class="field"><label data-i18n="notes">ملاحظات</label><textarea id="lessonNotes" rows="2"></textarea></div><button onclick="addCurriculumLesson()" data-i18n="addLesson">إضافة الدرس</button></div>
+</div>
+</section>
 
-  <section id="tasks" class="hidden">
-    <h2 data-t="tasksTitle">إدارة المهام</h2>
-    <div class="card">
-      <label data-t="newTask">مهمة جديدة</label>
-      <div class="row">
-        <input id="taskInput" placeholder="اكتب المهمة">
-        <button class="primary" onclick="addTask()" data-t="add">إضافة</button>
-      </div>
-      <div id="taskList"></div>
-    </div>
-  </section>
+<section id="daily" class="page hidden">
+<div class="panel"><h2 data-i18n="dailyTitle">خطة اليوم</h2><p class="muted" data-i18n="dailyIntro">تُحدد المادة حسب جدول الأسبوع، ويظهر أول درس لم يُتقن بعد.</p><div class="notice" id="dailySubject"></div><div id="dailyLesson"></div><div class="row"><button onclick="chooseAnother()" class="secondary" data-i18n="changeLesson">اختيار درس آخر</button><button onclick="postponeLesson()" class="secondary" data-i18n="postpone">تأجيل إلى الغد</button></div></div>
+<div class="panel"><h3 data-i18n="weeklySchedule">الجدول الأسبوعي</h3><p class="muted tiny" data-i18n="weeklyHint">يمكنك تغيير المادة المقررة لأي يوم.</p><div id="scheduleList"></div></div>
+<div class="panel"><h3 data-i18n="sessionLog">سجل الإنجاز</h3><div id="dailyLog"></div></div>
+</section>
 
-  <section id="goals" class="hidden">
-    <h2 data-t="goalsTitle">أهدافك</h2>
-    <div class="card">
-      <label data-t="newGoal">هدف جديد</label>
-      <div class="row">
-        <input id="goalInput" placeholder="اكتب هدفك">
-        <button class="primary" onclick="addGoal()" data-t="add">إضافة</button>
-      </div>
-      <div id="goalList"></div>
-    </div>
-  </section>
+<section id="countdown" class="page hidden">
+<div class="panel"><h2 data-i18n="countTitle">العد التنازلي ومراحل الخطة</h2><div class="stat"><span class="muted" data-i18n="daysLeft">الأيام المتبقية</span><strong id="countDays">—</strong><span id="countDate" class="muted"></span></div>
+<div class="field"><label data-i18n="examDate">موعد الامتحان (قابل للتعديل)</label><input type="date" id="examDate" value="2027-06-01"></div><div class="field"><label data-i18n="dailyHours">وقت الدراسة المتاح يومياً</label><select id="dailyHours" onchange="savePlan()"><option value="1">ساعة واحدة</option><option value="1.5">ساعة ونصف</option><option value="2" selected>ساعتان</option><option value="3">3 ساعات</option></select></div><button onclick="savePlan()" data-i18n="savePlan">حفظ الخطة</button><div id="phases"></div></div>
+<div class="panel"><h3 data-i18n="paceTitle">وتيرة الدروس</h3><div id="paceSummary"></div><div class="field"><label data-i18n="weeklyQuota">عدد الدروس المستهدف أسبوعياً</label><input id="weeklyQuota" type="number" min="1" max="100" value="6"></div><button onclick="savePlan()" data-i18n="save">حفظ</button></div>
+</section>
 
-  <section id="more" class="hidden">
-    <h2 data-t="personal">التطوير الشخصي</h2>
-    <div class="card">
-      <h3 data-t="readingTitle">📚 القراءة</h3>
-      <label data-t="bookName">اسم الكتاب</label>
-      <div class="row">
-        <input id="bookInput" placeholder="اسم الكتاب">
-        <button class="primary" onclick="addBook()" data-t="add">إضافة</button>
-      </div>
-      <div id="bookList"></div>
-    </div>
-    <div class="card">
-      <h3 data-t="quranTitle">📖 القرآن الكريم</h3>
-      <label data-t="dailyReading">الورد اليومي (بالأحزاب)</label>
-      <input id="quranInput" type="number" min="0" max="60" value="2">
-      <button class="primary" onclick="saveQuran()" data-t="save">حفظ</button>
-      <p id="quranStatus" class="muted"></p>
-    </div>
-    <div class="card">
-      <h3 data-t="settings">الإعدادات</h3>
-      <p data-t="languageSetting">لغة التطبيق</p>
-      <button onclick="toggleLanguage()" id="settingsLanguage" class="primary">العربية / Français</button>
-    </div>
-  </section>
+<section id="tasks" class="page hidden"><div class="panel"><h2 data-i18n="tasks">المهام</h2><div class="row"><input id="taskInput" data-placeholder="taskPlaceholder" placeholder="اكتب مهمة قصيرة"><button onclick="addSimple('tasks','taskInput','taskList')" data-i18n="add">إضافة</button></div><div id="taskList"></div></div></section>
+<section id="goals" class="page hidden"><div class="panel"><h2 data-i18n="goals">الأهداف</h2><div class="row"><input id="goalInput" data-placeholder="goalPlaceholder" placeholder="اكتب هدفاً"><button onclick="addSimple('goals','goalInput','goalList')" data-i18n="add">إضافة</button></div><div id="goalList"></div></div></section>
+<section id="more" class="page hidden"><div class="panel"><h2 data-i18n="more">المزيد</h2><button class="secondary" onclick="showPage('countdown')" data-i18n="countTitle">العد التنازلي ومراحل الخطة</button><div class="item"><h3 data-i18n="reading">القراءة</h3><p class="muted tiny" data-i18n="readingHint">سجل الكتب التي تقرؤها خارج المنهج.</p><div class="row"><input id="bookInput" data-placeholder="bookPlaceholder" placeholder="اسم الكتاب"><button onclick="addSimple('books','bookInput','bookList')" data-i18n="add">إضافة</button></div><div id="bookList"></div></div><div class="item"><h3 data-i18n="quran">القرآن</h3><label data-i18n="dailyHizb">الأحزاب المستهدفة يومياً</label><input type="number" min="0" max="20" id="quranGoal"><button onclick="saveQuran()" data-i18n="save">حفظ</button></div><div class="item"><h3 data-i18n="data">البيانات</h3><p class="muted tiny" data-i18n="dataHint">بياناتك محفوظة في متصفح هذا الجهاز فقط. صدّر نسخة احتياطية بانتظام.</p><div class="row"><button onclick="exportData()" data-i18n="export">تصدير نسخة احتياطية</button><label class="secondary" style="padding:10px;border-radius:10px;cursor:pointer"><span data-i18n="import">استيراد نسخة</span><input type="file" accept="application/json,.json" onchange="importData(event)" style="display:none"></label><button class="danger" onclick="resetData()" data-i18n="reset">مسح البيانات</button></div></div></div></section>
 
-  <footer>Life Manager · Version 1.0</footer>
-</main>
-
-<nav>
-  <button class="active" data-page="home" onclick="showPage('home')">🏠 <span data-t="navHome">الرئيسية</span></button>
-  <button data-page="bac" onclick="showPage('bac')">🎓 <span data-t="navBac">البكالوريا</span></button>
-  <button data-page="tasks" onclick="showPage('tasks')">✅ <span data-t="navTasks">المهام</span></button>
-  <button data-page="goals" onclick="showPage('goals')">🎯 <span data-t="navGoals">الأهداف</span></button>
-  <button data-page="more" onclick="showPage('more')">📚 <span data-t="navMore">المزيد</span></button>
+<div class="footer" data-i18n="footer">مداد — الإصدار الأول من نظام البكالوريا. البيانات محلية على هذا الجهاز.</div>
+</div>
+<nav class="nav" id="nav">
+<button class="active" onclick="showPage('home')" data-page="home" data-i18n="home">الرئيسية</button>
+<button onclick="showPage('curriculum')" data-page="curriculum" data-i18n="curriculum">المنهج</button>
+<button onclick="showPage('daily')" data-page="daily" data-i18n="daily">اليوم</button>
+<button onclick="showPage('tasks')" data-page="tasks" data-i18n="tasks">المهام</button>
+<button onclick="showPage('goals')" data-page="goals" data-i18n="goals">الأهداف</button>
+<button onclick="showPage('more')" data-page="more" data-i18n="more">المزيد</button>
 </nav>
-
 <script>
-const translations = {
-ar: {
-brand:"منظّم الحياة",title:"خطّط ليومك، وابنِ مستقبلك",
-subtitle:"مكان واحد لتنظيم دراستك وأهدافك وعاداتك.",
-welcome:"مرحبًا بك في مساحتك الخاصة",
-welcomeText:"ابدأ بخطوة صغيرة اليوم، وواصل التقدم نحو أهدافك.",
-tasks:"المهام",goals:"الأهداف",bac:"البكالوريا",subjects:"مواد دراسية",
-reading:"القراءة",books:"كتابًا مسجلًا",today:"أولوياتك اليوم",
-priority:"الأولوية الأولى: البكالوريا",
-priorityText:"خصّص وقتًا ثابتًا للمراجعة، ولو كان قصيرًا.",
-startStudy:"انتقل إلى الدراسة",bacTitle:"متابعة البكالوريا",
-bacText:"شعبة الآداب الأصلية — سجّل الدروس التي تراجعها.",
-subjectsTitle:"المواد الدراسية",lessonTitle:"تسجيل درس راجعته",
-chooseSubject:"المادة",lessonName:"اسم الدرس",saveLesson:"حفظ الدرس",
-tasksTitle:"إدارة المهام",newTask:"مهمة جديدة",add:"إضافة",
-goalsTitle:"أهدافك",newGoal:"هدف جديد",personal:"التطوير الشخصي",
-readingTitle:"📚 القراءة",bookName:"اسم الكتاب",quranTitle:"📖 القرآن الكريم",
-dailyReading:"الورد اليومي (بالأحزاب)",save:"حفظ",settings:"الإعدادات",
-languageSetting:"لغة التطبيق",navHome:"الرئيسية",navBac:"البكالوريا",
-navTasks:"المهام",navGoals:"الأهداف",navMore:"المزيد",
-done:"مكتمل",delete:"حذف",empty:"لا توجد عناصر بعد.",
-lessonPlaceholder:"اكتب اسم الدرس",taskPlaceholder:"اكتب المهمة",
-goalPlaceholder:"اكتب هدفك",bookPlaceholder:"اسم الكتاب",
-quranSaved:"تم حفظ الورد اليومي: ",chapter:"حزب",
-completed:"منجز",remaining:"متبقٍ",progress:"إنجاز المهام: "
-},
-fr: {
-brand:"Gestion de vie",title:"Planifiez votre journée, construisez votre avenir",
-subtitle:"Un espace pour vos études, objectifs et habitudes.",
-welcome:"Bienvenue dans votre espace personnel",
-welcomeText:"Faites un petit pas aujourd’hui et avancez vers vos objectifs.",
-tasks:"Tâches",goals:"Objectifs",bac:"Baccalauréat",subjects:"matières",
-reading:"Lecture",books:"livres enregistrés",today:"Vos priorités du jour",
-priority:"Priorité numéro un : le bac",
-priorityText:"Réservez un moment régulier à la révision, même court.",
-startStudy:"Accéder aux études",bacTitle:"Suivi du baccalauréat",
-bacText:"Littérature originale — enregistrez les leçons révisées.",
-subjectsTitle:"Matières",lessonTitle:"Enregistrer une leçon",
-chooseSubject:"Matière",lessonName:"Nom de la leçon",saveLesson:"Enregistrer",
-tasksTitle:"Gestion des tâches",newTask:"Nouvelle tâche",add:"Ajouter",
-goalsTitle:"Vos objectifs",newGoal:"Nouvel objectif",personal:"Développement personnel",
-readingTitle:"📚 Lecture",bookName:"Titre du livre",quranTitle:"📖 Coran",
-dailyReading:"Lecture quotidienne (en hizb)",save:"Enregistrer",
-settings:"Paramètres",languageSetting:"Langue de l’application",
-navHome:"Accueil",navBac:"Bac",navTasks:"Tâches",navGoals:"Objectifs",navMore:"Plus",
-done:"Terminé",delete:"Supprimer",empty:"Aucun élément pour le moment.",
-lessonPlaceholder:"Nom de la leçon",taskPlaceholder:"Saisir une tâche",
-goalPlaceholder:"Saisir un objectif",bookPlaceholder:"Titre du livre",
-quranSaved:"Lecture quotidienne enregistrée : ",chapter:"hizb",
-completed:"Terminées",remaining:"Restantes",progress:"Tâches terminées : "
-},
+const STORAGE='midad_v1';
+const oldPrefix='lm_';
+const defaultSubjects=[
+{id:'fiqh',ar:'الفقه وأصوله',fr:'Fiqh et fondements'},
+{id:'tafsir',ar:'التفسير والحديث',fr:'Tafsir et Hadith'},
+{id:'arabic',ar:'اللغة العربية وآدابها',fr:'Arabe et littérature'},
+{id:'thought',ar:'الفلسفة والفكر الإسلامي',fr:'Philosophie et pensée islamique'},
+{id:'history',ar:'التاريخ والجغرافيا',fr:'Histoire et géographie'},
+{id:'foreign',ar:'اللغة الأجنبية',fr:'Langue étrangère'}
+];
+const translations={
+ar:{welcome:'خطوتك اليومية نحو البكالوريا',welcomeSub:'خطة بسيطة قابلة للتعديل، تحفظ تقدمك على هذا الجهاز.',daysLeft:'الأيام المتبقية',toBac:'حتى موعد البكالوريا',overall:'إتقان المنهج',lessonsCount:'الدروس المسجلة',lessonsHint:'في جميع المواد',todayPlan:'درس اليوم',openDaily:'فتح خطة اليوم',subjectProgress:'التقدم حسب المادة',curriculumTitle:'خريطة المنهج',curriculumIntro:'أضف الدروس من كتبك المقررة. لا تُنشأ دروس المنهج تلقائياً حتى لا نضع عناوين غير دقيقة.',subject:'المادة',topicName:'اسم المحور / الوحدة',topicSource:'المرجع أو الصفحات (اختياري)',addTopic:'إضافة محور',addLessonTitle:'إضافة درس إلى محور',chooseTopic:'المحور',lessonName:'عنوان الدرس',source:'المرجع',pages:'الصفحات',notes:'ملاحظات',addLesson:'إضافة الدرس',dailyTitle:'خطة اليوم',dailyIntro:'تُحدد المادة حسب جدول الأسبوع، ويظهر أول درس لم يُتقن بعد.',changeLesson:'اختيار درس آخر',postpone:'تأجيل إلى الغد',weeklySchedule:'الجدول الأسبوعي',weeklyHint:'يمكنك تغيير المادة المقررة لأي يوم.',sessionLog:'سجل الإنجاز',countTitle:'العد التنازلي ومراحل الخطة',examDate:'موعد الامتحان (قابل للتعديل)',dailyHours:'وقت الدراسة المتاح يومياً',savePlan:'حفظ الخطة',paceTitle:'وتيرة الدروس',weeklyQuota:'عدد الدروس المستهدف أسبوعياً',save:'حفظ',tasks:'المهام',goals:'الأهداف',more:'المزيد',home:'الرئيسية',curriculum:'المنهج',daily:'اليوم',taskPlaceholder:'اكتب مهمة قصيرة',goalPlaceholder:'اكتب هدفاً',add:'إضافة',reading:'القراءة',readingHint:'سجل الكتب التي تقرؤها خارج المنهج.',bookPlaceholder:'اسم الكتاب',quran:'القرآن',dailyHizb:'الأحزاب المستهدفة يومياً',data:'البيانات',dataHint:'بياناتك محفوظة في متصفح هذا الجهاز فقط. صدّر نسخة احتياطية بانتظام.',export:'تصدير نسخة احتياطية',import:'استيراد نسخة',reset:'مسح البيانات',footer:'مداد — الإصدار الأول من نظام البكالوريا. البيانات محلية على هذا الجهاز.',start:'بدء الدراسة',done:'إنجاز الدرس',mastered:'متقن',understood:'مفهوم',studying:'قيد الدراسة',notStarted:'لم يبدأ',status:'الحالة',delete:'حذف',edit:'تعديل',noTopics:'لا توجد محاور لهذه المادة بعد.',noLessons:'لا توجد دروس في هذا المحور بعد.',noLessonToday:'لا يوجد درس غير متقن في هذه المادة. أضف دروساً أو راجع حالة الدروس.',none:'لا توجد عناصر بعد.',confirmDelete:'هل تريد حذف هذا العنصر؟',topicAdded:'تمت إضافة المحور.',lessonAdded:'تمت إضافة الدرس.',saved:'تم الحفظ.',days:'يوماً',phase1:'التأسيس',phase2:'التعميق',phase3:'المراجعة الشاملة',phase4:'نماذج الامتحانات',phaseNote:'تقسيم مبدئي للوقت: 40% تأسيس، 25% تعميق، 20% مراجعة، 15% نماذج. عدّل التاريخ حسب إعلان الامتحان.',ahead:'وتيرتك جيدة وفق العدد المستهدف.',behind:'عدد الدروس المسجلة أقل من الوتيرة المستهدفة؛ قلّل الهدف أو زد الوقت تدريجياً.',today:'اليوم',doneCount:'منجز',moveUp:'↑',moveDown:'↓',editTopicPrompt:'العنوان الجديد للمحور:',editLessonPrompt:'العنوان الجديد للدرس:',chooseSubject:'اختر المادة',noSubjectLessons:'لا توجد دروس مسجلة بعد.',exported:'أُعد ملف النسخة الاحتياطية.',imported:'تم استيراد النسخة الاحتياطية.',badFile:'تعذر قراءة الملف. تأكد أنه نسخة مداد الاحتياطية.',resetConfirm:'سيؤدي هذا إلى حذف بيانات مداد المحفوظة على هذا الجهاز. هل تريد المتابعة؟',quranSaved:'تم حفظ الهدف.',sessionDone:'سُجل إنجاز الدرس.',postponed:'تم تسجيل التأجيل لليوم الحالي.'},
+fr:{welcome:'Votre progression quotidienne vers le bac',welcomeSub:'Un plan modifiable, enregistré sur cet appareil.',daysLeft:'Jours restants',toBac:'avant le baccalauréat',overall:'Maîtrise du programme',lessonsCount:'Leçons enregistrées',lessonsHint:'Toutes matières',todayPlan:'Leçon du jour',openDaily:'Ouvrir le plan du jour',subjectProgress:'Progression par matière',curriculumTitle:'Carte du programme',curriculumIntro:'Ajoutez les leçons depuis vos manuels officiels. Aucune leçon n’est inventée automatiquement.',subject:'Matière',topicName:'Chapitre / unité',topicSource:'Référence ou pages (facultatif)',addTopic:'Ajouter un chapitre',addLessonTitle:'Ajouter une leçon',chooseTopic:'Chapitre',lessonName:'Titre de la leçon',source:'Référence',pages:'Pages',notes:'Notes',addLesson:'Ajouter la leçon',dailyTitle:'Plan du jour',dailyIntro:'La matière dépend du jour de la semaine; la première leçon non maîtrisée est proposée.',changeLesson:'Choisir une autre leçon',postpone:'Reporter à demain',weeklySchedule:'Planning hebdomadaire',weeklyHint:'Vous pouvez changer la matière de chaque jour.',sessionLog:'Historique',countTitle:'Compte à rebours et phases',examDate:'Date du bac (modifiable)',dailyHours:'Temps disponible par jour',savePlan:'Enregistrer le plan',paceTitle:'Rythme des leçons',weeklyQuota:'Objectif de leçons par semaine',save:'Enregistrer',tasks:'Tâches',goals:'Objectifs',more:'Plus',home:'Accueil',curriculum:'Programme',daily:'Aujourd’hui',taskPlaceholder:'Nouvelle tâche',goalPlaceholder:'Nouvel objectif',add:'Ajouter',reading:'Lecture',readingHint:'Suivez les livres lus en dehors du programme.',bookPlaceholder:'Titre du livre',quran:'Coran',dailyHizb:'Hizb ciblés par jour',data:'Données',dataHint:'Les données restent dans le navigateur de cet appareil. Exportez une sauvegarde régulièrement.',export:'Exporter la sauvegarde',import:'Importer une sauvegarde',reset:'Effacer les données',footer:'Midad — première version du système bac. Données stockées localement.',start:'Commencer',done:'Terminer la leçon',mastered:'Maîtrisée',understood:'Compris',studying:'En cours',notStarted:'Non commencée',status:'Statut',delete:'Supprimer',edit:'Modifier',noTopics:'Aucun chapitre pour cette matière.',noLessons:'Aucune leçon dans ce chapitre.',noLessonToday:'Aucune leçon non maîtrisée dans cette matière. Ajoutez des leçons ou modifiez leur statut.',none:'Aucun élément.',confirmDelete:'Supprimer cet élément ?',topicAdded:'Chapitre ajouté.',lessonAdded:'Leçon ajoutée.',saved:'Enregistré.',days:'jours',phase1:'Fondations',phase2:'Approfondissement',phase3:'Révision générale',phase4:'Sujets d’examen',phaseNote:'Répartition indicative : 40 % fondations, 25 % approfondissement, 20 % révision, 15 % sujets. Ajustez la date selon l’annonce officielle.',ahead:'Le rythme correspond à l’objectif.',behind:'Le nombre de leçons est inférieur à l’objectif. Réduisez la cible ou augmentez progressivement le temps.',today:'Aujourd’hui',doneCount:'Terminées',moveUp:'↑',moveDown:'↓',editTopicPrompt:'Nouveau titre du chapitre :',editLessonPrompt:'Nouveau titre de la leçon :',chooseSubject:'Choisir une matière',noSubjectLessons:'Aucune leçon enregistrée.',exported:'Sauvegarde préparée.',imported:'Sauvegarde importée.',badFile:'Fichier illisible. Utilisez une sauvegarde Midad.',resetConfirm:'Cela supprimera les données Midad de cet appareil. Continuer ?',quranSaved:'Objectif enregistré.',sessionDone:'Leçon marquée comme terminée.',postponed:'Report enregistré pour aujourd’hui.'}
 };
-
-let lang = localStorage.getItem("lm_lang") || "ar";
-const subjects = {
-ar:["التشريع (فقه وأصول)","الفكر الإسلامي","اللغة العربية","التاريخ والجغرافيا","القرآن والحديث","اللغة الفرنسية"],
-fr:["Législation (fiqh et fondements)","Pensée islamique","Langue arabe","Histoire et géographie","Coran et hadith","Langue française"]
-};
-
-function t(key){return translations[lang][key] || key}
-function getData(key, fallback=[]){
- try{return JSON.parse(localStorage.getItem("lm_"+key)) ?? fallback}
- catch(e){return fallback}
-}
-function setData(key,value){localStorage.setItem("lm_"+key,JSON.stringify(value))}
-
-function toggleLanguage(){
- lang = lang==="ar" ? "fr" : "ar";
- localStorage.setItem("lm_lang",lang);
- renderLanguage();
-}
-function renderLanguage(){
- document.documentElement.lang=lang;
- document.documentElement.dir=lang==="ar"?"rtl":"ltr";
- document.querySelectorAll("[data-t]").forEach(el=>el.textContent=t(el.dataset.t));
- document.getElementById("brand").textContent=t("brand");
- document.getElementById("title").textContent=t("title");
- document.getElementById("subtitle").textContent=t("subtitle");
- document.getElementById("languageButton").textContent=lang==="ar"?"Français":"العربية";
- document.getElementById("settingsLanguage").textContent=lang==="ar"?"العربية / Français":"Français / العربية";
- document.getElementById("taskInput").placeholder=t("taskPlaceholder");
- document.getElementById("goalInput").placeholder=t("goalPlaceholder");
- document.getElementById("bookInput").placeholder=t("bookPlaceholder");
- document.getElementById("lessonInput").placeholder=t("lessonPlaceholder");
- renderSubjects();renderTasks();renderGoals();renderLessons();renderBooks();renderQuran();updateStats();
-}
-function showPage(id){
- document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
- document.getElementById(id).classList.remove("hidden");
- document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
-}
-function renderSubjects(){
- const list=document.getElementById("subjectsList");
- const select=document.getElementById("subjectSelect");
- list.innerHTML="";select.innerHTML="";
- subjects[lang].forEach((s,i)=>{
- let div=document.createElement("div");div.className="item";
- div.innerHTML="<span>"+(i+1)+". "+s+"</span>";
- list.appendChild(div);
- let opt=document.createElement("option");opt.value=s;opt.textContent=s;select.appendChild(opt);
- });
-}
-function addTask(){
- let input=document.getElementById("taskInput"),v=input.value.trim();if(!v)return;
- let a=getData("tasks");a.push({text:v,done:false});setData("tasks",a);input.value="";renderTasks();updateStats();
-}
-function renderTasks(){
- let list=document.getElementById("taskList");list.innerHTML="";
- let a=getData("tasks");
- if(!a.length)list.textContent=t("empty");
- a.forEach((x,i)=>{
- let d=document.createElement("div");d.className="item";
- let cb=document.createElement("input");cb.type="checkbox";cb.checked=x.done;
- cb.onchange=()=>{a[i].done=cb.checked;setData("tasks",a);renderTasks();updateStats()};
- let s=document.createElement("span");s.textContent=x.text;if(x.done)s.className="done";
- let b=document.createElement("button");b.textContent=t("delete");b.onclick=()=>{a.splice(i,1);setData("tasks",a);renderTasks();updateStats()};
- d.append(cb,s,b);list.appendChild(d);
- });
-}
-function addGoal(){
- let input=document.getElementById("goalInput"),v=input.value.trim();if(!v)return;
- let a=getData("goals");a.push({text:v,done:false});setData("goals",a);input.value="";renderGoals();updateStats();
-}
-function renderGoals(){
- let list=document.getElementById("goalList");list.innerHTML="";
- let a=getData("goals");if(!a.length)list.textContent=t("empty");
- a.forEach((x,i)=>{
- let d=document.createElement("div");d.className="item";
- let cb=document.createElement("input");cb.type="checkbox";cb.checked=x.done;
- cb.onchange=()=>{a[i].done=cb.checked;setData("goals",a);renderGoals();updateStats()};
- let s=document.createElement("span");s.textContent=x.text;if(x.done)s.className="done";
- let b=document.createElement("button");b.textContent=t("delete");b.onclick=()=>{a.splice(i,1);setData("goals",a);renderGoals();updateStats()};
- d.append(cb,s,b);list.appendChild(d);
- });
-}
-function addLesson(){
- let input=document.getElementById("lessonInput"),v=input.value.trim();if(!v)return;
- let a=getData("lessons");a.push({subject:document.getElementById("subjectSelect").value,text:v});
- setData("lessons",a);input.value="";renderLessons();
-}
-function renderLessons(){
- let list=document.getElementById("lessonList");list.innerHTML="";
- let a=getData("lessons");if(!a.length)list.textContent=t("empty");
- a.forEach((x,i)=>{
- let d=document.createElement("div");d.className="item";
- let s=document.createElement("span");s.textContent=x.subject+" — "+x.text;
- let b=document.createElement("button");b.textContent=t("delete");b.onclick=()=>{a.splice(i,1);setData("lessons",a);renderLessons()};
- d.append(s,b);list.appendChild(d);
- });
-}
-function addBook(){
- let input=document.getElementById("bookInput"),v=input.value.trim();if(!v)return;
- let a=getData("books");a.push(v);setData("books",a);input.value="";renderBooks();updateStats();
-}
-function renderBooks(){
- let list=document.getElementById("bookList");list.innerHTML="";
- let a=getData("books");if(!a.length)list.textContent=t("empty");
- a.forEach((x,i)=>{
- let d=document.createElement("div");d.className="item";
- let s=document.createElement("span");s.textContent=x;
- let b=document.createElement("button");b.textContent=t("delete");b.onclick=()=>{a.splice(i,1);setData("books",a);renderBooks();updateStats()};
- d.append(s,b);list.appendChild(d);
- });
-}
-function saveQuran(){
- let n=Math.max(0,Math.min(60,Number(document.getElementById("quranInput").value)||0));
- setData("quran",n);renderQuran();
-}
-function renderQuran(){
- let n=getData("quran",2);
- document.getElementById("quranInput").value=n;
- document.getElementById("quranStatus").textContent=t("quranSaved")+n+" "+t("chapter");
-}
-function updateStats(){
- let tasks=getData("tasks"),goals=getData("goals"),books=getData("books");
- document.getElementById("taskCount").textContent=tasks.filter(x=>!x.done).length;
- document.getElementById("goalCount").textContent=goals.length;
- document.getElementById("readingCount").textContent=books.length;
- let pct=tasks.length?Math.round(tasks.filter(x=>x.done).length/tasks.length*100):0;
- document.getElementById("homeProgress").style.width=pct+"%";
- document.getElementById("progressText").textContent=t("progress")+pct+"%";
-}
-renderLanguage();
+let lang=localStorage.getItem('lm_lang')||'ar';
+let state=loadState();
+function initialState(){return {version:1,subjects:defaultSubjects.map(s=>({...s})),topics:[],lessons:[],schedule:['fiqh','tafsir','arabic','history','thought','foreign','all'],examDate:'2027-06-01',dailyHours:2,weeklyQuota:6,postponed:{},log:[],tasks:readOld('tasks',[]),goals:readOld('goals',[]),books:readOld('books',[]),quranGoal:readOld('quran',2),theme:localStorage.getItem('midad_theme')||'light'};}
+function readOld(k,def){try{let v=localStorage.getItem(oldPrefix+k);return v===null?def:JSON.parse(v)}catch(e){return def}}
+function loadState(){try{let v=JSON.parse(localStorage.getItem(STORAGE));if(v&&v.version===1)return v}catch(e){}return initialState()}
+function save(){localStorage.setItem(STORAGE,JSON.stringify(state));renderAll()}
+function tr(k){return (translations[lang]||translations.ar)[k]||k}
+function subjectName(id){let s=state.subjects.find(x=>x.id===id);return s?(s[lang]||s.ar):id}
+function statusName(s){return tr(({notStarted:'notStarted',studying:'studying',understood:'understood',mastered:'mastered'})[s]||'notStarted')}
+function showPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('hidden',x.id!==id));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));if(id==='curriculum')renderCurriculum();if(id==='daily')renderDaily();if(id==='countdown')renderCountdown();window.scrollTo(0,0)}
+function toggleLang(){lang=lang==='ar'?'fr':'ar';localStorage.setItem('lm_lang',lang);document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.getElementById('langBtn').textContent=lang==='ar'?'FR':'عربي';applyTranslations();renderAll()}
+function toggleTheme(){state.theme=state.theme==='dark'?'light':'dark';localStorage.setItem('midad_theme',state.theme);document.documentElement.dataset.theme=state.theme;save()}
+function applyTranslations(){document.querySelectorAll('[data-i18n]').forEach(el=>{let k=el.dataset.i18n;el.textContent=tr(k)});document.querySelectorAll('[data-placeholder]').forEach(el=>el.placeholder=tr(el.dataset.placeholder));document.title=lang==='ar'?'مداد | إدارة الحياة والدراسة':'Midad | Études et organisation'}
+function ensureIds(){state.topics.forEach((t,i)=>{if(!t.id)t.id='t'+Date.now()+i});state.lessons.forEach((l,i)=>{if(!l.id)l.id='l'+Date.now()+i;if(!l.status)l.status='notStarted'})}
+function allLessons(){return state.lessons}
+function calcProgress(lessons){if(!lessons.length)return 0;return Math.round(lessons.filter(l=>l.status==='mastered').length/lessons.length*100)}
+function daysUntil(dateStr){let target=new Date(dateStr+'T00:00:00');if(Number.isNaN(target.getTime()))return null;let now=new Date();now.setHours(0,0,0,0);return Math.ceil((target-now)/86400000)}
+function dayIndex(){return (new Date().getDay()+1)%7} // Saturday=0 ... Friday=6
+function todaySubject(){return state.schedule[dayIndex()]||'all'}
+function lessonsForSubject(id){return state.lessons.filter(l=>id==='all'||l.subject===id)}
+function nextLesson(id){let list=lessonsForSubject(id).filter(l=>l.status!=='mastered');return list[0]||null}
+function topicTitle(id){let t=state.topics.find(t=>t.id===id);return t?t.name:''}
+function renderSubjects(){let sel=document.getElementById('subjectFilter');let old=sel.value;sel.innerHTML='<option value="all">'+(lang==='ar'?'كل المواد':'Toutes les matières')+'</option>'+state.subjects.map(s=>`<option value="${s.id}">${escapeHtml(subjectName(s.id))}</option>`).join('');if([...sel.options].some(o=>o.value===old))sel.value=old;
+let tsel=document.getElementById('lessonTopic');let oldT=tsel.value;tsel.innerHTML=state.topics.map(t=>`<option value="${t.id}">${escapeHtml(subjectName(t.subject))} — ${escapeHtml(t.name)}</option>`).join('');if([...tsel.options].some(o=>o.value===oldT))tsel.value=oldT;
+let sched=document.getElementById('scheduleList');sched.innerHTML=state.schedule.map((id,i)=>`<div class="row item"><strong style="min-width:78px">${['السبت','الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'][i]&&lang==='ar'?['السبت','الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'][i]:['Samedi','Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi'][i]}</strong><select onchange="setSchedule(${i},this.value)"><option value="all">${lang==='ar'?'مراجعة شاملة':'Révision générale'}</option>${state.subjects.map(s=>`<option value="${s.id}" ${s.id===id?'selected':''}>${escapeHtml(subjectName(s.id))}</option>`).join('')}</select></div>`).join('')}
+function addTopic(){let name=document.getElementById('newTopic').value.trim();if(!name){alert(lang==='ar'?'اكتب اسم المحور أولاً.':'Saisissez un titre.');return}let subject=document.getElementById('subjectFilter').value;if(subject==='all'){alert(tr('chooseSubject'));return}state.topics.push({id:'t'+Date.now(),subject,name,source:document.getElementById('topicSource').value.trim(),order:state.topics.filter(t=>t.subject===subject).length});document.getElementById('newTopic').value='';document.getElementById('topicSource').value='';save();alert(tr('topicAdded'))}
+function addCurriculumLesson(){let topicId=document.getElementById('lessonTopic').value;let title=document.getElementById('newLesson').value.trim();let topic=state.topics.find(t=>t.id===topicId);if(!topic){alert(lang==='ar'?'أضف محوراً أولاً ثم اختره.':'Ajoutez d’abord un chapitre.');return}if(!title){alert(lang==='ar'?'اكتب عنوان الدرس.':'Saisissez le titre de la leçon.');return}state.lessons.push({id:'l'+Date.now(),subject:topic.subject,topicId,title,source:document.getElementById('lessonSource').value.trim(),pages:document.getElementById('lessonPages').value.trim(),notes:document.getElementById('lessonNotes').value.trim(),status:'notStarted',createdAt:new Date().toISOString()});['newLesson','lessonSource','lessonPages','lessonNotes'].forEach(id=>document.getElementById(id).value='');save();alert(tr('lessonAdded'))}
+function renderCurriculum(){renderSubjects();let filter=document.getElementById('subjectFilter').value||'all';let topics=state.topics.filter(t=>filter==='all'||t.subject===filter);let box=document.getElementById('curriculumList');if(!topics.length){box.innerHTML=`<div class="empty">${tr('noTopics')}</div>`;return}box.innerHTML=topics.map(t=>{let ls=state.lessons.filter(l=>l.topicId===t.id);return `<div class="item"><div class="itemhead"><div><h3>${escapeHtml(t.name)}</h3><div class="muted tiny">${escapeHtml(subjectName(t.subject))}${t.source?' · '+escapeHtml(t.source):''}</div></div><div class="row"><button class="secondary small" onclick="editTopic('${t.id}')">${tr('edit')}</button><button class="danger small" onclick="deleteTopic('${t.id}')">${tr('delete')}</button></div></div><div class="progress"><span style="width:${calcProgress(ls)}%"></span></div><div class="tiny muted">${calcProgress(ls)}% · ${ls.filter(l=>l.status==='mastered').length}/${ls.length} ${tr('doneCount')}</div>${ls.length?ls.map(l=>lessonMarkup(l)).join(''):`<div class="empty">${tr('noLessons')}</div>`}</div>`}).join('')}
+function lessonMarkup(l){return `<div class="item"><div class="itemhead"><div><strong>${escapeHtml(l.title)}</strong><div class="tiny muted">${[l.source,l.pages?((lang==='ar'?'ص. ':'p. ')+l.pages):'',l.notes].filter(Boolean).map(escapeHtml).join(' · ')}</div></div><span class="badge ${l.status==='mastered'?'':l.status==='studying'?'warn':''}">${statusName(l.status)}</span></div><div class="row" style="margin-top:8px"><select aria-label="${tr('status')}" onchange="setLessonStatus('${l.id}',this.value)"><option value="notStarted" ${l.status==='notStarted'?'selected':''}>${tr('notStarted')}</option><option value="studying" ${l.status==='studying'?'selected':''}>${tr('studying')}</option><option value="understood" ${l.status==='understood'?'selected':''}>${tr('understood')}</option><option value="mastered" ${l.status==='mastered'?'selected':''}>${tr('mastered')}</option></select><button class="secondary small" onclick="editLesson('${l.id}')">${tr('edit')}</button><button class="danger small" onclick="deleteLesson('${l.id}')">${tr('delete')}</button></div></div>`}
+function setLessonStatus(id,status){let l=state.lessons.find(l=>l.id===id);if(!l)return;l.status=status;if(status==='mastered')state.log.unshift({date:new Date().toISOString(),lessonId:id,title:l.title,subject:l.subject});save()}
+function editTopic(id){let t=state.topics.find(t=>t.id===id);if(!t)return;let n=prompt(tr('editTopicPrompt'),t.name);if(n&&n.trim()){t.name=n.trim();save()}}
+function deleteTopic(id){if(!confirm(tr('confirmDelete')))return;state.topics=state.topics.filter(t=>t.id!==id);state.lessons=state.lessons.filter(l=>l.topicId!==id);save()}
+function editLesson(id){let l=state.lessons.find(l=>l.id===id);if(!l)return;let n=prompt(tr('editLessonPrompt'),l.title);if(n&&n.trim()){l.title=n.trim();save()}}
+function deleteLesson(id){if(!confirm(tr('confirmDelete')))return;state.lessons=state.lessons.filter(l=>l.id!==id);save()}
+function setSchedule(i,id){state.schedule[i]=id;save()}
+function chooseAnother(){let id=todaySubject();let list=lessonsForSubject(id).filter(l=>l.status!=='mastered');if(!list.length){alert(tr('noLessonToday'));return}let promptText=list.map((l,i)=>`${i+1}. ${l.title}`).join('\n');let answer=prompt(promptText+(lang==='ar'?'\nاكتب رقم الدرس:':'\nNuméro de la leçon :'));let ix=Number(answer)-1;if(Number.isInteger(ix)&&ix>=0&&ix<list.length)renderDaily(list[ix].id)}
+let chosenDailyId=null;
+function renderDaily(forceId){renderSubjects();let subject=todaySubject();let sbox=document.getElementById('dailySubject');sbox.textContent=(lang==='ar'?'مادة اليوم: ':'Matière du jour : ')+(subject==='all'?(lang==='ar'?'مراجعة شاملة':'Révision générale'):subjectName(subject));let l=forceId?state.lessons.find(x=>x.id===forceId):nextLesson(subject);chosenDailyId=l?l.id:null;let box=document.getElementById('dailyLesson');if(!l){box.innerHTML=`<div class="empty">${tr('noLessonToday')}</div>`}else{box.innerHTML=`<div class="item"><h3>${escapeHtml(l.title)}</h3><div class="muted">${escapeHtml(subjectName(l.subject))} · ${escapeHtml(topicTitle(l.topicId))}</div><p class="tiny muted">${[l.source,l.pages?((lang==='ar'?'الصفحات: ':'Pages : ')+l.pages):'',l.notes].filter(Boolean).map(escapeHtml).join(' · ')}</p><label>${tr('status')}</label><select id="dailyStatus"><option value="notStarted" ${l.status==='notStarted'?'selected':''}>${tr('notStarted')}</option><option value="studying" ${l.status==='studying'?'selected':''}>${tr('studying')}</option><option value="understood" ${l.status==='understood'?'selected':''}>${tr('understood')}</option><option value="mastered">${tr('mastered')}</option></select><div class="row" style="margin-top:10px"><button onclick="startLesson()">${tr('start')}</button><button onclick="completeDaily()" class="secondary">${tr('done')}</button></div></div>`}document.getElementById('dailyLog').innerHTML=state.log.slice(0,10).map(x=>`<div class="item tiny">${new Date(x.date).toLocaleDateString(lang==='ar'?'ar-MR':'fr-FR')} · ${escapeHtml(x.title)} — ${escapeHtml(subjectName(x.subject))}</div>`).join('')||`<div class="empty">${tr('none')}</div>`}
+function startLesson(){if(!chosenDailyId)return;let l=state.lessons.find(l=>l.id===chosenDailyId);if(l&&l.status==='notStarted')l.status='studying';save();alert(lang==='ar'?'تم فتح الدرس. مؤقت الدراسة سيضاف في مرحلة لاحقة.':'Leçon ouverte. Le minuteur sera ajouté dans une phase ultérieure.')}
+function completeDaily(){if(!chosenDailyId)return;let l=state.lessons.find(l=>l.id===chosenDailyId);if(!l)return;l.status='understood';state.log.unshift({date:new Date().toISOString(),lessonId:l.id,title:l.title,subject:l.subject});save();alert(tr('sessionDone'))}
+function postponeLesson(){if(!chosenDailyId)return;state.postponed[chosenDailyId]=new Date().toISOString().slice(0,10);save();alert(tr('postponed'))}
+function renderCountdown(){let date=document.getElementById('examDate');date.value=state.examDate||'2027-06-01';document.getElementById('dailyHours').value=String(state.dailyHours||2);document.getElementById('weeklyQuota').value=state.weeklyQuota||6;let d=daysUntil(state.examDate||'2027-06-01');document.getElementById('countDays').textContent=d===null?'—':d;document.getElementById('countDate').textContent=(lang==='ar'?'موعد الامتحان: ':'Date : ')+new Date((state.examDate||'2027-06-01')+'T00:00:00').toLocaleDateString(lang==='ar'?'ar-MR':'fr-FR');let total=Math.max(1,d||1);let phases=[['phase1',.40],['phase2',.25],['phase3',.20],['phase4',.15]];let used=0;document.getElementById('phases').innerHTML=`<p class="muted tiny">${tr('phaseNote')}</p>`+phases.map(([key,p],i)=>{let start=Math.round(used*total);used+=p;let end=Math.round(used*total);return `<div class="item"><div class="itemhead"><strong>${i+1}. ${tr(key)}</strong><span class="badge">${Math.round(p*100)}%</span></div><div class="progress"><span style="width:${p*100}%"></span></div><div class="tiny muted">${Math.max(0,start)}–${Math.min(total,end)} ${tr('days')}</div></div>`}).join('');let quota=Number(state.weeklyQuota)||6;let lessons=state.lessons.length;let weeks=Math.max(1,Math.ceil(Math.max(0,d||0)/7));let needed=Math.ceil(Math.max(0,lessons-state.lessons.filter(l=>l.status==='mastered').length)/weeks);document.getElementById('paceSummary').innerHTML=`<p>${lang==='ar'?'الدروس غير المتقنة: ':'Leçons non maîtrisées : '}<strong>${state.lessons.filter(l=>l.status!=='mastered').length}</strong></p><p class="muted">${needed>quota?tr('behind'):tr('ahead')}</p><p class="tiny muted">${lang==='ar'?'وقت الدراسة الأسبوعي التقريبي: ':'Temps hebdomadaire estimé : '}${(Number(state.dailyHours)||2)*7} ${lang==='ar'?'ساعات':'heures'}</p>`}
+function savePlan(){let d=document.getElementById('examDate').value;if(d)state.examDate=d;state.dailyHours=Number(document.getElementById('dailyHours').value)||2;state.weeklyQuota=Math.max(1,Number(document.getElementById('weeklyQuota').value)||6);save();alert(tr('saved'))}
+function renderHome(){let d=daysUntil(state.examDate||'2027-06-01');document.getElementById('homeDays').textContent=d===null?'—':d;let p=calcProgress(state.lessons);document.getElementById('homeProgress').textContent=p+'%';document.getElementById('homeProgressBar').style.width=p+'%';document.getElementById('homeLessons').textContent=state.lessons.length;let id=todaySubject(),l=nextLesson(id);document.getElementById('homeDaily').innerHTML=l?`<strong>${escapeHtml(l.title)}</strong><div class="muted tiny">${escapeHtml(subjectName(l.subject))} · ${escapeHtml(topicTitle(l.topicId))}</div>`:`<div class="muted">${tr('noLessonToday')}</div>`;document.getElementById('homeSubjects').innerHTML=state.subjects.map(s=>{let ls=state.lessons.filter(l=>l.subject===s.id),pr=calcProgress(ls);return `<div class="item"><div class="itemhead"><strong>${escapeHtml(subjectName(s.id))}</strong><span class="tiny">${pr}% (${ls.filter(l=>l.status==='mastered').length}/${ls.length})</span></div><div class="progress"><span style="width:${pr}%"></span></div></div>`}).join('')}
+function addSimple(key,inputId,listId){let el=document.getElementById(inputId),v=el.value.trim();if(!v)return;let arr=state[key]||[];arr.push({id:Date.now(),text:v,done:false});state[key]=arr;el.value='';save()}
+function renderSimple(key,listId){let arr=state[key]||[];document.getElementById(listId).innerHTML=arr.map((x,i)=>`<div class="item row"><label class="checkline" style="flex:1;margin:0"><input type="checkbox" ${x.done?'checked':''} onchange="toggleSimple('${key}',${i},this.checked)"><span style="${x.done?'text-decoration:line-through;':''}">${escapeHtml(typeof x==='string'?x:x.text||'')}</span></label><button class="danger small" onclick="removeSimple('${key}',${i})">${tr('delete')}</button></div>`).join('')||`<div class="empty">${tr('none')}</div>`}
+function toggleSimple(key,i,v){state[key][i].done=v;save()}
+function removeSimple(key,i){state[key].splice(i,1);save()}
+function saveQuran(){state.quranGoal=Math.max(0,Number(document.getElementById('quranGoal').value)||0);localStorage.setItem(oldPrefix+'quran',JSON.stringify(state.quranGoal));save();alert(tr('quranSaved'))}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderAll(){document.documentElement.dataset.theme=state.theme||'light';document.getElementById('todayLine').textContent=new Date().toLocaleDateString(lang==='ar'?'ar-MR':'fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});renderHome();renderSubjects();renderCurriculum();renderDaily();renderCountdown();renderSimple('tasks','taskList');renderSimple('goals','goalList');renderSimple('books','bookList');document.getElementById('quranGoal').value=state.quranGoal??2}
+function exportData(){let blob=new Blob([JSON.stringify({app:'Midad',version:1,state},null,2)],{type:'application/json'});let url=URL.createObjectURL(blob);let a=document.createElement('a');a.href=url;a.download='midad-backup.json';a.click();URL.revokeObjectURL(url);alert(tr('exported'))}
+function importData(event){let file=event.target.files[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let obj=JSON.parse(reader.result);let s=obj.state||obj;if(!s||!Array.isArray(s.subjects)||!Array.isArray(s.lessons)||!Array.isArray(s.topics))throw new Error('invalid');if(!confirm(lang==='ar'?'سيستبدل الاستيراد البيانات الحالية. هل تريد المتابعة؟':'L’import remplacera les données actuelles. Continuer ?'))return;state={...initialState(),...s,version:1};ensureIds();save();alert(tr('imported'))}catch(e){alert(tr('badFile'))}};reader.readAsText(file);event.target.value=''}
+function resetData(){if(!confirm(tr('resetConfirm')))return;state=initialState();save()}
+function runSelfTests(){const checks=[];checks.push(['empty progress',calcProgress([])===0]);checks.push(['mastery progress',calcProgress([{status:'mastered'},{status:'understood'}])===50]);checks.push(['countdown function',typeof daysUntil('2027-06-01')==='number']);checks.push(['weekly schedule length',state.schedule.length===7]);console.table(checks.map(([name,pass])=>({test:name,pass})));return checks.every(x=>x[1])}
+applyTranslations();ensureIds();renderAll();
 </script>
 </body>
-</html> 
+</html>
