@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مداد - النسخة التجريبية</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#edf2ee;color:#20332a}
+header{padding:20px;background:#245a43;color:white}
+main{max-width:700px;margin:auto;padding:16px}
+section{background:white;padding:16px;margin:14px 0;border-radius:14px}
+button{padding:11px 14px;border:0;border-radius:8px;background:#286348;color:white;margin:5px;cursor:pointer}
+input,select{padding:10px;max-width:100%;margin:7px 0}
+#notice{background:#fff4cf;padding:10px;border-radius:8px}
+#books li{margin:12px 0;overflow-wrap:anywhere}
+body.dark{background:#17221c;color:#edf5ef}
+body.dark section{background:#26362c;color:#edf5ef}
+body.dark input,body.dark select{background:#334438;color:white}
+#hero{padding:20px;border-radius:12px;background:linear-gradient(135deg,#d7ead8,#9bc8ac)}
+body.dark #hero{background:linear-gradient(135deg,#304d3a,#172d22)}
+</style>
+</head>
+<body>
+<header>
+<h1>مداد | الدراسة والحياة</h1>
+<p>خطوة يومية نحو البكالوريا</p>
+<button onclick="toggleTheme()">تبديل المظهر</button>
+<button onclick="showNotices()">الإشعارات <span id="count">0</span></button>
+</header>
+<main>
+<section id="hero">
+<h2>ابدأ بخطوة اليوم</h2>
+<p>نظّم دراستك واحتفظ بمراجعك على جهازك.</p>
+</section>
+
+<section>
+<h2>الخلفية</h2>
+<label>اختر خلفية جاهزة:</label><br>
+<select id="background" onchange="setBackground(this.value)">
+<option value="green">الطبيعة</option>
+<option value="sunrise">الشروق</option>
+<option value="ocean">المحيط</option>
+<option value="night">الليل</option>
+</select><br>
+<label>أو اختر صورة من هاتفك:</label><br>
+<input type="file" id="image" accept="image/*" onchange="chooseImage(event)">
+<button onclick="resetBackground()">استعادة الخلفية</button>
+<p>الصورة المختارة تُحفظ في هذه الصفحة على جهازك.</p>
+</section>
+
+<section>
+<h2>الإشعارات</h2>
+<div id="notice">لا توجد إشعارات جديدة.</div>
+<button onclick="addNotice()">إضافة تذكير للدراسة</button>
+<button onclick="clearNotices()">مسح الإشعارات</button>
+</section>
+
+<section>
+<h2>مكتبة الكتب والمراجع</h2>
+<p>اختر ملف PDF من هاتفك لإضافته إلى المكتبة المحلية.</p>
+<label>عنوان الكتاب:</label><br>
+<input id="bookTitle" placeholder="اكتب عنوان الكتاب">
+<br><label>ملف PDF:</label><br>
+<input id="pdf" type="file" accept="application/pdf">
+<br><button onclick="addBook()">إضافة إلى المكتبة</button>
+<ul id="books"></ul>
+</section>
+<p>مداد — نسخة تجريبية لاختبار الواجهة.</p>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+let notices = [];
+let imageURL = null;
+let books = [];
+
+function toggleTheme(){
+  document.body.classList.toggle('dark');
+}
+function setBackground(value){
+  $('hero').style.background = ({
+    green:'linear-gradient(135deg,#d7ead8,#9bc8ac)',
+    sunrise:'linear-gradient(135deg,#ffe0b2,#e9a8a0)',
+    ocean:'linear-gradient(135deg,#c7e8f3,#7bb9d5)',
+    night:'linear-gradient(135deg,#555b80,#252c48)'
+  })[value];
+}
+function chooseImage(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')){
+    alert('اختر ملف صورة صالحاً.');
+    return;
+  }
+  if(imageURL) URL.revokeObjectURL(imageURL);
+  imageURL = URL.createObjectURL(file);
+  $('hero').style.background = 'center/cover no-repeat url("' + imageURL + '")';
+}
+function resetBackground(){
+  if(imageURL) URL.revokeObjectURL(imageURL);
+  imageURL = null;
+  $('image').value = '';
+  setBackground('green');
+}
+function renderNotices(){
+  $('count').textContent = notices.length;
+  $('notice').textContent = notices.length
+    ? notices.join(' — ')
+    : 'لا توجد إشعارات جديدة.';
+}
+function addNotice(){
+  notices.unshift('تذكير: خصص وقتاً لمراجعة دروس البكالوريا.');
+  renderNotices();
+}
+function showNotices(){
+  alert(notices.length ? notices.join('\n') : 'لا توجد إشعارات.');
+}
+function clearNotices(){
+  notices = [];
+  renderNotices();
+}
+function renderBooks(){
+  $('books').replaceChildren();
+  books.forEach((book,index)=>{
+    const li = document.createElement('li');
+    const title = document.createElement('strong');
+    title.textContent = book.name;
+    const open = document.createElement('button');
+    open.textContent = 'فتح الكتاب';
+    open.onclick = ()=>{
+      const url = URL.createObjectURL(book.file);
+      const tab = window.open(url,'_blank');
+      if(!tab) alert('اسمح بفتح النوافذ المنبثقة لعرض الكتاب.');
+      setTimeout(()=>URL.revokeObjectURL(url),60000);
+    };
+    const remove = document.createElement('button');
+    remove.textContent = 'حذف';
+    remove.onclick = ()=>{
+      books.splice(index,1);
+      renderBooks();
+    };
+    li.append(title,document.createElement('br'),open,remove);
+    $('books').append(li);
+  });
+}
+function addBook(){
+  const file = $('pdf').files[0];
+  const title = $('bookTitle').value.trim();
+  if(!file || file.type !== 'application/pdf'){
+    alert('اختر ملف PDF أولاً.');
+    return;
+  }
+  if(file.size > 25*1024*1024){
+    alert('حجم الملف أكبر من 25 ميغابايت.');
+    return;
+  }
+  books.push({name:title || file.name,file});
+  $('bookTitle').value='';
+  $('pdf').value='';
+  renderBooks();
+}
+</script>
+</body>
+</html>
