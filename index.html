@@ -6,47 +6,54 @@
     <title>مداد — نظام إدارة الحياة والدراسة والمالية</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
     <!-- FontAwesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap');
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #f3f4f6;
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, color 0.3s ease;
         }
         .card-box {
-            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
         }
     </style>
 </head>
-<body class="text-gray-800 min-h-screen flex flex-col">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
 
     <!-- شريط التنقل العلوي -->
-    <header class="card-box shadow-sm sticky top-0 z-40 border-b border-gray-200">
+    <header class="bg-white/90 dark:bg-gray-800/90 card-box shadow-sm sticky top-0 z-40 border-b border-gray-200 dark:border-gray-700">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <button onclick="toggleSidebar()" class="p-2 bg-emerald-100 text-emerald-800 rounded-xl transition text-lg active:scale-95">
+                <button onclick="toggleSidebar()" class="p-2 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 rounded-xl transition text-lg active:scale-95">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="bg-emerald-600 text-white p-2 rounded-xl shadow">
                     <i class="fa-solid fa-feather-pointed text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-base font-bold text-gray-900 leading-tight">مشروع مِداد</h1>
-                    <p class="text-xs text-gray-500">إدارة الحياة • البكالوريا • المالية</p>
+                    <h1 class="text-base font-bold text-gray-900 dark:text-white leading-tight">مشروع مِداد</h1>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">إدارة الحياة • البكالوريا • المالية</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="switchTab('notifications')" class="p-2 text-gray-600 hover:text-emerald-600 transition">
+                <!-- زر تبديل الوضع الليلي -->
+                <button onclick="toggleDarkMode()" class="p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 transition">
+                    <i id="darkModeIcon" class="fa-solid fa-moon text-xl"></i>
+                </button>
+                <button onclick="switchTab('notifications')" class="relative p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 transition">
                     <i class="fa-solid fa-bell text-xl"></i>
                     <span id="notifBadge" class="absolute top-1 right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
                 </button>
-                <button onclick="switchTab('settings')" class="p-2 text-gray-600 hover:text-emerald-600 transition">
+                <button onclick="switchTab('settings')" class="p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 transition">
                     <i class="fa-solid fa-gear text-xl"></i>
                 </button>
             </div>
@@ -55,13 +62,13 @@
 
     <!-- القائمة الجانبية العمودية -->
     <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-50 hidden"></div>
-    <div id="sidebar" class="fixed top-0 right-0 bottom-0 w-72 bg-white shadow-2xl z-50 transform transition-transform duration-300 flex flex-col p-5 border-l border-gray-200" style="transform: translateX(100%);">
-        <div class="flex justify-between items-center mb-6 pb-3 border-b border-gray-200">
+    <div id="sidebar" class="fixed top-0 right-0 bottom-0 w-72 bg-white dark:bg-gray-800 shadow-2xl z-50 transform transition-transform duration-300 flex flex-col p-5 border-l border-gray-200 dark:border-gray-700" style="transform: translateX(100%);">
+        <div class="flex justify-between items-center mb-6 pb-3 border-b border-gray-200 dark:border-gray-700">
             <div class="flex items-center gap-2">
                 <div class="bg-emerald-600 text-white p-1.5 rounded-lg">
                     <i class="fa-solid fa-feather-pointed"></i>
                 </div>
-                <span class="font-bold text-gray-900 text-sm">قائمة التطبيق</span>
+                <span class="font-bold text-gray-900 dark:text-white text-sm">قائمة التطبيق</span>
             </div>
             <button onclick="toggleSidebar()" class="text-gray-500 hover:text-red-500 p-2 text-xl">
                 <i class="fa-solid fa-xmark"></i>
@@ -69,34 +76,55 @@
         </div>
 
         <div class="flex flex-col space-y-2 flex-grow overflow-y-auto">
-            <button onclick="switchTab('home'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 transition">
+            <button onclick="switchTab('home'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-house w-5 text-emerald-600"></i> الرئيسية
             </button>
-            <button onclick="switchTab('tasks'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 transition">
+            <button onclick="switchTab('tasks'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-list-check w-5 text-emerald-600"></i> المهام اليومية
             </button>
-            <button onclick="switchTab('bac'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 transition">
+            <button onclick="switchTab('bac'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-graduation-cap w-5 text-blue-600"></i> البكالوريا والتركيز
             </button>
-            <button onclick="switchTab('finance'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 transition">
+            <button onclick="switchTab('finance'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-wallet w-5 text-emerald-700"></i> الجانب المالي (MRU)
             </button>
-            <button onclick="switchTab('calendar'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 transition">
+            <button onclick="switchTab('calendar'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-calendar-days w-5 text-indigo-600"></i> التقويم والمواعيد
             </button>
-            <button onclick="switchTab('library'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 transition">
+            <button onclick="switchTab('library'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-book w-5 text-purple-600"></i> المكتبة والمراجع
             </button>
-            <button onclick="switchTab('notifications'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 transition">
+            <button onclick="switchTab('notifications'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-bell w-5 text-amber-600"></i> الإشعارات
             </button>
-            <button onclick="switchTab('settings'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 transition">
+            <button onclick="switchTab('settings'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-gear w-5 text-gray-600"></i> الإعدادات والخلفيات
             </button>
         </div>
 
-        <div class="pt-4 border-t border-gray-200 text-center text-xs text-gray-400">
+        <div class="pt-4 border-t border-gray-200 dark:border-gray-700 text-center text-xs text-gray-400">
             مشروع مِداد — موريتانيا
+        </div>
+    </div>
+
+    <!-- زر الإضافة السريعة العائم (FAB) -->
+    <button onclick="openQuickAddModal()" class="fixed bottom-6 left-6 bg-emerald-600 hover:bg-emerald-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl z-30 transition hover:scale-110 active:scale-95">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <!-- نافذة الإضافة السريعة المنبثقة -->
+    <div id="quickAddModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-4 border border-gray-200 dark:border-gray-700">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-base text-gray-900 dark:text-white"><i class="fa-solid fa-bolt text-emerald-600 ml-2"></i>إضافة سريعة</h3>
+                <button onclick="closeQuickAddModal()" class="text-gray-400 hover:text-red-500 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="quickAction('tasks');" class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 rounded-xl text-xs font-bold text-center hover:bg-emerald-100 transition"><i class="fa-solid fa-list-check block text-lg mb-1"></i>مهمة جديدة</button>
+                <button onclick="quickAction('finance');" class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-xl text-xs font-bold text-center hover:bg-blue-100 transition"><i class="fa-solid fa-wallet block text-lg mb-1"></i>عملية مالية</button>
+                <button onclick="quickAction('library');" class="p-3 bg-purple-50 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 rounded-xl text-xs font-bold text-center hover:bg-purple-100 transition"><i class="fa-solid fa-book block text-lg mb-1"></i>كتاب جديد</button>
+                <button onclick="quickAction('calendar');" class="p-3 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300 rounded-xl text-xs font-bold text-center hover:bg-indigo-100 transition"><i class="fa-solid fa-calendar-days block text-lg mb-1"></i>موعد هام</button>
+            </div>
         </div>
     </div>
 
@@ -116,35 +144,35 @@
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="card-box p-4 rounded-2xl shadow-sm border border-gray-100">
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="text-emerald-600 text-xs font-semibold mb-1">مهام اليوم المنجزة</div>
                     <div id="statTasks" class="text-xl font-black">0 / 0</div>
                 </div>
-                <div class="card-box p-4 rounded-2xl shadow-sm border border-gray-100">
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="text-blue-600 text-xs font-semibold mb-1">دروس البكالوريا المكتملة</div>
                     <div id="statLessons" class="text-xl font-black">0</div>
                 </div>
-                <div class="card-box p-4 rounded-2xl shadow-sm border border-gray-100">
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="text-emerald-700 text-xs font-semibold mb-1">الرصيد المالي المتاح</div>
                     <div id="homeTotalBalance" class="text-xl font-black text-emerald-600">0 MRU</div>
                 </div>
-                <div class="card-box p-4 rounded-2xl shadow-sm border border-gray-100">
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="text-amber-600 text-xs font-semibold mb-1">أيام للبكالوريا</div>
                     <div id="statDays" class="text-xl font-black">--</div>
                 </div>
             </div>
 
             <div class="grid md:grid-cols-2 gap-6">
-                <div class="card-box p-5 rounded-2xl shadow-sm border border-gray-100">
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-bold text-gray-800"><i class="fa-solid fa-list-check text-emerald-600 ml-2"></i>مهام اليوم</h3>
+                        <h3 class="font-bold text-gray-800 dark:text-gray-100"><i class="fa-solid fa-list-check text-emerald-600 ml-2"></i>مهام اليوم</h3>
                         <button onclick="switchTab('tasks')" class="text-xs text-emerald-600 hover:underline">عرض الكل</button>
                     </div>
                     <div id="homeTasksList" class="space-y-2"></div>
                 </div>
-                <div class="card-box p-5 rounded-2xl shadow-sm border border-gray-100">
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-bold text-gray-800"><i class="fa-solid fa-graduation-cap text-blue-600 ml-2"></i>تقدم البكالوريا</h3>
+                        <h3 class="font-bold text-gray-800 dark:text-gray-100"><i class="fa-solid fa-graduation-cap text-blue-600 ml-2"></i>تقدم البكالوريا</h3>
                         <button onclick="switchTab('bac')" class="text-xs text-blue-600 hover:underline">إدارة المواد</button>
                     </div>
                     <div id="homeBacProgress" class="space-y-3"></div>
@@ -154,15 +182,15 @@
 
         <!-- 2. المهام -->
         <section id="tab-tasks" class="tab-content hidden space-y-6">
-            <div class="card-box p-5 rounded-2xl shadow-sm">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-list-check text-emerald-600"></i> إدارة المهام اليومية
                 </h2>
                 <form id="taskForm" onsubmit="addTask(event)" class="space-y-3">
                     <div class="flex gap-2">
                         <input type="text" id="taskInput" placeholder="أضف مهمة جديدة..." required
-                            class="flex-grow px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-sm">
-                        <select id="taskPriority" class="px-3 py-2.5 rounded-xl border border-gray-300 bg-white text-sm">
+                            class="flex-grow px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm">
+                        <select id="taskPriority" class="px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm">
                             <option value="normal">عادية</option>
                             <option value="high">مهمة جداً</option>
                         </select>
@@ -170,28 +198,26 @@
                     <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl shadow">إضافة المهمة</button>
                 </form>
             </div>
-            <div class="card-box p-5 rounded-2xl shadow-sm">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-gray-700">قائمة المهام</h3>
+                    <h3 class="font-bold text-gray-700 dark:text-gray-300">قائمة المهام</h3>
                     <button onclick="clearCompletedTasks()" class="text-xs text-red-500 hover:underline">حذف المكتملة</button>
                 </div>
                 <div id="tasksList" class="space-y-2"></div>
             </div>
         </section>
 
-        <!-- 3. البكالوريا ومؤقت التركيز (Pomodoro) -->
+        <!-- 3. البكالوريا والتركيز -->
         <section id="tab-bac" class="tab-content hidden space-y-6">
-            <!-- مؤقت التركيز الدراسي -->
-            <div class="card-box p-5 rounded-2xl shadow-sm border-r-4 border-emerald-600 bg-emerald-50/50">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border-r-4 border-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/20 border border-gray-200 dark:border-gray-700">
                 <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-base font-bold text-emerald-900 flex items-center gap-2">
+                    <h2 class="text-base font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
                         <i class="fa-solid fa-stopwatch text-emerald-600"></i> مؤقت التركيز الدراسي (Pomodoro)
                     </h2>
-                    <span id="timerMode" class="bg-emerald-200 text-emerald-800 text-[10px] px-2 py-0.5 rounded-md font-bold">جلسة تركيز</span>
                 </div>
                 <div class="text-center py-4">
-                    <div id="timerDisplay" class="text-4xl font-black text-gray-800 tracking-wider">25:00</div>
-                    <p class="text-xs text-gray-500 mt-1">ركز في مادة واحدة دون تشتيت</p>
+                    <div id="timerDisplay" class="text-4xl font-black text-gray-800 dark:text-white tracking-wider">25:00</div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">ركز في مادة واحدة دون تشتيت</p>
                 </div>
                 <div class="flex justify-center gap-2">
                     <button onclick="startTimer()" class="bg-emerald-600 text-white px-5 py-2 rounded-xl text-xs font-bold shadow hover:bg-emerald-700">تشغيل</button>
@@ -200,13 +226,12 @@
                 </div>
             </div>
 
-            <!-- جدول المراجعة الأسبوعي -->
-            <div class="card-box p-5 rounded-2xl shadow-sm border-r-4 border-indigo-600">
-                <h2 class="text-lg font-bold mb-2 flex items-center gap-2 text-indigo-900">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border-r-4 border-indigo-600 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-lg font-bold mb-2 flex items-center gap-2 text-indigo-900 dark:text-indigo-300">
                     <i class="fa-solid fa-calendar-days text-indigo-600"></i> جدول المراجعة الأسبوعي
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-                    <select id="plannerDay" class="px-3 py-2 rounded-xl border border-gray-300 bg-white text-xs">
+                    <select id="plannerDay" class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-xs">
                         <option value="السبت">السبت</option>
                         <option value="الأحد">الأحد</option>
                         <option value="الإثنين">الإثنين</option>
@@ -215,105 +240,103 @@
                         <option value="الخميس">الخميس</option>
                         <option value="الجمعة">الجمعة</option>
                     </select>
-                    <input type="text" id="plannerTask" placeholder="البرنامج المقترح..." class="px-3 py-2 rounded-xl border border-gray-300 bg-white text-xs">
+                    <input type="text" id="plannerTask" placeholder="البرنامج المقترح..." class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-xs">
                 </div>
                 <button onclick="addPlannerItem()" class="w-full bg-indigo-600 text-white py-2 rounded-xl text-xs font-bold shadow">إضافة لجدول الأسبوع</button>
                 <div id="plannerContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4"></div>
             </div>
 
-            <!-- مواد الدروس -->
-            <div class="card-box p-5 rounded-2xl shadow-sm">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold mb-2 flex items-center gap-2">
                     <i class="fa-solid fa-graduation-cap text-blue-600"></i> مواد شعبة الآداب الأصلية
                 </h2>
                 <div class="flex gap-2 mb-4">
-                    <input type="text" id="newSubjectInput" placeholder="اسم المادة..." class="flex-grow px-4 py-2 rounded-xl border border-gray-300 bg-white text-sm">
+                    <input type="text" id="newSubjectInput" placeholder="اسم المادة..." class="flex-grow px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm">
                     <button onclick="addSubject()" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow">إضافة مادة</button>
                 </div>
                 <div id="subjectsContainer" class="space-y-4"></div>
             </div>
         </section>
 
-        <!-- 4. المالية والتقارير المتقدمة -->
+        <!-- 4. المالية -->
         <section id="tab-finance" class="tab-content hidden space-y-6">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="card-box p-4 rounded-2xl shadow-sm border border-emerald-200">
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-900">
                     <span class="text-xs text-emerald-600 font-bold">إجمالي الدخل</span>
                     <div id="financeIncomeSum" class="text-base font-black text-emerald-700">0 MRU</div>
                 </div>
-                <div class="card-box p-4 rounded-2xl shadow-sm border border-red-200">
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-red-200 dark:border-red-900">
                     <span class="text-xs text-red-600 font-bold">إجمالي المصروفات</span>
                     <div id="financeExpenseSum" class="text-base font-black text-red-600">0 MRU</div>
                 </div>
-                <div class="card-box p-4 rounded-2xl shadow-sm border border-purple-200">
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-purple-200 dark:border-purple-900">
                     <span class="text-xs text-purple-600 font-bold">إجمالي المدخرات</span>
                     <div id="financeSavingsSum" class="text-base font-black text-purple-700">0 MRU</div>
                 </div>
-                <div class="card-box p-4 rounded-2xl shadow-sm border border-amber-200">
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-amber-200 dark:border-amber-900">
                     <span class="text-xs text-amber-600 font-bold">صافي الديون</span>
                     <div id="financeDebtsSum" class="text-base font-black text-amber-700">0 MRU</div>
                 </div>
             </div>
 
-            <!-- تقرير توزيع المصروفات المتقدم حسب التصنيف -->
-            <div class="card-box p-5 rounded-2xl shadow-sm">
-                <h3 class="font-bold text-sm mb-3 text-gray-800"><i class="fa-solid fa-chart-bar text-emerald-600 ml-1"></i>تقرير توزيع المصروفات حسب المجالات</h3>
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
+                <h3 class="font-bold text-sm mb-3 text-gray-800 dark:text-gray-200"><i class="fa-solid fa-chart-bar text-emerald-600 ml-1"></i>تقرير توزيع المصروفات حسب المجالات</h3>
                 <div id="categoryReportContainer" class="space-y-2"></div>
             </div>
 
-            <div class="card-box p-5 rounded-2xl shadow-sm">
-                <h3 class="text-base font-bold mb-3 flex items-center gap-2 text-emerald-800">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
+                <h3 class="text-base font-bold mb-3 flex items-center gap-2 text-emerald-800 dark:text-emerald-300">
                     <i class="fa-solid fa-money-bill-transfer"></i> تسجيل عملية مالية جديدة
                 </h3>
                 <form id="transForm" onsubmit="addTransaction(event)" class="space-y-3">
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                        <select id="transType" onchange="updateCategories()" class="px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white">
+                        <select id="transType" onchange="updateCategories()" class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
                             <option value="expense">مصروف (-)</option>
                             <option value="income">دخل (+)</option>
                         </select>
-                        <input type="number" id="transAmount" placeholder="المبلغ (MRU)" required class="px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white">
-                        <select id="transCategory" class="px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white"></select>
-                        <select id="transAccount" class="px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white">
+                        <input type="number" id="transAmount" placeholder="المبلغ (MRU)" required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                        <select id="transCategory" class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700"></select>
+                        <select id="transAccount" class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
                             <option value="نقدي (كاش)">نقدي (كاش)</option>
                             <option value="بنكي / Bankily">بنكي / Bankily</option>
                             <option value="محفظة أخرى">محفظة أخرى</option>
                         </select>
                     </div>
-                    <input type="text" id="transNote" placeholder="ملاحظة..." class="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white">
+                    <input type="text" id="transNote" placeholder="ملاحظة..." class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
                     <button type="submit" class="w-full bg-emerald-700 text-white font-bold py-2 rounded-xl text-xs shadow">حفظ العملية</button>
                 </form>
             </div>
 
-            <div class="card-box p-5 rounded-2xl shadow-sm">
-                <h3 class="font-bold text-sm text-gray-800 mb-3"><i class="fa-solid fa-receipt text-emerald-600 ml-1"></i>سجل العمليات الأخيرة</h3>
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
+                <h3 class="font-bold text-sm text-gray-800 dark:text-gray-200 mb-3"><i class="fa-solid fa-receipt text-emerald-600 ml-1"></i>سجل العمليات الأخيرة</h3>
                 <div id="transactionsList" class="space-y-2"></div>
             </div>
 
             <div class="grid md:grid-cols-2 gap-6">
-                <div class="card-box p-5 rounded-2xl shadow-sm">
-                    <h3 class="font-bold text-sm mb-3 text-purple-800"><i class="fa-solid fa-bullseye"></i> الأهداف المالية</h3>
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
+                    <h3 class="font-bold text-sm mb-3 text-purple-800 dark:text-purple-300"><i class="fa-solid fa-bullseye"></i> الأهداف المالية</h3>
                     <form id="goalForm" onsubmit="addFinancialGoal(event)" class="space-y-2 mb-4">
-                        <input type="text" id="goalTitle" placeholder="عنوان الهدف..." required class="w-full px-3 py-1.5 border rounded-xl text-xs bg-white">
+                        <input type="text" id="goalTitle" placeholder="عنوان الهدف..." required class="w-full px-3 py-1.5 border rounded-xl text-xs bg-white dark:bg-gray-700 dark:border-gray-600">
                         <div class="flex gap-2">
-                            <input type="number" id="goalTarget" placeholder="المبلغ المستهدف" required class="flex-1 px-3 py-1.5 border rounded-xl text-xs bg-white">
-                            <input type="number" id="goalCurrent" placeholder="المدخر حالياً" class="flex-1 px-3 py-1.5 border rounded-xl text-xs bg-white">
+                            <input type="number" id="goalTarget" placeholder="المبلغ المستهدف" required class="flex-1 px-3 py-1.5 border rounded-xl text-xs bg-white dark:bg-gray-700 dark:border-gray-600">
+                            <input type="number" id="goalCurrent" placeholder="المدخر حالياً" class="flex-1 px-3 py-1.5 border rounded-xl text-xs bg-white dark:bg-gray-700 dark:border-gray-600">
                         </div>
                         <button type="submit" class="w-full bg-purple-700 text-white py-1.5 rounded-xl text-xs font-bold">إضافة هدف</button>
                     </form>
                     <div id="financialGoalsList" class="space-y-2"></div>
                 </div>
 
-                <div class="card-box p-5 rounded-2xl shadow-sm">
-                    <h3 class="font-bold text-sm mb-3 text-amber-800"><i class="fa-solid fa-hand-holding-dollar"></i> الديون والالتزامات</h3>
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
+                    <h3 class="font-bold text-sm mb-3 text-amber-800 dark:text-amber-300"><i class="fa-solid fa-hand-holding-dollar"></i> الديون والالتزامات</h3>
                     <form id="debtForm" onsubmit="addDebtItem(event)" class="space-y-2 mb-4">
                         <div class="flex gap-2">
-                            <select id="debtType" class="px-2 py-1.5 border rounded-xl text-xs bg-white">
+                            <select id="debtType" class="px-2 py-1.5 border rounded-xl text-xs bg-white dark:bg-gray-700 dark:border-gray-600">
                                 <option value="upon_me">دين عليّ (-)</option>
                                 <option value="for_me">دين لي (+)</option>
                             </select>
-                            <input type="text" id="debtPerson" placeholder="اسم الشخص" required class="flex-1 px-3 py-1.5 border rounded-xl text-xs bg-white">
+                            <input type="text" id="debtPerson" placeholder="اسم الشخص" required class="flex-1 px-3 py-1.5 border rounded-xl text-xs bg-white dark:bg-gray-700 dark:border-gray-600">
                         </div>
-                        <input type="number" id="debtAmount" placeholder="المبلغ (MRU)" required class="w-full px-3 py-1.5 border rounded-xl text-xs bg-white">
+                        <input type="number" id="debtAmount" placeholder="المبلغ (MRU)" required class="w-full px-3 py-1.5 border rounded-xl text-xs bg-white dark:bg-gray-700 dark:border-gray-600">
                         <button type="submit" class="w-full bg-amber-700 text-white py-1.5 rounded-xl text-xs font-bold">تسجيل الدين</button>
                     </form>
                     <div id="debtsList" class="space-y-2"></div>
@@ -321,30 +344,29 @@
             </div>
         </section>
 
-        <!-- 5. التقويم والمواعيد (قسم جديد) -->
+        <!-- 5. التقويم والمواعيد -->
         <section id="tab-calendar" class="tab-content hidden space-y-6">
-            <div class="card-box p-5 rounded-2xl shadow-sm">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-calendar-days text-indigo-600"></i> التقويم والمواعيد الهامة</h2>
                 <form id="eventForm" onsubmit="addEvent(event)" class="space-y-3 mb-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <input type="text" id="eventTitle" placeholder="عنوان الموعد (مثلاً: امتحان تجريبي فقه)..." required class="px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white">
-                        <input type="date" id="eventDate" required class="px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white">
+                        <input type="text" id="eventTitle" placeholder="عنوان الموعد..." required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                        <input type="date" id="eventDate" required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
                     </div>
                     <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2 rounded-xl text-xs shadow">إضافة موعد للتقويم</button>
                 </form>
-
                 <div id="eventsList" class="space-y-2"></div>
             </div>
         </section>
 
         <!-- 6. المكتبة -->
         <section id="tab-library" class="tab-content hidden space-y-6">
-            <div class="card-box p-5 rounded-2xl shadow-sm">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-book text-purple-600"></i> المكتبة الدراسية والثقافية</h2>
                 <form id="bookForm" onsubmit="addBook(event)" class="space-y-3">
-                    <input type="text" id="bookTitle" placeholder="عنوان الكتاب..." required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-sm">
+                    <input type="text" id="bookTitle" placeholder="عنوان الكتاب..." required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <select id="bookCategory" class="px-3 py-2.5 rounded-xl border border-gray-300 bg-white text-sm">
+                        <select id="bookCategory" class="px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm">
                             <option value="اللغة العربية">اللغة العربية</option>
                             <option value="التشريع">التشريع (فقه وأصول)</option>
                             <option value="الفكر الإسلامي">الفكر الإسلامي</option>
@@ -354,18 +376,18 @@
                             <option value="ثقافة عامة">القراءة والثقافة العامة</option>
                             <option value="أخرى">كتب أخرى</option>
                         </select>
-                        <input type="url" id="bookLink" placeholder="رابط الكتاب (https://...)" class="px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-sm">
+                        <input type="url" id="bookLink" placeholder="رابط الكتاب (https://...)" class="px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm">
                     </div>
-                    <textarea id="bookNotes" placeholder="ملاحظات..." rows="2" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-sm"></textarea>
+                    <textarea id="bookNotes" placeholder="ملاحظات..." rows="2" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"></textarea>
                     <button type="submit" class="w-full bg-purple-600 text-white font-bold py-2.5 rounded-xl shadow">إضافة للمكتبة</button>
                 </form>
             </div>
             
-            <div class="card-box p-5 rounded-2xl shadow-sm">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <div class="flex flex-col md:flex-row justify-between items-center gap-3 mb-4">
-                    <h3 class="font-bold text-gray-700 text-sm">الكتب المحفوظة</h3>
+                    <h3 class="font-bold text-gray-700 dark:text-gray-300 text-sm">الكتب المحفوظة</h3>
                     <div class="flex gap-2 w-full md:w-auto">
-                        <select id="bookFilterCategory" onchange="renderLibrary()" class="px-3 py-1.5 rounded-xl border border-gray-300 text-xs bg-white">
+                        <select id="bookFilterCategory" onchange="renderLibrary()" class="px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
                             <option value="all">كل التصنيفات</option>
                             <option value="اللغة العربية">اللغة العربية</option>
                             <option value="التشريع">التشريع</option>
@@ -375,7 +397,7 @@
                             <option value="الفرنسية">الفرنسية</option>
                             <option value="ثقافة عامة">ثقافة عامة</option>
                         </select>
-                        <input type="text" id="bookSearch" oninput="renderLibrary()" placeholder="بحث..." class="px-3 py-1.5 rounded-xl border border-gray-300 text-xs bg-white flex-grow">
+                        <input type="text" id="bookSearch" oninput="renderLibrary()" placeholder="بحث..." class="px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700 flex-grow">
                     </div>
                 </div>
                 <div id="booksGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
@@ -384,33 +406,30 @@
 
         <!-- 7. الإشعارات -->
         <section id="tab-notifications" class="tab-content hidden space-y-6">
-            <div class="card-box p-5 rounded-2xl shadow-sm space-y-4">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm space-y-4 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-bell text-amber-600"></i> التنبيهات والإشعارات الذكية</h2>
                 <div id="notificationsContainer" class="space-y-2"></div>
             </div>
         </section>
 
-        <!-- 8. الإعدادات والخلفيات الجديدة -->
+        <!-- 8. الإعدادات -->
         <section id="tab-settings" class="tab-content hidden space-y-6">
-            <div class="card-box p-5 rounded-2xl shadow-sm space-y-4">
-                <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-gear text-gray-700"></i> الإعدادات وخلفيات التطبيق</h2>
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm space-y-4 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-gear text-gray-700 dark:text-gray-300"></i> الإعدادات وخلفيات التطبيق</h2>
                 <div>
-                    <label class="block text-sm font-semibold mb-2 text-gray-700">اختر خلفية مريحة للدراسة:</label>
+                    <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">اختر خلفية مريحة للدراسة:</label>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
-                        <button onclick="setBg('default')" class="p-2 border rounded-xl text-xs bg-gray-100 font-bold">افتراضية</button>
-                        <button onclick="setBg('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80')" class="p-2 border rounded-xl text-xs bg-gray-100">جبال وهدوء</button>
-                        <button onclick="setBg('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80')" class="p-2 border rounded-xl text-xs bg-gray-100">مكتبة دافئة</button>
-                        <button onclick="setBg('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80')" class="p-2 border rounded-xl text-xs bg-gray-100">كتب وقراءة</button>
-                        <button onclick="setBg('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80')" class="p-2 border rounded-xl text-xs bg-gray-100">طبيعة خضراء</button>
-                        <button onclick="setBg('https://images.unsplash.com/photo-1518655048521-f130df041f66?auto=format&fit=crop&w=1200&q=80')" class="p-2 border rounded-xl text-xs bg-gray-100">طاولة عمل</button>
-                        <button onclick="setBg('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80')" class="p-2 border rounded-xl text-xs bg-gray-100">سماء ونجوم</button>
+                        <button onclick="setBg('default')" class="p-2 border rounded-xl text-xs bg-gray-100 dark:bg-gray-700 dark:border-gray-600 font-bold">افتراضية</button>
+                        <button onclick="setBg('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80')" class="p-2 border rounded-xl text-xs bg-gray-100 dark:bg-gray-700 dark:border-gray-600">جبال وهدوء</button>
+                        <button onclick="setBg('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80')" class="p-2 border rounded-xl text-xs bg-gray-100 dark:bg-gray-700 dark:border-gray-600">مكتبة دافئة</button>
+                        <button onclick="setBg('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80')" class="p-2 border rounded-xl text-xs bg-gray-100 dark:bg-gray-700 dark:border-gray-600">كتب وقراءة</button>
                     </div>
-                    <input type="text" id="customBgInput" placeholder="أو أدخل رابط صورة مباشر هنا..." class="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs mb-2 bg-white">
-                    <button onclick="applyCustomBg()" class="w-full bg-gray-800 text-white py-2 rounded-xl text-xs font-bold">تطبيق الخلفية الخاصة</button>
+                    <input type="text" id="customBgInput" placeholder="أو أدخل رابط صورة مباشر هنا..." class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs mb-2 bg-white dark:bg-gray-700">
+                    <button onclick="applyCustomBg()" class="w-full bg-gray-800 dark:bg-gray-700 text-white py-2 rounded-xl text-xs font-bold">تطبيق الخلفية الخاصة</button>
                 </div>
-                <hr class="border-gray-200">
+                <hr class="border-gray-200 dark:border-gray-700">
                 <div class="space-y-2">
-                    <label class="block text-sm font-semibold text-gray-700">النسخ الاحتياطي والبيانات:</label>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">النسخ الاحتياطي والبيانات:</label>
                     <div class="flex gap-2">
                         <button onclick="exportData()" class="flex-1 bg-emerald-600 text-white py-2 rounded-xl text-xs font-bold shadow">تصدير النسخة</button>
                         <label class="flex-1 bg-blue-600 text-white py-2 rounded-xl text-xs font-bold shadow text-center cursor-pointer">
@@ -427,7 +446,7 @@
 
     <!-- جافاسكريبت التطبيق الشامل -->
     <script>
-        const STORAGE_KEY = 'midad_app_data_v1';
+        const STORAGE_KEY = 'midad_app_data_v2';
 
         let appData = {
             tasks: [],
@@ -447,7 +466,7 @@
                 goals: [],
                 debts: []
             },
-            settings: { bg: 'default' }
+            settings: { bg: 'default', darkMode: false }
         };
 
         const expenseCategories = ['طعام ومؤونة', 'مواصلات', 'سكن وفواتير', 'دراسة وكتب', 'صحة وعلاج', 'أسرة وهدايا', 'أخرى'];
@@ -495,6 +514,36 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // تحكم نافذة الإضافة السريعة (FAB)
+        function openQuickAddModal() {
+            document.getElementById('quickAddModal').classList.remove('hidden');
+        }
+        function closeQuickAddModal() {
+            document.getElementById('quickAddModal').classList.add('hidden');
+        }
+        function quickAction(tabId) {
+            closeQuickAddModal();
+            switchTab(tabId);
+        }
+
+        // تحكم الوضع الليلي والنهاري
+        function toggleDarkMode() {
+            appData.settings.darkMode = !appData.settings.darkMode;
+            saveData();
+            applyTheme();
+        }
+
+        function applyTheme() {
+            const icon = document.getElementById('darkModeIcon');
+            if (appData.settings.darkMode) {
+                document.documentElement.classList.add('dark');
+                if (icon) icon.className = 'fa-solid fa-sun text-xl text-amber-400';
+            } else {
+                document.documentElement.classList.remove('dark');
+                if (icon) icon.className = 'fa-solid fa-moon text-xl';
+            }
+        }
+
         function initHeader() {
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const todayStr = new Date().toLocaleDateString('ar-MR', options);
@@ -503,7 +552,7 @@
             updateCategories();
         }
 
-        // --- مؤقت التركيز (Pomodoro) ---
+        // مؤقت التركيز (Pomodoro)
         let timerInterval = null;
         let timerSeconds = 25 * 60;
         let isTimerRunning = false;
@@ -590,10 +639,10 @@
             let homeHtml = '';
             appData.tasks.slice(-5).reverse().forEach(t => {
                 const itemHtml = `
-                    <div class="flex items-center justify-between p-3 rounded-xl border ${t.completed ? 'bg-gray-50 border-gray-200 opacity-60 line-through' : 'bg-white border-gray-200'}">
+                    <div class="flex items-center justify-between p-3 rounded-xl border ${t.completed ? 'bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-700 opacity-60 line-through' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-700'}">
                         <div class="flex items-center gap-3">
                             <input type="checkbox" ${t.completed ? 'checked' : ''} onclick="toggleTask(${t.id})" class="w-4 h-4 text-emerald-600 rounded">
-                            <span class="text-sm ${t.priority === 'high' ? 'font-bold text-red-600' : ''}">${t.text}</span>
+                            <span class="text-sm ${t.priority === 'high' ? 'font-bold text-red-600 dark:text-red-400' : ''}">${t.text}</span>
                         </div>
                         <button onclick="deleteTask(${t.id})" class="text-gray-400 hover:text-red-500 text-xs"><i class="fa-solid fa-trash"></i></button>
                     </div>
@@ -633,10 +682,10 @@
             let html = '';
             appData.planner.forEach(p => {
                 html += `
-                    <div class="bg-white border border-indigo-100 p-3 rounded-xl text-xs flex justify-between items-start">
+                    <div class="bg-white dark:bg-gray-700 border border-indigo-100 dark:border-indigo-900 p-3 rounded-xl text-xs flex justify-between items-start">
                         <div>
-                            <span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-bold">${p.day}</span>
-                            <p class="mt-1 text-gray-800 font-medium">${p.task}</p>
+                            <span class="bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded font-bold">${p.day}</span>
+                            <p class="mt-1 text-gray-800 dark:text-gray-200 font-medium">${p.task}</p>
                         </div>
                         <button onclick="deletePlannerItem(${p.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
                     </div>
@@ -673,10 +722,10 @@
             let html = '';
             appData.events.sort((a,b) => new Date(a.date) - new Date(b.date)).forEach(ev => {
                 html += `
-                    <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-200 text-xs">
+                    <div class="flex justify-between items-center bg-white dark:bg-gray-700 p-3 rounded-xl border border-gray-200 dark:border-gray-600 text-xs">
                         <div>
-                            <span class="font-bold text-indigo-800">${ev.title}</span>
-                            <p class="text-[11px] text-gray-500"><i class="fa-solid fa-clock ml-1"></i>${ev.date}</p>
+                            <span class="font-bold text-indigo-800 dark:text-indigo-300">${ev.title}</span>
+                            <p class="text-[11px] text-gray-500 dark:text-gray-400"><i class="fa-solid fa-clock ml-1"></i>${ev.date}</p>
                         </div>
                         <button onclick="deleteEvent(${ev.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
                     </div>
@@ -749,7 +798,7 @@
                             <span>${sub.name}</span>
                             <span>${percent}%</span>
                         </div>
-                        <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
                             <div class="bg-blue-600 h-full" style="width: ${percent}%"></div>
                         </div>
                     </div>
@@ -757,12 +806,12 @@
 
                 let lessonsHtml = '';
                 sub.lessons.forEach(l => {
-                    let badgeColor = 'bg-gray-200 text-gray-700';
-                    if (l.status === 'قيد الدراسة') badgeColor = 'bg-amber-100 text-amber-700';
-                    if (l.status === 'تمت مراجعته') badgeColor = 'bg-emerald-100 text-emerald-700';
+                    let badgeColor = 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200';
+                    if (l.status === 'قيد الدراسة') badgeColor = 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300';
+                    if (l.status === 'تمت مراجعته') badgeColor = 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300';
 
                     lessonsHtml += `
-                        <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-gray-100 text-xs">
+                        <div class="flex items-center justify-between bg-white dark:bg-gray-700 p-2.5 rounded-xl border border-gray-100 dark:border-gray-600 text-xs">
                             <span class="font-medium">${l.name}</span>
                             <div class="flex items-center gap-2">
                                 <button onclick="cycleLessonStatus(${sub.id}, ${l.id})" class="px-2.5 py-1 rounded-lg ${badgeColor} font-semibold transition">${l.status}</button>
@@ -773,15 +822,15 @@
                 });
 
                 html += `
-                    <div class="bg-white border border-gray-200 p-4 rounded-2xl space-y-3">
+                    <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 p-4 rounded-2xl space-y-3">
                         <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-gray-800 text-sm flex items-center gap-2">
+                            <h3 class="font-bold text-gray-800 dark:text-gray-100 text-sm flex items-center gap-2">
                                 <i class="fa-solid fa-book-open text-blue-600"></i> ${sub.name}
-                                <span class="text-xs font-normal text-gray-500">(${completedLessons}/${totalLessons})</span>
+                                <span class="text-xs font-normal text-gray-500 dark:text-gray-400">(${completedLessons}/${totalLessons})</span>
                             </h3>
                         </div>
                         <div class="flex gap-2">
-                            <input type="text" id="lesson-input-${sub.id}" placeholder="إضافة درس..." class="flex-grow px-3 py-1.5 rounded-xl border border-gray-300 text-xs bg-white">
+                            <input type="text" id="lesson-input-${sub.id}" placeholder="إضافة درس..." class="flex-grow px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-600">
                             <button onclick="addLesson(${sub.id})" class="bg-blue-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold">إضافة</button>
                         </div>
                         <div class="space-y-1.5 mt-2">
@@ -795,7 +844,7 @@
             homeProg.innerHTML = homeProgHtml || '<p class="text-xs text-gray-400">لا توجد مواد مضافة.</p>';
         }
 
-        // المالية والتقارير المتقدمة
+        // المالية والتقارير
         function updateCategories() {
             const type = document.getElementById('transType').value;
             const catSelect = document.getElementById('transCategory');
@@ -882,7 +931,6 @@
             document.getElementById('financeExpenseSum').textContent = `${totalExpense} MRU`;
             document.getElementById('homeTotalBalance').textContent = `${netBalance} MRU`;
 
-            // تقرير الفئات
             const catReport = document.getElementById('categoryReportContainer');
             if (catReport) {
                 if (totalExpense === 0) {
@@ -897,7 +945,7 @@
                                     <span>${cat}</span>
                                     <span>${sum} MRU (${pct}%)</span>
                                 </div>
-                                <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
                                     <div class="bg-emerald-600 h-full" style="width: ${pct}%"></div>
                                 </div>
                             </div>
@@ -916,10 +964,10 @@
                     appData.finance.transactions.slice(-6).reverse().forEach(t => {
                         const isIncome = t.type === 'income';
                         html += `
-                            <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-gray-100 text-xs">
+                            <div class="flex justify-between items-center bg-white dark:bg-gray-700 p-2.5 rounded-xl border border-gray-100 dark:border-gray-600 text-xs">
                                 <div>
-                                    <span class="font-bold ${isIncome ? 'text-emerald-600' : 'text-red-600'}">${isIncome ? '+' : '-'}${t.amount} MRU</span>
-                                    <span class="text-gray-500 mr-2">(${t.category} • ${t.account})</span>
+                                    <span class="font-bold ${isIncome ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}">${isIncome ? '+' : '-'}${t.amount} MRU</span>
+                                    <span class="text-gray-500 dark:text-gray-400 mr-2">(${t.category} • ${t.account})</span>
                                 </div>
                                 <button onclick="deleteTransaction(${t.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
                             </div>
@@ -940,12 +988,12 @@
                         totalSavings += g.current;
                         const percent = Math.min(100, Math.round((g.current / g.target) * 100));
                         html += `
-                            <div class="bg-white p-2.5 rounded-xl border border-gray-100 text-xs space-y-1">
+                            <div class="bg-white dark:bg-gray-700 p-2.5 rounded-xl border border-gray-100 dark:border-gray-600 text-xs space-y-1">
                                 <div class="flex justify-between font-bold">
                                     <span>${g.title}</span>
                                     <span>${g.current} / ${g.target} MRU (${percent}%)</span>
                                 </div>
-                                <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 h-1.5 rounded-full overflow-hidden">
                                     <div class="bg-purple-600 h-full" style="width: ${percent}%"></div>
                                 </div>
                                 <div class="flex justify-end"><button onclick="deleteGoal(${g.id})" class="text-[10px] text-red-500 hover:underline">حذف</button></div>
@@ -969,10 +1017,10 @@
                         if (isUponMe) netDebts -= d.amount;
                         else netDebts += d.amount;
                         html += `
-                            <div class="flex justify-between items-center bg-white p-2 rounded-xl border border-gray-100 text-xs">
+                            <div class="flex justify-between items-center bg-white dark:bg-gray-700 p-2 rounded-xl border border-gray-100 dark:border-gray-600 text-xs">
                                 <div>
-                                    <span class="font-bold ${isUponMe ? 'text-red-600' : 'text-emerald-600'}">${isUponMe ? 'عليّ' : 'لي'}: ${d.amount} MRU</span>
-                                    <span class="text-gray-600 font-medium mr-1">(${d.person})</span>
+                                    <span class="font-bold ${isUponMe ? 'text-red-600 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'}">${isUponMe ? 'عليّ' : 'لي'}: ${d.amount} MRU</span>
+                                    <span class="text-gray-600 dark:text-gray-300 font-medium mr-1">(${d.person})</span>
                                 </div>
                                 <button onclick="deleteDebt(${d.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
                             </div>
@@ -1026,14 +1074,14 @@
             let html = '';
             filtered.forEach(b => {
                 html += `
-                    <div class="bg-white border border-gray-200 p-4 rounded-2xl flex flex-col justify-between space-y-2 text-xs">
+                    <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 p-4 rounded-2xl flex flex-col justify-between space-y-2 text-xs">
                         <div>
-                            <span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-md font-semibold">${b.category}</span>
-                            <h4 class="font-bold text-gray-900 text-sm mt-1">${b.title}</h4>
-                            ${b.notes ? `<p class="text-gray-600 mt-1">${b.notes}</p>` : ''}
+                            <span class="bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-md font-semibold">${b.category}</span>
+                            <h4 class="font-bold text-gray-900 dark:text-white text-sm mt-1">${b.title}</h4>
+                            ${b.notes ? `<p class="text-gray-600 dark:text-gray-300 mt-1">${b.notes}</p>` : ''}
                         </div>
-                        <div class="flex justify-between items-center pt-2 border-t border-gray-100">
-                            ${b.link ? `<a href="${b.link}" target="_blank" class="text-blue-600 hover:underline flex items-center gap-1"><i class="fa-solid fa-external-link"></i> فتح الرابط</a>` : '<span></span>'}
+                        <div class="flex justify-between items-center pt-2 border-t border-gray-100 dark:border-gray-600">
+                            ${b.link ? `<a href="${b.link}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"><i class="fa-solid fa-external-link"></i> فتح الرابط</a>` : '<span></span>'}
                             <button onclick="deleteBook(${b.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i> حذف</button>
                         </div>
                     </div>
@@ -1064,13 +1112,13 @@
 
             let html = '';
             if (notifs.length === 0) {
-                html = `<div class="p-3 bg-white/60 rounded-xl border border-gray-200 text-sm text-gray-600">لا توجد إشعارات جديدة حالياً. كل أمورك منظمة!</div>`;
+                html = `<div class="p-3 bg-white/60 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600 text-sm text-gray-600 dark:text-gray-300">لا توجد إشعارات جديدة حالياً. كل أمورك منظمة!</div>`;
             } else {
                 notifs.forEach(n => {
                     html += `
-                        <div class="p-3 bg-white rounded-xl border border-gray-200 text-xs space-y-1">
-                            <h4 class="font-bold text-emerald-800">${n.title}</h4>
-                            <p class="text-gray-600">${n.desc}</p>
+                        <div class="p-3 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 text-xs space-y-1">
+                            <h4 class="font-bold text-emerald-800 dark:text-emerald-400">${n.title}</h4>
+                            <p class="text-gray-600 dark:text-gray-300">${n.desc}</p>
                         </div>
                     `;
                 });
@@ -1078,7 +1126,7 @@
             container.innerHTML = html;
         }
 
-        // الإعدادات والخلفيات
+        // الخلفيات
         function setBg(bgValue) {
             appData.settings.bg = bgValue;
             saveData();
@@ -1096,7 +1144,6 @@
             const bg = appData.settings.bg;
             if (bg === 'default') {
                 document.body.style.backgroundImage = 'none';
-                document.body.style.backgroundColor = '#f3f4f6';
             } else {
                 document.body.style.backgroundImage = `url('${bg}')`;
             }
@@ -1113,9 +1160,6 @@
             });
             const statLessons = document.getElementById('statLessons');
             if (statLessons) statLessons.textContent = completedLessonsCount;
-            
-            const statBooks = document.getElementById('statBooks');
-            if (statBooks) statBooks.textContent = appData.books.length;
 
             const bacDate = new Date('2027-06-01');
             const diffTime = bacDate - new Date();
@@ -1162,6 +1206,7 @@
             loadData();
             initHeader();
             applyBgStyle();
+            applyTheme();
             renderTasks();
             renderPlanner();
             renderEvents();
@@ -1181,3 +1226,4 @@
     </script>
 </body>
 </html>
+
