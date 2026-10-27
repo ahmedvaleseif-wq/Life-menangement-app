@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مداد — نظام إدارة الحياة والدراسة</title>
-    <!-- Tailwind CSS CDN للتصميم العصري المتجاوب -->
+    <title>مداد — نظام إدارة الحياة والدراسة والمالية</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,7 +19,7 @@
             transition: background 0.3s ease;
         }
         .glass {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.93);
             backdrop-filter: blur(10px);
         }
     </style>
@@ -35,7 +35,7 @@
                 </div>
                 <div>
                     <h1 class="text-lg font-bold text-gray-900 leading-tight">مشروع مِداد</h1>
-                    <p class="text-xs text-gray-500">بكالوريا الآداب الأصلية</p>
+                    <p class="text-xs text-gray-500">إدارة الحياة • البكالوريا • المالية</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
@@ -53,14 +53,14 @@
     <!-- المحتوى الرئيسي -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 pb-24">
         
-        <!-- 1. لوحة التحكم -->
+        <!-- 1. لوحة التحكم الرئيسية -->
         <section id="tab-home" class="tab-content space-y-6">
             <div class="bg-gradient-to-r from-emerald-700 to-teal-800 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
                 <div class="relative z-10">
                     <h2 id="welcomeGreeting" class="text-2xl font-black mb-1">أهلاً بك يا أخي</h2>
                     <p id="currentDateDisplay" class="text-emerald-100 text-sm mb-4"></p>
                     <blockquote class="bg-black/20 p-3 rounded-xl text-sm italic border-r-4 border-emerald-400">
-                        "من طلب العلا سهر الليالي.. اصبر، فما بقي إلا القليل لتنال البكالوريا بتفوق."
+                        "من طلب العلا سهر الليالي.. اصبر وتنظم، فما بقي إلا القليل لتنال البكالوريا وتستقر حياتك."
                     </blockquote>
                 </div>
                 <div class="absolute -left-10 -bottom-10 text-white/10 text-9xl">
@@ -68,27 +68,27 @@
                 </div>
             </div>
 
-            <!-- إحصائيات سريعة -->
+            <!-- إحصائيات سريعة عامة وملاحظات مالية -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="glass p-4 rounded-2xl shadow-sm border border-gray-100">
-                    <div class="text-emerald-600 text-sm font-semibold mb-1">المهام المنجزة اليوم</div>
-                    <div id="statTasks" class="text-2xl font-black">0 / 0</div>
+                    <div class="text-emerald-600 text-xs font-semibold mb-1">مهام اليوم المنجزة</div>
+                    <div id="statTasks" class="text-xl font-black">0 / 0</div>
                 </div>
                 <div class="glass p-4 rounded-2xl shadow-sm border border-gray-100">
-                    <div class="text-blue-600 text-sm font-semibold mb-1">الدروس المكتملة</div>
-                    <div id="statLessons" class="text-2xl font-black">0</div>
+                    <div class="text-blue-600 text-xs font-semibold mb-1">دروس البكالوريا المكتملة</div>
+                    <div id="statLessons" class="text-xl font-black">0</div>
                 </div>
                 <div class="glass p-4 rounded-2xl shadow-sm border border-gray-100">
-                    <div class="text-purple-600 text-sm font-semibold mb-1">الكتب والمراجع</div>
-                    <div id="statBooks" class="text-2xl font-black">0</div>
+                    <div class="text-emerald-700 text-xs font-semibold mb-1">الرصيد المالي المتاح</div>
+                    <div id="homeTotalBalance" class="text-xl font-black text-emerald-600">0 MRU</div>
                 </div>
                 <div class="glass p-4 rounded-2xl shadow-sm border border-gray-100">
-                    <div class="text-amber-600 text-sm font-semibold mb-1">أيام للبكالوريا</div>
-                    <div id="statDays" class="text-2xl font-black">--</div>
+                    <div class="text-amber-600 text-xs font-semibold mb-1">أيام للبكالوريا</div>
+                    <div id="statDays" class="text-xl font-black">--</div>
                 </div>
             </div>
 
-            <!-- اختصار سريع -->
+            <!-- اختصارات لوحة التحكم -->
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="glass p-5 rounded-2xl shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center mb-4">
@@ -163,9 +163,7 @@
                     إضافة إلى جدول المراجعة الأسبوعي
                 </button>
 
-                <div id="plannerContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
-                    <!-- يضاف الجدول هنا -->
-                </div>
+                <div id="plannerContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4"></div>
             </div>
 
             <!-- مواد الدروس -->
@@ -187,7 +185,106 @@
             </div>
         </section>
 
-        <!-- 4. المكتبة -->
+        <!-- 4. الجانب المالي (جديد بالكامل) -->
+        <section id="tab-finance" class="tab-content hidden space-y-6">
+            <!-- 1. نظرة عامة مالية -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="glass p-4 rounded-2xl shadow-sm border border-emerald-200">
+                    <span class="text-xs text-emerald-600 font-bold">إجمالي الدخل</span>
+                    <div id="financeIncomeSum" class="text-lg font-black text-emerald-700">0 MRU</div>
+                </div>
+                <div class="glass p-4 rounded-2xl shadow-sm border border-red-200">
+                    <span class="text-xs text-red-600 font-bold">إجمالي المصروفات</span>
+                    <div id="financeExpenseSum" class="text-lg font-black text-red-600">0 MRU</div>
+                </div>
+                <div class="glass p-4 rounded-2xl shadow-sm border border-purple-200">
+                    <span class="text-xs text-purple-600 font-bold">إجمالي المدخرات</span>
+                    <div id="financeSavingsSum" class="text-lg font-black text-purple-700">0 MRU</div>
+                </div>
+                <div class="glass p-4 rounded-2xl shadow-sm border border-amber-200">
+                    <span class="text-xs text-amber-600 font-bold">صافي الديون (عليك/لك)</span>
+                    <div id="financeDebtsSum" class="text-lg font-black text-amber-700">0 MRU</div>
+                </div>
+            </div>
+
+            <!-- 2. تسجيل عملية مالية جديدة (دخل / مصروف) -->
+            <div class="glass p-5 rounded-2xl shadow-sm">
+                <h3 class="text-base font-bold mb-3 flex items-center gap-2 text-emerald-800">
+                    <i class="fa-solid fa-money-bill-transfer"></i> تسجيل عملية مالية جديدة
+                </h3>
+                <form id="transForm" onsubmit="addTransaction(event)" class="space-y-3">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <select id="transType" onchange="updateCategories()" class="px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white">
+                            <option value="expense">مصروف (-)</option>
+                            <option value="income">دخل (+)</option>
+                        </select>
+                        <input type="number" id="transAmount" placeholder="المبلغ (MRU)" required 
+                            class="px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white">
+                        <select id="transCategory" class="px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white">
+                            <!-- يملأ ديناميكياً -->
+                        </select>
+                        <select id="transAccount" class="px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white">
+                            <option value="نقدي (كاش)">نقدي (كاش)</option>
+                            <option value="بنكي / Bankily">بنكي / Bankily</option>
+                            <option value="محفظة أخرى">محفظة أخرى</option>
+                        </select>
+                    </div>
+                    <input type="text" id="transNote" placeholder="ملاحظة أو بيان العملية (اختياري)..." 
+                        class="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white">
+                    <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 rounded-xl text-xs transition shadow">
+                        حفظ العملية المالية
+                    </button>
+                </form>
+            </div>
+
+            <!-- 3. سجل العمليات الأخيرة -->
+            <div class="glass p-5 rounded-2xl shadow-sm">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-sm text-gray-800"><i class="fa-solid fa-receipt text-emerald-600 ml-1"></i>سجل العمليات الأخيرة</h3>
+                </div>
+                <div id="transactionsList" class="space-y-2"></div>
+            </div>
+
+            <!-- 4. الأهداف المالية والديون -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- الأهداف المالية وصناديق الادخار -->
+                <div class="glass p-5 rounded-2xl shadow-sm">
+                    <h3 class="font-bold text-sm mb-3 flex items-center gap-2 text-purple-800">
+                        <i class="fa-solid fa-bullseye"></i> الأهداف المالية والادخار
+                    </h3>
+                    <form id="goalForm" onsubmit="addFinancialGoal(event)" class="space-y-2 mb-4">
+                        <input type="text" id="goalTitle" placeholder="عنوان الهدف (مثلاً: شراء حاسوب)..." required class="w-full px-3 py-1.5 border rounded-xl text-xs">
+                        <div class="flex gap-2">
+                            <input type="number" id="goalTarget" placeholder="المبلغ المستهدف" required class="flex-1 px-3 py-1.5 border rounded-xl text-xs">
+                            <input type="number" id="goalCurrent" placeholder="المدخر حالياً" class="flex-1 px-3 py-1.5 border rounded-xl text-xs">
+                        </div>
+                        <button type="submit" class="w-full bg-purple-700 text-white py-1.5 rounded-xl text-xs font-bold">إضافة هدف مالية</button>
+                    </form>
+                    <div id="financialGoalsList" class="space-y-2"></div>
+                </div>
+
+                <!-- إدارة الديون -->
+                <div class="glass p-5 rounded-2xl shadow-sm">
+                    <h3 class="font-bold text-sm mb-3 flex items-center gap-2 text-amber-800">
+                        <i class="fa-solid fa-hand-holding-dollar"></i> سجل الديون والالتزامات
+                    </h3>
+                    <form id="debtForm" onsubmit="addDebtItem(event)" class="space-y-2 mb-4">
+                        <div class="flex gap-2">
+                            <select id="debtType" class="px-2 py-1.5 border rounded-xl text-xs">
+                                <option value="upon_me">دين عليّ (-)</option>
+                                <option value="for_me">دين لي (+)</option>
+                            </select>
+                            <input type="text" id="debtPerson" placeholder="اسم الشخص / الجهة" required class="flex-1 px-3 py-1.5 border rounded-xl text-xs">
+                        </div>
+                        <input type="number" id="debtAmount" placeholder="المبلغ (MRU)" required class="w-full px-3 py-1.5 border rounded-xl text-xs">
+                        <button type="submit" class="w-full bg-amber-700 text-white py-1.5 rounded-xl text-xs font-bold">تسجيل الدين</button>
+                    </form>
+                    <div id="debtsList" class="space-y-2"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. المكتبة -->
         <section id="tab-library" class="tab-content hidden space-y-6">
             <div class="glass p-5 rounded-2xl shadow-sm">
                 <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
@@ -228,22 +325,22 @@
             </div>
         </section>
 
-        <!-- 5. الإشعارات -->
+        <!-- 6. الإشعارات -->
         <section id="tab-notifications" class="tab-content hidden space-y-6">
             <div class="glass p-5 rounded-2xl shadow-sm space-y-4">
                 <h2 class="text-lg font-bold flex items-center gap-2">
                     <i class="fa-solid fa-bell text-amber-600"></i> التنبيهات والإشعارات
                 </h2>
-                <p class="text-sm text-gray-600">هنا تظهر تذكيرات المراجعة والمهام اليومية.</p>
+                <p class="text-sm text-gray-600">هنا تظهر تذكيرات المراجعة والمهام والتنبيهات المالية.</p>
                 <div id="notificationsList" class="space-y-2">
                     <div class="p-3 bg-white/60 rounded-xl border border-gray-200 text-sm text-gray-600">
-                        لا توجد إشعارات جديدة حالياً. استمر في العمل الجيد نحو البكالوريا!
+                        لا توجد إشعارات جديدة حالياً. كل أمورك منظمة!
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 6. الإعدادات -->
+        <!-- 7. الإعدادات -->
         <section id="tab-settings" class="tab-content hidden space-y-6">
             <div class="glass p-5 rounded-2xl shadow-sm space-y-4">
                 <h2 class="text-lg font-bold flex items-center gap-2">
@@ -284,29 +381,29 @@
     <nav class="glass border-t border-gray-200 fixed bottom-0 left-0 right-0 z-50 shadow-lg">
         <div class="max-w-md mx-auto flex justify-around py-2">
             <button onclick="switchTab('home')" id="nav-home" class="nav-btn flex flex-col items-center text-emerald-600 text-xs">
-                <i class="fa-solid fa-house text-lg"></i>
+                <i class="fa-solid fa-house text-base"></i>
                 <span>الرئيسية</span>
             </button>
             <button onclick="switchTab('tasks')" id="nav-tasks" class="nav-btn flex flex-col items-center text-gray-500 text-xs">
-                <i class="fa-solid fa-list-check text-lg"></i>
+                <i class="fa-solid fa-list-check text-base"></i>
                 <span>المهام</span>
             </button>
             <button onclick="switchTab('bac')" id="nav-bac" class="nav-btn flex flex-col items-center text-gray-500 text-xs">
-                <i class="fa-solid fa-graduation-cap text-lg"></i>
+                <i class="fa-solid fa-graduation-cap text-base"></i>
                 <span>البكالوريا</span>
             </button>
-            <button onclick="switchTab('library')" id="nav-library" class="nav-btn flex flex-col items-center text-gray-500 text-xs">
-                <i class="fa-solid fa-book text-lg"></i>
-                <span>المكتبة</span>
+            <button onclick="switchTab('finance')" id="nav-finance" class="nav-btn flex flex-col items-center text-gray-500 text-xs">
+                <i class="fa-solid fa-wallet text-base"></i>
+                <span>المالية</span>
             </button>
-            <button onclick="switchTab('settings')" id="nav-settings" class="nav-btn flex flex-col items-center text-gray-500 text-xs">
-                <i class="fa-solid fa-gear text-lg"></i>
-                <span>الإعدادات</span>
+            <button onclick="switchTab('library')" id="nav-library" class="nav-btn flex flex-col items-center text-gray-500 text-xs">
+                <i class="fa-solid fa-book text-base"></i>
+                <span>المكتبة</span>
             </button>
         </div>
     </nav>
 
-    <!-- جافاسكريبت التطبيق -->
+    <!-- جافاسكريبت التطبيق الشامل -->
     <script>
         const STORAGE_KEY = 'midad_app_data_v1';
 
@@ -322,8 +419,16 @@
             ],
             planner: [],
             books: [],
+            finance: {
+                transactions: [],
+                goals: [],
+                debts: []
+            },
             settings: { bg: 'default' }
         };
+
+        const expenseCategories = ['طعام ومؤونة', 'مواسطات', 'سكن وفواتير', 'دراسة وكتب', 'صحة والعلاج', 'أسرة وهدايا', 'أخرى'];
+        const incomeCategories = ['راتب/دخل شهري', 'عمل إضافي', 'مساعدة/منحة', 'أخرى'];
 
         function loadData() {
             const saved = localStorage.getItem(STORAGE_KEY);
@@ -332,6 +437,7 @@
                     const parsed = JSON.parse(saved);
                     appData = { ...appData, ...parsed };
                     if (!appData.planner) appData.planner = [];
+                    if (!appData.finance) appData.finance = { transactions: [], goals: [], debts: [] };
                 } catch (e) {
                     console.error('خطأ في قراءة البيانات', e);
                 }
@@ -359,6 +465,7 @@
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const todayStr = new Date().toLocaleDateString('ar-MR', options);
             document.getElementById('currentDateDisplay').textContent = todayStr;
+            updateCategories();
         }
 
         // المهام
@@ -473,7 +580,7 @@
             container.innerHTML = html;
         }
 
-        // مواد البكالوريا
+        // البكالوريا والمواد
         function addSubject() {
             const input = document.getElementById('newSubjectInput');
             if (!input.value.trim()) return;
@@ -580,7 +687,7 @@
                             <button onclick="addLesson(${sub.id})" class="bg-blue-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold">إضافة</button>
                         </div>
                         <div class="space-y-1.5 mt-2">
-                            ${lessonsHtml || '<p class="text-xs text-gray-400 text-center py-2">لا توجد دروس مضافة لهذه المادة بعد.</p>'}
+                            ${lessonsHtml || '<p class="text-xs text-gray-400 text-center py-2">لا توجد دروس مضافة لهذا القسم.</p>'}
                         </div>
                     </div>
                 `;
@@ -588,6 +695,182 @@
 
             container.innerHTML = html;
             homeProg.innerHTML = homeProgHtml || '<p class="text-xs text-gray-400">لا توجد مواد مضافة.</p>';
+        }
+
+        // ----------- الجانب المالي -----------
+        function updateCategories() {
+            const type = document.getElementById('transType').value;
+            const catSelect = document.getElementById('transCategory');
+            catSelect.innerHTML = '';
+            const cats = type === 'expense' ? expenseCategories : incomeCategories;
+            cats.forEach(c => {
+                catSelect.innerHTML += `<option value="${c}">${c}</option>`;
+            });
+        }
+
+        function addTransaction(e) {
+            e.preventDefault();
+            const type = document.getElementById('transType').value;
+            const amount = parseFloat(document.getElementById('transAmount').value);
+            const category = document.getElementById('transCategory').value;
+            const account = document.getElementById('transAccount').value;
+            const note = document.getElementById('transNote').value.trim();
+
+            if (!amount || amount <= 0) return;
+
+            appData.finance.transactions.push({
+                id: Date.now(),
+                type, amount, category, account, note,
+                date: new Date().toLocaleDateString('ar-MR')
+            });
+
+            document.getElementById('transForm').reset();
+            updateCategories();
+            saveData();
+            renderFinance();
+        }
+
+        function deleteTransaction(id) {
+            appData.finance.transactions = appData.finance.transactions.filter(t => t.id !== id);
+            saveData();
+            renderFinance();
+        }
+
+        function addFinancialGoal(e) {
+            e.preventDefault();
+            const title = document.getElementById('goalTitle').value.trim();
+            const target = parseFloat(document.getElementById('goalTarget').value);
+            const current = parseFloat(document.getElementById('goalCurrent').value) || 0;
+
+            if (!title || !target) return;
+
+            appData.finance.goals.push({
+                id: Date.now(), title, target, current
+            });
+
+            document.getElementById('goalForm').reset();
+            saveData();
+            renderFinance();
+        }
+
+        function deleteGoal(id) {
+            appData.finance.goals = appData.finance.goals.filter(g => g.id !== id);
+            saveData();
+            renderFinance();
+        }
+
+        function addDebtItem(e) {
+            e.preventDefault();
+            const type = document.getElementById('debtType').value;
+            const person = document.getElementById('debtPerson').value.trim();
+            const amount = parseFloat(document.getElementById('debtAmount').value);
+
+            if (!person || !amount) return;
+
+            appData.finance.debts.push({
+                id: Date.now(), type, person, amount
+            });
+
+            document.getElementById('debtForm').reset();
+            saveData();
+            renderFinance();
+        }
+
+        function deleteDebt(id) {
+            appData.finance.debts = appData.finance.debts.filter(d => d.id !== id);
+            saveData();
+            renderFinance();
+        }
+
+        function renderFinance() {
+            let totalIncome = 0;
+            let totalExpense = 0;
+            appData.finance.transactions.forEach(t => {
+                if (t.type === 'income') totalIncome += t.amount;
+                if (t.type === 'expense') totalExpense += t.amount;
+            });
+
+            const netBalance = totalIncome - totalExpense;
+            document.getElementById('financeIncomeSum').textContent = `${totalIncome} MRU`;
+            document.getElementById('financeExpenseSum').textContent = `${totalExpense} MRU`;
+            document.getElementById('homeTotalBalance').textContent = `${netBalance} MRU`;
+
+            // المعاملات
+            const transList = document.getElementById('transactionsList');
+            if (!appData.finance.transactions.length) {
+                transList.innerHTML = `<p class="text-xs text-gray-400 text-center py-2">لا توجد عمليات مالية مسجلة بعد.</p>`;
+            } else {
+                let html = '';
+                appData.finance.transactions.slice(-6).reverse().forEach(t => {
+                    const isIncome = t.type === 'income';
+                    html += `
+                        <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-gray-100 text-xs">
+                            <div>
+                                <span class="font-bold ${isIncome ? 'text-emerald-600' : 'text-red-600'}">${isIncome ? '+' : '-'}${t.amount} MRU</span>
+                                <span class="text-gray-500 mr-2">(${t.category} • ${t.account})</span>
+                                ${t.note ? `<p class="text-[11px] text-gray-400">${t.note}</p>` : ''}
+                            </div>
+                            <button onclick="deleteTransaction(${t.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+                transList.innerHTML = html;
+            }
+
+            // الأهداف المالية
+            let totalSavings = 0;
+            const goalsList = document.getElementById('financialGoalsList');
+            if (!appData.finance.goals.length) {
+                goalsList.innerHTML = `<p class="text-xs text-gray-400 text-center py-1">لا توجد أهداف ادخار.</p>`;
+            } else {
+                let html = '';
+                appData.finance.goals.forEach(g => {
+                    totalSavings += g.current;
+                    const percent = Math.min(100, Math.round((g.current / g.target) * 100));
+                    html += `
+                        <div class="bg-white p-2.5 rounded-xl border border-gray-100 text-xs space-y-1">
+                            <div class="flex justify-between font-bold">
+                                <span>${g.title}</span>
+                                <span>${g.current} / ${g.target} MRU (${percent}%)</span>
+                            </div>
+                            <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-purple-600 h-full" style="width: ${percent}%"></div>
+                            </div>
+                            <div class="flex justify-end">
+                                <button onclick="deleteGoal(${g.id})" class="text-[10px] text-red-500 hover:underline">حذف</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                goalsList.innerHTML = html;
+            }
+            document.getElementById('financeSavingsSum').textContent = `${totalSavings} MRU`;
+
+            // الديون
+            let netDebts = 0;
+            const debtsList = document.getElementById('debtsList');
+            if (!appData.finance.debts.length) {
+                debtsList.innerHTML = `<p class="text-xs text-gray-400 text-center py-1">لا توجد ديون مسجلة.</p>`;
+            } else {
+                let html = '';
+                appData.finance.debts.forEach(d => {
+                    const isUponMe = d.type === 'upon_me';
+                    if (isUponMe) netDebts -= d.amount;
+                    else netDebts += d.amount;
+
+                    html += `
+                        <div class="flex justify-between items-center bg-white p-2 rounded-xl border border-gray-100 text-xs">
+                            <div>
+                                <span class="font-bold ${isUponMe ? 'text-red-600' : 'text-emerald-600'}">${isUponMe ? 'عليّ' : 'لي'}: ${d.amount} MRU</span>
+                                <span class="text-gray-600 font-medium mr-1">(${d.person})</span>
+                            </div>
+                            <button onclick="deleteDebt(${d.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+                debtsList.innerHTML = html;
+            }
+            document.getElementById('financeDebtsSum').textContent = `${netDebts} MRU`;
         }
 
         // المكتبة
@@ -599,8 +882,7 @@
             const notes = document.getElementById('bookNotes').value;
 
             appData.books.push({
-                id: Date.now(),
-                title, category, link, notes
+                id: Date.now(), title, category, link, notes
             });
 
             document.getElementById('bookForm').reset();
@@ -668,7 +950,7 @@
             }
         }
 
-        // الإحصائيات
+        // الإحصائيات العامة
         function updateStats() {
             const completedTasks = appData.tasks.filter(t => t.completed).length;
             document.getElementById('statTasks').textContent = `${completedTasks} / ${appData.tasks.length}`;
@@ -715,24 +997,4 @@
         }
 
         function resetData() {
-            if (confirm('هل أنت متأكد من رغبتك في إعادة ضبط جميع البيانات؟')) {
-                localStorage.removeItem(STORAGE_KEY);
-                location.reload();
-            }
-        }
-
-        function initApp() {
-            loadData();
-            initHeader();
-            applyBgStyle();
-            renderTasks();
-            renderPlanner();
-            renderSubjects();
-            renderLibrary();
-            updateStats();
-        }
-
-        window.onload = initApp;
-    </script>
-</body>
-</html>
+            if (confirm('هل أنت متأكد من رغبتك في إعادة ضبط جميع البيانات
