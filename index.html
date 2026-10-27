@@ -23,6 +23,18 @@
     <script>
         tailwind.config = {
             darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            emerald: '#059669',
+                            olive: '#556b2f',
+                            royal: '#1e40af',
+                            warm: '#8b4513'
+                        }
+                    }
+                }
+            }
         }
     </script>
     <!-- FontAwesome للأيقونات -->
@@ -37,11 +49,32 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
         .card-box {
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        /* الثيمات المخصصة */
+        body.theme-emerald { --primary-color: #059669; }
+        body.theme-olive { --primary-color: #4d7c0f; }
+        body.theme-royal { --primary-color: #1d4ed8; }
+        body.theme-warm { --primary-color: #9a3412; }
+
+        /* شاشة الترحيب */
+        #splash-screen {
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
+<body class="theme-emerald bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- شاشة الترحيب (Splash Screen) -->
+    <div id="splash-screen" class="fixed inset-0 bg-gray-900 z-50 flex flex-col items-center justify-center text-white">
+        <div class="animate-bounce mb-4 bg-emerald-600 p-5 rounded-3xl shadow-2xl">
+            <i class="fa-solid fa-feather-pointed text-5xl"></i>
+        </div>
+        <h1 class="text-3xl font-black tracking-widest mb-2">مِـدَاد</h1>
+        <p class="text-xs text-gray-400 font-light">نظام إدارة الحياة • البكالوريا • المالية</p>
+        <div class="mt-8 w-16 h-1 bg-emerald-500 rounded-full animate-pulse"></div>
+    </div>
 
     <!-- شريط التنقل العلوي -->
     <header class="bg-white/90 dark:bg-gray-800/90 card-box shadow-sm sticky top-0 z-40 border-b border-gray-200 dark:border-gray-700">
@@ -167,7 +200,7 @@
                     <div id="statLessons" class="text-xl font-black">0</div>
                 </div>
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                    <div class="text-emerald-700 text-xs font-semibold mb-1">الرصيد المالي المتاح</div>
+                    <div class="text-emerald-700 text-xs font-semibold mb-1">الرصيد المتاح</div>
                     <div id="homeTotalBalance" class="text-xl font-black text-emerald-600">0 MRU</div>
                 </div>
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
@@ -235,7 +268,7 @@
                 </div>
                 <div class="flex justify-center gap-2">
                     <button onclick="startTimer()" class="bg-emerald-600 text-white px-5 py-2 rounded-xl text-xs font-bold shadow hover:bg-emerald-700">تشغيل</button>
-                    <button onclick="pauseTimer()" class="bg-amber-500 text-white px-5 py-2 rounded-xl text-xs font-bold shadow hover:bg-amber-600">إيقاف مؤقت</button>
+                    <button onclick="pauseTimer()" class="bg-amber-500 text-white px-5 py-2 rounded-xl text-xs font-bold shadow hover:bg-amber-600">إوقاف مؤقت</button>
                     <button onclick="resetTimer()" class="bg-gray-400 text-white px-4 py-2 rounded-xl text-xs font-bold shadow hover:bg-gray-500">إعادة ضبط</button>
                 </div>
             </div>
@@ -430,6 +463,28 @@
         <section id="tab-settings" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm space-y-4 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-gear text-gray-700 dark:text-gray-300"></i> الإعدادات وخلفيات التطبيق</h2>
+                
+                <!-- قسم اختيار الثيمات اللونية الواجهية -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">اختر النمط المفضل لونيًا للواجهة:</label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <button onclick="setTheme('emerald')" class="p-3 rounded-xl border border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-xs font-bold flex items-center justify-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-emerald-600"></span> الزمردي الراقي
+                        </button>
+                        <button onclick="setTheme('olive')" class="p-3 rounded-xl border border-lime-600 bg-lime-50 dark:bg-lime-950/40 text-lime-800 dark:text-lime-300 text-xs font-bold flex items-center justify-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-lime-700"></span> الأخضر الزيتوني
+                        </button>
+                        <button onclick="setTheme('royal')" class="p-3 rounded-xl border border-blue-600 bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 text-xs font-bold flex items-center justify-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-blue-700"></span> الأزرق الملكي
+                        </button>
+                        <button onclick="setTheme('warm')" class="p-3 rounded-xl border border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-300 text-xs font-bold flex items-center justify-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-amber-800"></span> البني الخشبي
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="border-gray-200 dark:border-gray-700">
+
                 <div>
                     <label class="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">اختر خلفية مريحة للدراسة:</label>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
@@ -480,7 +535,7 @@
                 goals: [],
                 debts: []
             },
-            settings: { bg: 'default', darkMode: false }
+            settings: { bg: 'default', darkMode: false, theme: 'emerald' }
         };
 
         const expenseCategories = ['طعام ومؤونة', 'مواصلات', 'سكن وفواتير', 'دراسة وكتب', 'صحة وعلاج', 'أسرة وهدايا', 'أخرى'];
@@ -495,6 +550,7 @@
                     if (!appData.planner) appData.planner = [];
                     if (!appData.events) appData.events = [];
                     if (!appData.finance) appData.finance = { transactions: [], goals: [], debts: [] };
+                    if (!appData.settings.theme) appData.settings.theme = 'emerald';
                 } catch (e) {
                     console.error('خطأ في قراءة البيانات', e);
                 }
@@ -543,6 +599,17 @@
             appData.settings.darkMode = !appData.settings.darkMode;
             saveData();
             applyTheme();
+        }
+
+        function setTheme(themeName) {
+            appData.settings.theme = themeName;
+            saveData();
+            applyThemeClass();
+        }
+
+        function applyThemeClass() {
+            document.body.classList.remove('theme-emerald', 'theme-olive', 'theme-royal', 'theme-warm');
+            document.body.classList.add(`theme-${appData.settings.theme || 'emerald'}`);
         }
 
         function applyTheme() {
@@ -1205,10 +1272,21 @@
             }
         }
 
+        function hideSplashScreen() {
+            const splash = document.getElementById('splash-screen');
+            if (splash) {
+                setTimeout(() => {
+                    splash.style.opacity = '0';
+                    splash.style.visibility = 'hidden';
+                }, 1200);
+            }
+        }
+
         function initApp() {
             loadData();
             initHeader();
             applyBgStyle();
+            applyThemeClass();
             applyTheme();
             renderTasks();
             renderPlanner();
@@ -1223,10 +1301,12 @@
             
             const sidebar = document.getElementById('sidebar');
             if (sidebar) sidebar.style.transform = 'translateX(100%)';
+            
+            hideSplashScreen();
         }
 
         window.onload = initApp;
     </script>
 </body>
 </html>
-
+ 
