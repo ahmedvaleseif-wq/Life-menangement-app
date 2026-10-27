@@ -88,30 +88,26 @@
                 </div>
             </div>
 
-            <!-- اختصار سريع للمهام اليومية والدروس -->
+            <!-- اختصار سريع -->
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="glass p-5 rounded-2xl shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-bold text-gray-800"><i class="fa-solid fa-list-check text-emerald-600 ml-2"></i>مهام اليوم</h3>
                         <button onclick="switchTab('tasks')" class="text-xs text-emerald-600 hover:underline">عرض الكل</button>
                     </div>
-                    <div id="homeTasksList" class="space-y-2">
-                        <!-- تضاف ديناميكياً -->
-                    </div>
+                    <div id="homeTasksList" class="space-y-2"></div>
                 </div>
                 <div class="glass p-5 rounded-2xl shadow-sm border border-gray-100">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-bold text-gray-800"><i class="fa-solid fa-graduation-cap text-blue-600 ml-2"></i>تقدم البكالوريا</h3>
                         <button onclick="switchTab('bac')" class="text-xs text-blue-600 hover:underline">إدارة المواد</button>
                     </div>
-                    <div id="homeBacProgress" class="space-y-3">
-                        <!-- تضاف ديناميكياً -->
-                    </div>
+                    <div id="homeBacProgress" class="space-y-3"></div>
                 </div>
             </div>
         </section>
 
-        <!-- 2. المهام -->
+        <!-- 2. المهام اليومية -->
         <section id="tab-tasks" class="tab-content hidden space-y-6">
             <div class="glass p-5 rounded-2xl shadow-sm">
                 <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
@@ -137,14 +133,42 @@
                     <h3 class="font-bold text-gray-700">قائمة المهام</h3>
                     <button onclick="clearCompletedTasks()" class="text-xs text-red-500 hover:underline">حذف المكتملة</button>
                 </div>
-                <div id="tasksList" class="space-y-2">
-                    <!-- المهام هنا -->
-                </div>
+                <div id="tasksList" class="space-y-2"></div>
             </div>
         </section>
 
-        <!-- 3. البكالوريا (المواد والدروس) -->
+        <!-- 3. البكالوريا والجدول الأسبوعي -->
         <section id="tab-bac" class="tab-content hidden space-y-6">
+            <!-- جدول المراجعة الأسبوعي الجديد -->
+            <div class="glass p-5 rounded-2xl shadow-sm border-l-4 border-indigo-600">
+                <h2 class="text-lg font-bold mb-2 flex items-center gap-2 text-indigo-900">
+                    <i class="fa-solid fa-calendar-days text-indigo-600"></i> جدول المراجعة الأسبوعي
+                </h2>
+                <p class="text-xs text-gray-500 mb-4">وزع وقتك على أيام الأسبوع لضمان مراجعة جميع مواد الآداب الأصلية.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                    <select id="plannerDay" class="px-3 py-2 rounded-xl border border-gray-300 bg-white/80 text-xs">
+                        <option value="السبت">السبت</option>
+                        <option value="الأحد">الأحد</option>
+                        <option value="الإثنين">الإثنين</option>
+                        <option value="الثلاثاء">الثلاثاء</option>
+                        <option value="الأربعاء">الأربعاء</option>
+                        <option value="الخميس">الخميس</option>
+                        <option value="الجمعة">الجمعة (راحة أو مراجعة خفيفة)</option>
+                    </select>
+                    <input type="text" id="plannerTask" placeholder="البرنامج المقترح (مثلاً: حفظ نص في الأدب + فقه)..." 
+                        class="px-3 py-2 rounded-xl border border-gray-300 bg-white/80 text-xs">
+                </div>
+                <button onclick="addPlannerItem()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-xl text-xs font-bold shadow">
+                    إضافة لجدول الأسبوع
+                </button>
+
+                <div id="plannerContainer" class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
+                    <!-- يضاف الجدول هنا -->
+                </div>
+            </div>
+
+            <!-- مواد الدروس -->
             <div class="glass p-5 rounded-2xl shadow-sm">
                 <h2 class="text-lg font-bold mb-2 flex items-center gap-2">
                     <i class="fa-solid fa-graduation-cap text-blue-600"></i> مواد شعبة الآداب الأصلية
@@ -159,9 +183,7 @@
                     </button>
                 </div>
 
-                <div id="subjectsContainer" class="space-y-4">
-                    <!-- المواد والدروس -->
-                </div>
+                <div id="subjectsContainer" class="space-y-4"></div>
             </div>
         </section>
 
@@ -202,9 +224,7 @@
                     <input type="text" id="bookSearch" oninput="renderLibrary()" placeholder="بحث في الكتب..." 
                         class="px-3 py-1 rounded-lg border border-gray-300 text-xs bg-white/80 w-36">
                 </div>
-                <div id="booksGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <!-- بطاقات الكتب -->
-                </div>
+                <div id="booksGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
             </div>
         </section>
 
@@ -217,7 +237,7 @@
                 <p class="text-sm text-gray-600">هنا تظهر تذكيرات المراجعة والمهام اليومية.</p>
                 <div id="notificationsList" class="space-y-2">
                     <div class="p-3 bg-white/60 rounded-xl border border-gray-200 text-sm text-gray-600">
-                        لا توجد إشعارات جديدة حالياً. استمر في العمل الجيد!
+                        لا توجد إشعارات جديدة حالياً. استمر في العمل الجيد نحو البكالوريا!
                     </div>
                 </div>
             </div>
@@ -288,10 +308,8 @@
 
     <!-- جافاسكريبت التطبيق -->
     <script>
-        // مفتاح التخزين المحلي (محافظ عليه لتوافق البيانات السابقة)
         const STORAGE_KEY = 'midad_app_data_v1';
 
-        // الحالة الافتراضية للبيانات
         let appData = {
             tasks: [],
             subjects: [
@@ -302,29 +320,29 @@
                 { id: 5, name: 'القرآن والحديث', lessons: [] },
                 { id: 6, name: 'اللغة الفرنسية', lessons: [] }
             ],
+            planner: [],
             books: [],
             settings: { bg: 'default' }
         };
 
-        // تحميل البيانات من localStorage
         function loadData() {
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
                 try {
-                    appData = JSON.parse(saved);
+                    const parsed = JSON.parse(saved);
+                    appData = { ...appData, ...parsed };
+                    if (!appData.planner) appData.planner = [];
                 } catch (e) {
-                    console.error('خطأ في قراءة البيانات المحفوظة', e);
+                    console.error('خطأ في قراءة البيانات', e);
                 }
             }
         }
 
-        // حفظ البيانات
         function saveData() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
             updateStats();
         }
 
-        // التنقل بين الأقسام
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('tab-' + tabId).classList.remove('hidden');
@@ -337,7 +355,6 @@
             window.scrollTo(0, 0);
         }
 
-        // تحديث التاريخ والتاريخ الهجري والتحفيز
         function initHeader() {
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const todayStr = new Date().toLocaleDateString('ar-MR', options);
@@ -412,7 +429,51 @@
             homeList.innerHTML = homeHtml || `<p class="text-xs text-gray-400">أحسنت! أكملت جميع المهام.</p>`;
         }
 
-        // مواد البكالوريا والدروس
+        // جدول المراجعة الأسبوعي
+        function addPlannerItem() {
+            const day = document.getElementById('plannerDay').value;
+            const task = document.getElementById('plannerTask').value.trim();
+            if (!task) return;
+
+            appData.planner.push({
+                id: Date.now(),
+                day,
+                task
+            });
+            document.getElementById('plannerTask').value = '';
+            saveData();
+            renderPlanner();
+        }
+
+        function deletePlannerItem(id) {
+            appData.planner = appData.planner.filter(p => p.id !== id);
+            saveData();
+            renderPlanner();
+        }
+
+        function renderPlanner() {
+            const container = document.getElementById('plannerContainer');
+            if (!appData.planner.length) {
+                container.innerHTML = `<p class="text-xs text-gray-400 text-center py-2 col-span-3">لم تتم إضافة عناصر للجدول الأسبوعي بعد.</p>`;
+                return;
+            }
+
+            let html = '';
+            appData.planner.forEach(p => {
+                html += `
+                    <div class="bg-white/90 border border-indigo-100 p-3 rounded-xl text-xs flex justify-between items-start">
+                        <div>
+                            <span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-bold">${p.day}</span>
+                            <p class="mt-1 text-gray-800 font-medium">${p.task}</p>
+                        </div>
+                        <button onclick="deletePlannerItem(${p.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // مواد البكالوريا
         function addSubject() {
             const input = document.getElementById('newSubjectInput');
             if (!input.value.trim()) return;
@@ -434,7 +495,7 @@
                 subject.lessons.push({
                     id: Date.now(),
                     name: input.value.trim(),
-                    status: 'لم يبدأ' // لم يبدأ، قيد الدراسة، تمت مراجعته
+                    status: 'لم يبدأ'
                 });
                 input.value = '';
                 saveData();
@@ -607,21 +668,18 @@
             }
         }
 
-        // الإحصائيات العامة
+        // الإحصائيات
         function updateStats() {
             const completedTasks = appData.tasks.filter(t => t.completed).length;
             document.getElementById('statTasks').textContent = `${completedTasks} / ${appData.tasks.length}`;
             
-            let totalLessonsCount = 0;
             let completedLessonsCount = 0;
             appData.subjects.forEach(s => {
-                totalLessonsCount += s.lessons.length;
                 completedLessonsCount += s.lessons.filter(l => l.status === 'تمت مراجعته').length;
             });
             document.getElementById('statLessons').textContent = completedLessonsCount;
             document.getElementById('statBooks').textContent = appData.books.length;
 
-            // حساب الأيام المتبقية لتقريب موعد البكالوريا (مثلاً يونيو 2027)
             const bacDate = new Date('2027-06-01');
             const diffTime = bacDate - new Date();
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -657,18 +715,18 @@
         }
 
         function resetData() {
-            if (confirm('هل أنت متأكد من رغبتك في إعادة ضبط جميع البيانات؟ ستفقد المهام والدروس الحالية إن لم تقم بعمل نسخة احتياطية.')) {
+            if (confirm('هل أنت متأكد من رغبتك في إعادة ضبط جميع البيانات؟')) {
                 localStorage.removeItem(STORAGE_KEY);
                 location.reload();
             }
         }
 
-        // تشغيل التطبيق عند التحميل
         function initApp() {
             loadData();
             initHeader();
             applyBgStyle();
             renderTasks();
+            renderPlanner();
             renderSubjects();
             renderLibrary();
             updateStats();
