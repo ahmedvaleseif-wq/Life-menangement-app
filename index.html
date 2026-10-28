@@ -119,7 +119,7 @@
                 <i class="fa-solid fa-house w-5 text-emerald-600"></i> الرئيسية
             </button>
             <button onclick="switchTab('worship'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
-                <i class="fa-solid fa-kaaba w-5 text-emerald-600"></i> محراب العبادات والطاعات
+                <i class="fa-solid fa-kaaba w-5 text-emerald-600"></i> محراب العبادات والطاعات 🕌
             </button>
             <button onclick="switchTab('tasks'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-list-check w-5 text-emerald-600"></i> المهام اليومية
@@ -251,50 +251,131 @@
             </div>
         </section>
 
-        <!-- 2. قسم محراب العبادات والطاعات -->
+        <!-- 2. قسم محراب العبادات والطاعات (المطور كلياً) -->
         <section id="tab-worship" class="tab-content hidden space-y-6">
-            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-900 space-y-4">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-base font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
-                        <i class="fa-solid fa-kaaba text-emerald-600"></i> متابعة الصلوات والفرائض اليومية
-                    </h2>
-                    <span id="worshipProgressText" class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-3 py-1 rounded-full">0% منجز</span>
+            <div class="dynamic-header-bg text-white p-6 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="space-y-1 text-center md:text-right">
+                    <h2 class="text-2xl font-black"><i class="fa-solid fa-kaaba ml-2"></i> محراب العبادات والصلات المتقدم</h2>
+                    <p class="text-xs text-emerald-100">أساس التوفيق والبركة والصفاء الذهني لرحلة تفوقك في البكالوريا والحياة.</p>
                 </div>
-                <p class="text-xs text-gray-500 dark:text-gray-400">"أحب الأعمال إلى الله أدومها وإن قل".. حافظ على فرائضك وسننك اليومية لتنال التوفيق البركة:</p>
+                <div class="bg-black/30 backdrop-blur-md px-6 py-4 rounded-2xl text-center border border-white/20">
+                    <span class="text-xs text-emerald-200 block">نسبة الالتزام الإيماني اليومي</span>
+                    <div id="worshipProgressText" class="text-3xl font-black text-amber-400">0%</div>
+                </div>
+            </div>
+
+            <!-- أ. الفرائض اليومية -->
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-950 space-y-4">
+                <h3 class="font-bold text-sm text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
+                    <i class="fa-solid fa-mosque text-emerald-600"></i> أولاً: متابعة الصلوات والفرائض اليومية
+                </h3>
                 <div id="dailyPrayersList" class="grid grid-cols-1 md:grid-cols-5 gap-3"></div>
             </div>
 
-            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-teal-200 dark:border-teal-900 space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-sm text-teal-900 dark:text-teal-300 flex items-center gap-2">
-                        <i class="fa-solid fa-quran text-teal-600"></i> الورد القرآني والختمة المباركة
-                    </h3>
-                    <span id="quranProgressBadge" class="text-xs font-bold bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 px-3 py-1 rounded-full">الصفحة 0 من 604</span>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
-                    <div class="space-y-1">
-                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300">الصفحة الحالية من المصحف:</label>
-                        <input type="number" id="quranPageInput" min="0" max="604" placeholder="أدخل رقم الصفحة..." class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+            <!-- ب. السنن الرواتب والنوافل المستقلة -->
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-indigo-200 dark:border-indigo-950 space-y-4">
+                <h3 class="font-bold text-sm text-indigo-900 dark:text-indigo-300 flex items-center gap-2">
+                    <i class="fa-solid fa-star-and-crescent text-indigo-600"></i> ثانياً: السنن الرواتب والنوافل (الضحى، الوتر، الراتب)
+                </h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400">تقرب إلى الله بالسنن الرواتب وصلاة الضحى وقيام الليل لتنال عظيم الأجر:</p>
+                <div id="sunnahList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+            </div>
+
+            <!-- ج. الورد القرآني وحفظ الأحزاب -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-teal-200 dark:border-teal-950 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-sm text-teal-900 dark:text-teal-300 flex items-center gap-2">
+                            <i class="fa-solid fa-quran text-teal-600"></i> الورد القرآني والختمة المباركة
+                        </h3>
+                        <span id="quranProgressBadge" class="text-xs font-bold bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 px-3 py-1 rounded-full">الصفحة 0</span>
                     </div>
-                    <div class="space-y-1">
-                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300">ملاحظة الورد الحالي (سورة/حزب):</label>
-                        <input type="text" id="quranNoteInput" placeholder="مثلاً: سورة البقرة - الجزء الأول..." class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">الصفحة الحالية من المصحف (من 604):</label>
+                            <input type="number" id="quranPageInput" min="0" max="604" placeholder="رقم الصفحة..." class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">ملاحظة الورد (سورة/حزب):</label>
+                            <input type="text" id="quranNoteInput" placeholder="مثلاً: سورة البقرة - الجزء 2..." class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                        </div>
+                        <button onclick="updateQuranProgress()" class="w-full bg-teal-600 text-white font-bold py-2 rounded-xl text-xs shadow hover:bg-teal-700 transition">تحديث الورد القرآني</button>
                     </div>
-                    <button onclick="updateQuranProgress()" class="bg-teal-600 text-white font-bold py-2 px-4 rounded-xl text-xs shadow hover:bg-teal-700 transition md:mt-5">تحديث الورد القرآني</button>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 h-2.5 rounded-full overflow-hidden">
+                        <div id="quranProgressBar" class="bg-teal-600 h-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
                 </div>
 
-                <div class="w-full bg-gray-200 dark:bg-gray-700 h-2.5 rounded-full overflow-hidden">
-                    <div id="quranProgressBar" class="bg-teal-600 h-full transition-all duration-300" style="width: 0%"></div>
+                <!-- تتبع حفظ الأجزاء -->
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-amber-200 dark:border-amber-950 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-sm text-amber-900 dark:text-amber-300 flex items-center gap-2">
+                            <i class="fa-solid fa-brain text-amber-600"></i> ركن تتبع حفظ الأجزاء والمراجعة
+                        </h3>
+                        <span id="quranHifzBadge" class="text-xs font-bold bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200 px-3 py-1 rounded-full">0 حزب محفوظ</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">الأحزاب أو الأجزاء المحفوظة حالياً (من 60 حزب):</label>
+                            <input type="number" id="hizbInput" min="0" max="60" placeholder="عدد الأحزاب..." class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">ورد المراجعة اليومي للحفظ:</label>
+                            <input type="text" id="hizbNoteInput" placeholder="مثلاً: مراجعة حزب الملك..." class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                        </div>
+                        <button onclick="updateHifzProgress()" class="w-full bg-amber-600 text-white font-bold py-2 rounded-xl text-xs shadow hover:bg-amber-700 transition">تحديث ركن الحفظ</button>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 h-2.5 rounded-full overflow-hidden">
+                        <div id="hifzProgressBar" class="bg-amber-600 h-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-indigo-200 dark:border-indigo-900 space-y-4">
-                <h3 class="font-bold text-sm text-indigo-900 dark:text-indigo-300 flex items-center gap-2">
-                    <i class="fa-solid fa-hands-praying text-indigo-600"></i> واحة النوافل والفضائل الأسبوعية واليومية
-                </h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400">سجل مشاركاتك في النوافل لتقوية صلتك بالله وزيادة منسوب إيمانك:</p>
-                <div id="sunnahList" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
+            <!-- د. عداد التسبيح الرقمي المدمج والأذكار -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- عداد التسبيح الرقمي -->
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-6 rounded-2xl shadow-sm border border-emerald-300 dark:border-emerald-900 text-center space-y-4">
+                    <h3 class="font-bold text-sm text-emerald-900 dark:text-emerald-300 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-circle-notch text-emerald-600 animate-spin"></i> عداد التسبيح والاستغفار الرقمي
+                    </h3>
+                    <div id="tasbihFormulaDisplay" class="text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 py-1.5 px-3 rounded-lg inline-block">
+                        سبحان الله وبحمده، سبحان الله العظيم
+                    </div>
+                    <div class="py-4">
+                        <div id="tasbihCountDisplay" class="text-6xl font-black text-emerald-600 dark:text-emerald-400 tracking-wider">0</div>
+                        <p class="text-xs text-gray-400 mt-1">اضغط الزر أدناه للعد أثناء مراجعتك</p>
+                    </div>
+                    <div class="flex justify-center gap-3">
+                        <button onclick="incrementTasbih()" class="bg-emerald-600 text-white px-8 py-3 rounded-2xl text-base font-black shadow-lg hover:bg-emerald-700 active:scale-95 transition">تسبيح 📿</button>
+                        <button onclick="resetTasbih()" class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-3 rounded-2xl text-xs font-bold hover:bg-gray-300 transition">تصفير</button>
+                    </div>
+                    <div class="flex justify-center gap-2 pt-2">
+                        <button onclick="setTasbihFormula('استغفر الله العظيم واتوب إليه')" class="text-[11px] px-2.5 py-1 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-emerald-100">استغفار</button>
+                        <button onclick="setTasbihFormula('لا حول ولا قوة إلا بالله')" class="text-[11px] px-2.5 py-1 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-emerald-100">الحوقلة</button>
+                        <button onclick="setTasbihFormula('سبحان الله وبحمده')" class="text-[11px] px-2.5 py-1 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-emerald-100">التسبيح</button>
+                    </div>
+                </div>
+
+                <!-- واحة الأدعية والأذكار الحصينة -->
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-6 rounded-2xl shadow-sm border border-indigo-200 dark:border-indigo-950 space-y-4">
+                    <h3 class="font-bold text-sm text-indigo-900 dark:text-indigo-300 flex items-center gap-2">
+                        <i class="fa-solid fa-hands-praying text-indigo-600"></i> واحة الأدعية والأذكار الحصينة للطالب
+                    </h3>
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-xl border border-indigo-100 dark:border-indigo-900 space-y-1">
+                            <span class="font-bold text-indigo-800 dark:text-indigo-300 block">دعاء المذاكرة والفهم:</span>
+                            <p class="text-gray-600 dark:text-gray-300 italic">"اللهم لا سهل إلا ما جعلته سهلاً، وانت تجعل الحزن إذا شئت سهلاً، اللهم افتح علينا فتوح العارفين."</p>
+                        </div>
+                        <div class="p-3 bg-teal-50 dark:bg-teal-950/40 rounded-xl border border-teal-100 dark:border-teal-900 space-y-1">
+                            <span class="font-bold text-teal-800 dark:text-teal-300 block">دعاء التوفيق والنجاح:</span>
+                            <p class="text-gray-600 dark:text-gray-300 italic">"رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي وَاحْلُلْ عُقْدَةً مِّن لِّسَانِي يَفْقَهُوا قَوْلِي."</p>
+                        </div>
+                        <div class="p-3 bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-100 dark:border-amber-900 space-y-1">
+                            <span class="font-bold text-amber-800 dark:text-amber-300 block">دعاء الثبات وتفريغ الهم:</span>
+                            <p class="text-gray-600 dark:text-gray-300 italic">"حسبنا الله ونعم الوكيل، توكلنا على الله العلي العظيم."</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -892,22 +973,26 @@
 
     <!-- جافاسكريبت التطبيق الشامل والمُحدث بالكامل -->
     <script>
-        const STORAGE_KEY = 'midad_app_data_v2';
+        const STORAGE_KEY = 'midad_app_data_v3';
 
         const defaultWorshipItems = [
-            { id: 'fajr', name: 'صلاة الفجر والسنّة', done: false },
-            { id: 'dhuhr', name: 'صلاة الظهر والسنن', done: false },
+            { id: 'fajr', name: 'صلاة الفجر', done: false },
+            { id: 'dhuhr', name: 'صلاة الظهر', done: false },
             { id: 'asr', name: 'صلاة العصر', done: false },
-            { id: 'maghrib', name: 'صلاة المغرب والسنّة', done: false },
-            { id: 'isha', name: 'صلاة العشاء والوتر', done: false },
+            { id: 'maghrib', name: 'صلاة المغرب', done: false },
+            { id: 'isha', name: 'صلاة العشاء', done: false },
             { id: 'azkar_morning', name: 'أذكار الصباح', done: false },
             { id: 'azkar_evening', name: 'أذكار المساء', done: false }
         ];
 
         const defaultSunnahItems = [
-            { id: 'duha', name: 'صلاة الضحى (ركعتان على الأقل)', done: false },
-            { id: 'qiyam', name: 'قيام الليل ( ولو بركعتين)', done: false },
-            { id: 'fasting', name: 'صيام التطوع (الإثنين/الخميس/الأيام البيض)', done: false }
+            { id: 'sunnah_fajr', name: 'سنة الفجر القبلية (ركعتا الفجر)', done: false },
+            { id: 'sunnah_dhuhr_before', name: 'سنن الظهر القبلية (أربع ركعات)', done: false },
+            { id: 'sunnah_dhuhr_after', name: 'سنن الظهر البعدية (ركعتان)', done: false },
+            { id: 'sunnah_maghrib', name: 'سنة المغرب البعدية (ركعتان)', done: false },
+            { id: 'sunnah_isha', name: 'سنة العشاء البعدية (ركعتان)', done: false },
+            { id: 'duha', name: 'صلاة الضحى (ركعتان فأكثر)', done: false },
+            { id: 'witr', name: 'صلاة الوتر قبل النوم', done: false }
         ];
 
         let appData = {
@@ -935,7 +1020,11 @@
                 prayers: JSON.parse(JSON.stringify(defaultWorshipItems)),
                 sunnah: JSON.parse(JSON.stringify(defaultSunnahItems)),
                 quranPage: 0,
-                quranNote: ''
+                quranNote: '',
+                hizbCount: 0,
+                hizbNote: '',
+                tasbihCount: 0,
+                tasbihFormula: 'سبحان الله وبحمده، سبحان الله العظيم'
             },
             finance: {
                 transactions: [],
@@ -966,8 +1055,20 @@
                             prayers: JSON.parse(JSON.stringify(defaultWorshipItems)),
                             sunnah: JSON.parse(JSON.stringify(defaultSunnahItems)),
                             quranPage: 0,
-                            quranNote: ''
+                            quranNote: '',
+                            hizbCount: 0,
+                            hizbNote: '',
+                            tasbihCount: 0,
+                            tasbihFormula: 'سبحان الله وبحمده، سبحان الله العظيم'
                         };
+                    }
+                    if (appData.worship.hizbCount === undefined) {
+                        appData.worship.hizbCount = 0;
+                        appData.worship.hizbNote = '';
+                    }
+                    if (appData.worship.tasbihCount === undefined) {
+                        appData.worship.tasbihCount = 0;
+                        appData.worship.tasbihFormula = 'سبحان الله وبحمده، سبحان الله العظيم';
                     }
                     if (!appData.finance) appData.finance = { transactions: [], goals: [], debts: [], budgetLimit: 5000 };
                     if (!appData.finance.budgetLimit) appData.finance.budgetLimit = 5000;
@@ -1071,6 +1172,7 @@
             updateCategories();
         }
 
+        // --- محراب العبادات والطاعات المطور ---
         function toggleWorshipItem(id) {
             const item = appData.worship.prayers.find(p => p.id === id);
             if (item) {
@@ -1100,10 +1202,45 @@
                 const page = Math.min(604, Math.max(0, parseInt(pInput.value) || 0));
                 appData.worship.quranPage = page;
                 appData.worship.quranNote = nInput ? nInput.value.trim() : '';
-                appData.gamification.points += 5;
+                appData.gamification.points += 10;
                 saveData();
                 renderWorship();
             }
+        }
+
+        function updateHifzProgress() {
+            const hInput = document.getElementById('hizbInput');
+            const nInput = document.getElementById('hizbNoteInput');
+            if (hInput) {
+                const hizb = Math.min(60, Math.max(0, parseInt(hInput.value) || 0));
+                appData.worship.hizbCount = hizb;
+                appData.worship.hizbNote = nInput ? nInput.value.trim() : '';
+                appData.gamification.points += 15;
+                saveData();
+                renderWorship();
+            }
+        }
+
+        function incrementTasbih() {
+            appData.worship.tasbihCount = (appData.worship.tasbihCount || 0) + 1;
+            if (appData.worship.tasbihCount % 33 === 0) {
+                appData.gamification.points += 5;
+            }
+            saveData();
+            renderWorship();
+        }
+
+        function resetTasbih() {
+            appData.worship.tasbihCount = 0;
+            saveData();
+            renderWorship();
+        }
+
+        function setTasbihFormula(formula) {
+            appData.worship.tasbihFormula = formula;
+            appData.worship.tasbihCount = 0;
+            saveData();
+            renderWorship();
         }
 
         function renderWorship() {
@@ -1112,10 +1249,13 @@
             const worshipProgressText = document.getElementById('worshipProgressText');
             if (!prayersList || !sunnahList) return;
 
-            let completedPrayers = 0;
+            // حساب النسبة المئوية الشاملة للفرائض والسنن
+            let totalItems = appData.worship.prayers.length + appData.worship.sunnah.length;
+            let completedCount = 0;
+
             let prayersHtml = '';
             appData.worship.prayers.forEach(p => {
-                if (p.done) completedPrayers++;
+                if (p.done) completedCount++;
                 prayersHtml += `
                     <div onclick="toggleWorshipItem('${p.id}')" class="cursor-pointer p-3 rounded-xl border flex items-center justify-between transition ${p.done ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-300 font-bold' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300'}">
                         <span class="text-xs">${p.name}</span>
@@ -1125,11 +1265,9 @@
             });
             prayersList.innerHTML = prayersHtml;
 
-            const worshipPercent = appData.worship.prayers.length > 0 ? Math.round((completedPrayers / appData.worship.prayers.length) * 100) : 0;
-            if (worshipProgressText) worshipProgressText.textContent = `${worshipPercent}% منجز`;
-
             let sunnahHtml = '';
             appData.worship.sunnah.forEach(s => {
+                if (s.done) completedCount++;
                 sunnahHtml += `
                     <div onclick="toggleSunnahItem('${s.id}')" class="cursor-pointer p-3 rounded-xl border flex items-center justify-between transition ${s.done ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-800 text-indigo-900 dark:text-indigo-300 font-bold' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300'}">
                         <span class="text-xs">${s.name}</span>
@@ -1139,6 +1277,10 @@
             });
             sunnahList.innerHTML = sunnahHtml;
 
+            const worshipPercent = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
+            if (worshipProgressText) worshipProgressText.textContent = `${worshipPercent}%`;
+
+            // القرآن
             const qPage = appData.worship.quranPage || 0;
             const qNote = appData.worship.quranNote || '';
             const qPercent = Math.min(100, Math.round((qPage / 604) * 100));
@@ -1148,10 +1290,33 @@
             const qInput = document.getElementById('quranPageInput');
             const qNoteInput = document.getElementById('quranNoteInput');
 
-            if (qBadge) qBadge.textContent = `الصفحة ${qPage} من 604 (${qPercent}%)`;
+            if (qBadge) qBadge.textContent = `الصفحة ${qPage} (${qPercent}%)`;
             if (qBar) qBar.style.width = `${qPercent}%`;
             if (qInput && document.activeElement !== qInput) qInput.value = qPage;
             if (qNoteInput && document.activeElement !== qNoteInput) qNoteInput.value = qNote;
+
+            // الحفظ
+            const hizb = appData.worship.hizbCount || 0;
+            const hizbNote = appData.worship.hizbNote || '';
+            const hizbPercent = Math.min(100, Math.round((hizb / 60) * 100));
+
+            const hBadge = document.getElementById('quranHifzBadge');
+            const hBar = document.getElementById('hifzProgressBar');
+            const hInput = document.getElementById('hizbInput');
+            const hNoteInput = document.getElementById('hizbNoteInput');
+
+            if (hBadge) hBadge.textContent = `${hizb} حزب (${hizbPercent}%)`;
+            if (hBar) hBar.style.width = `${hizbPercent}%`;
+            if (hInput && document.activeElement !== hInput) hInput.value = hizb;
+            if (hNoteInput && document.activeElement !== hNoteInput) hNoteInput.value = hizbNote;
+
+            // التسبيح
+            const tCount = appData.worship.tasbihCount || 0;
+            const tFormula = appData.worship.tasbihFormula || 'سبحان الله وبحمده';
+            const tDisplay = document.getElementById('tasbihCountDisplay');
+            const fDisplay = document.getElementById('tasbihFormulaDisplay');
+            if (tDisplay) tDisplay.textContent = tCount;
+            if (fDisplay) fDisplay.textContent = tFormula;
         }
 
         function populateGoalDropdownInTime() {
@@ -1399,7 +1564,6 @@
             homeList.innerHTML = homeHtml || `<p class="text-xs text-gray-400">أحسنت! أكملت جميع المهام.</p>`;
         }
 
-        // --- بنك الأفكار السريعة (Brain Dump) ---
         function addBrainDump(e) {
             e.preventDefault();
             const title = document.getElementById('brainDumpTitle').value.trim();
@@ -1444,7 +1608,6 @@
             container.innerHTML = html;
         }
 
-        // --- نظام النقاط والشارات (Gamification) ---
         function renderGamification() {
             const pointsEl = document.getElementById('statPoints');
             const totalPointsEl = document.getElementById('totalPointsDisplay');
@@ -1459,7 +1622,7 @@
             if (badgesContainer) {
                 let badges = [
                     { title: 'طالب مجتهد 📚', desc: 'أضف أول درس أو أنجز مهامك الدراسية', unlocked: appData.tasks.length > 0 || points >= 50 },
-                    { title: 'حافظ العبادات 🕌', desc: 'التزم بصلواتك ووردك اليومي', unlocked: points >= 100 },
+                    { title: 'حافظ العبادات 🕌', desc: 'التزم بصلواتك والسنن ووردك اليومي', unlocked: points >= 100 },
                     { title: 'بطل التركيز ⏳', desc: 'أتمم جلسات تركيز بالـ Pomodoro', unlocked: points >= 150 },
                     { title: 'سيد الإنتاجية 🌟', desc: 'تخطي حاجز 300 نقطة إجمالية', unlocked: points >= 300 }
                 ];
@@ -1480,16 +1643,17 @@
             }
         }
 
-        // --- التقرير الأسبوعي الذكي (Weekly Review) ---
         function renderWeeklyReview() {
             const wScore = document.getElementById('weeklyWorshipScore');
             const tScore = document.getElementById('weeklyTasksScore');
             const fScore = document.getElementById('weeklyFinanceScore');
             const coachAdvice = document.getElementById('weeklyCoachAdvice');
 
+            let totalWorshipItems = appData.worship.prayers.length + appData.worship.sunnah.length;
             let worshipDone = 0;
             appData.worship.prayers.forEach(p => { if (p.done) worshipDone++; });
-            const worshipRatio = appData.worship.prayers.length > 0 ? Math.round((worshipDone / appData.worship.prayers.length) * 100) : 0;
+            appData.worship.sunnah.forEach(s => { if (s.done) worshipDone++; });
+            const worshipRatio = totalWorshipItems > 0 ? Math.round((worshipDone / totalWorshipItems) * 100) : 0;
 
             const completedTasks = appData.tasks.filter(t => t.completed).length;
 
@@ -1504,7 +1668,7 @@
                 if (worshipRatio >= 80 && completedTasks >= 3) {
                     coachAdvice.innerHTML = `🌟 <strong>أداء أسبوعي استثنائي!</strong> أنت تجمع بين الروحانية والإنتاجية الدراسية بامتياز. حافظ على هذا النسق وستنال البكالوريا بتفوق باهر.`;
                 } else if (worshipRatio < 50) {
-                    coachAdvice.innerHTML = `⚡ <strong>توجيه الموجه:</strong> لاحظنا انخفاضاً طفيفاً في التزام الفرائض والعبادات. اجعل الصلاة والقرآن أولويتك الأولى لتنزل البركة والتركيز في وقت دراستك.`;
+                    coachAdvice.innerHTML = `⚡ <strong>توجيه الموجه:</strong> لاحظنا انخفاضاً طفيفاً في التزام الفرائض والسنن. اجعل الصلاة والقرآن أولويتك الأولى لتنزل البركة والتركيز في وقت دراستك.`;
                 } else {
                     coachAdvice.innerHTML = `🚀 <strong>أنت تسير في الطريق الصحيح!</strong> احرص على جدولة ساعات دراستك اليومية بانتظام ولا تترك المهام تتراكم عليك.`;
                 }
@@ -2195,11 +2359,14 @@
             const statLessons = document.getElementById('statLessons');
             if (statLessons) statLessons.textContent = completedLessonsCount;
 
+            let totalWorshipItems = appData.worship.prayers.length + appData.worship.sunnah.length;
             let worshipDoneCount = 0;
             appData.worship.prayers.forEach(p => { if (p.done) worshipDoneCount++; });
+            appData.worship.sunnah.forEach(s => { if (s.done) worshipDoneCount++; });
+            
             const statWorship = document.getElementById('statWorship');
             if (statWorship) {
-                const pct = appData.worship.prayers.length > 0 ? Math.round((worshipDoneCount / appData.worship.prayers.length) * 100) : 0;
+                const pct = totalWorshipItems > 0 ? Math.round((worshipDoneCount / totalWorshipItems) * 100) : 0;
                 statWorship.textContent = `${pct}%`;
             }
 
