@@ -124,6 +124,9 @@
             <button onclick="switchTab('bac'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-graduation-cap w-5 text-blue-600"></i> البكالوريا والتركيز
             </button>
+            <button onclick="switchTab('goals'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-bullseye w-5 text-amber-600"></i> بوصلة الأهداف والطموحات
+            </button>
             <button onclick="switchTab('finance'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-wallet w-5 text-emerald-700"></i> الجانب المالي (MRU)
             </button>
@@ -160,8 +163,8 @@
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <button onclick="quickAction('tasks');" class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 rounded-xl text-xs font-bold text-center hover:bg-emerald-100 transition"><i class="fa-solid fa-list-check block text-lg mb-1"></i>مهمة جديدة</button>
+                <button onclick="quickAction('goals');" class="p-3 bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 rounded-xl text-xs font-bold text-center hover:bg-amber-100 transition"><i class="fa-solid fa-bullseye block text-lg mb-1"></i>هدف جديد</button>
                 <button onclick="quickAction('finance');" class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-xl text-xs font-bold text-center hover:bg-blue-100 transition"><i class="fa-solid fa-wallet block text-lg mb-1"></i>عملية مالية</button>
-                <button onclick="quickAction('library');" class="p-3 bg-purple-50 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 rounded-xl text-xs font-bold text-center hover:bg-purple-100 transition"><i class="fa-solid fa-book block text-lg mb-1"></i>كتاب جديد</button>
                 <button onclick="quickAction('calendar');" class="p-3 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300 rounded-xl text-xs font-bold text-center hover:bg-indigo-100 transition"><i class="fa-solid fa-calendar-days block text-lg mb-1"></i>موعد هام</button>
             </div>
         </div>
@@ -357,7 +360,78 @@
             </div>
         </section>
 
-        <!-- 4. المالية -->
+        <!-- 4. قسم الأهداف والطموحات الجديد كلياً (طويلة وقصيرة المدى وأنواع أخرى) -->
+        <section id="tab-goals" class="tab-content hidden space-y-6">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-amber-200 dark:border-amber-900 space-y-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-bold flex items-center gap-2 text-amber-900 dark:text-amber-300">
+                        <i class="fa-solid fa-bullseye text-amber-600"></i> بوصلة الأهداف والطموحات (قصيرة وطويلة المدى)
+                    </h2>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">حدد أهدافك وزعها زمنياً (قصيرة، متوسطة، أو طويلة المدى) مع متابعة نسبة إنجاز كل هدف بدقة:</p>
+                
+                <form id="lifeGoalForm" onsubmit="addLifeGoal(event)" class="space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                        <input type="text" id="lifeGoalTitle" placeholder="عنوان الهدف (مثلاً: التفوق في البكالوريا بتقدير)..." required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                        
+                        <!-- الميزة 1: التقسيم الزمني المتقدم -->
+                        <select id="lifeGoalTerm" class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700 font-bold">
+                            <option value="قصير المدى">⚡ هدف قصير المدى (أيام/أسابيع)</option>
+                            <option value="متوسط المدى">⏳ هدف متوسط المدى (أشهر)</option>
+                            <option value="طويل المدى">🌟 هدف استراتيجي طويل المدى (سنوات)</option>
+                        </select>
+
+                        <!-- الميزة 3: تصنيف مجالات الحياة للأهداف -->
+                        <select id="lifeGoalCategory" class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700 font-bold">
+                            <option value="دراسي وعلمي">📚 دراسي وعلمي</option>
+                            <option value="روحي وديني">🕌 روحي وديني</option>
+                            <option value="شاتي وتطوير ذات">💡 شخصي وتطوير ذات</option>
+                            <option value="مالي واقتصادي">💰 مالي واقتصادي</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <input type="text" id="lifeGoalAction" placeholder="خطوات التنفيذ الأساسية للوصول للهدف..." class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-600 dark:text-gray-300 font-semibold">نسبة الإنجاز الحالية:</span>
+                            <input type="number" id="lifeGoalProgress" min="0" max="100" value="0" placeholder="0-100" class="w-20 px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-600 text-xs text-center font-bold bg-white dark:bg-gray-700">
+                            <span class="text-xs">%</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-amber-600 text-white font-bold py-2.5 rounded-xl text-xs shadow hover:bg-amber-700 transition">إضافة الهدف إلى بوصلة الطموحات</button>
+                </form>
+            </div>
+
+            <!-- عرض الأهداف المبوبة حسب المدى -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- أهداف قصيرة المدى -->
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-3">
+                    <h3 class="font-bold text-sm text-emerald-700 dark:text-emerald-400 flex items-center gap-2 border-b pb-2 dark:border-gray-700">
+                        <i class="fa-solid fa-bolt"></i> أهداف قصيرة المدى
+                    </h3>
+                    <div id="shortTermGoalsList" class="space-y-2"></div>
+                </div>
+
+                <!-- أهداف متوسطة المدى -->
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-3">
+                    <h3 class="font-bold text-sm text-blue-700 dark:text-blue-400 flex items-center gap-2 border-b pb-2 dark:border-gray-700">
+                        <i class="fa-solid fa-hourglass-half"></i> أهداف متوسطة المدى
+                    </h3>
+                    <div id="midTermGoalsList" class="space-y-2"></div>
+                </div>
+
+                <!-- أهداف طويلة المدى -->
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-3">
+                    <h3 class="font-bold text-sm text-amber-700 dark:text-amber-400 flex items-center gap-2 border-b pb-2 dark:border-gray-700">
+                        <i class="fa-solid fa-star"></i> أهداف طويلة المدى
+                    </h3>
+                    <div id="longTermGoalsList" class="space-y-2"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. المالية -->
         <section id="tab-finance" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-900 space-y-3">
                 <div class="flex justify-between items-center">
@@ -460,10 +534,8 @@
             </div>
         </section>
 
-        <!-- 5. التقويم والمواعيد (المطور بـ 3 ميزات: عداد المواعيد، تصنيف ملون، وملاحظات المواعيد) -->
+        <!-- 6. التقويم والمواعيد -->
         <section id="tab-calendar" class="tab-content hidden space-y-6">
-            
-            <!-- أ) عداد المواعيد والامتحانات القادمة -->
             <div id="calendarAlertCard" class="bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900 p-4 rounded-2xl flex items-center justify-between text-indigo-900 dark:text-indigo-200 text-xs shadow-sm">
                 <div class="flex items-center gap-3">
                     <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow">
@@ -483,8 +555,6 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                         <input type="text" id="eventTitle" placeholder="عنوان الموعد أو الاختبار..." required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
                         <input type="date" id="eventDate" required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
-                        
-                        <!-- ب) تصنيف المواعيد بالألوان والأنواع -->
                         <select id="eventType" class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700 font-bold">
                             <option value="امتحان تجريبي">🔴 امتحان / اختبار تجريبي</option>
                             <option value="حصة دعم">🔵 حصة دعم / دراسة</option>
@@ -492,9 +562,7 @@
                             <option value="موعد شخصي">🟡 موعد شخصي</option>
                         </select>
                     </div>
-                    <!-- ج) تدوين ملاحظات سريعة للموعد -->
                     <input type="text" id="eventNote" placeholder="ملاحظات أو متطلبات خاصة (مثلاً: إحضار كتاب الفقه والملخصات)..." class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
-                    
                     <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-xl text-xs shadow">إضافة موعد للتقويم</button>
                 </form>
 
@@ -502,7 +570,7 @@
             </div>
         </section>
 
-        <!-- 6. المكتبة -->
+        <!-- 7. المكتبة -->
         <section id="tab-library" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-book text-purple-600"></i> المكتبة الدراسية والثقافية</h2>
@@ -547,7 +615,7 @@
             </div>
         </section>
 
-        <!-- 7. الإشعارات -->
+        <!-- 8. الإشعارات -->
         <section id="tab-notifications" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm space-y-4 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-bell text-amber-600"></i> التنبيهات والإشعارات الذكية</h2>
@@ -555,7 +623,7 @@
             </div>
         </section>
 
-        <!-- 8. الإعدادات -->
+        <!-- 9. الإعدادات -->
         <section id="tab-settings" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm space-y-4 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-gear text-gray-700 dark:text-gray-300"></i> الإعدادات وخلفيات التطبيق</h2>
@@ -625,6 +693,7 @@
             planner: [],
             events: [],
             books: [],
+            lifeGoals: [], // قسم الأهداف الجديدة
             finance: {
                 transactions: [],
                 goals: [],
@@ -645,12 +714,7 @@
                     appData = { ...appData, ...parsed };
                     if (!appData.planner) appData.planner = [];
                     if (!appData.events) appData.events = [];
-                    // توافق مع هيكل المواعيد القديم في حال وجد
-                    appData.events = appData.events.map(ev => ({
-                        ...ev,
-                        type: ev.type || 'موعد شخصي',
-                        note: ev.note || ''
-                    }));
+                    if (!appData.lifeGoals) appData.lifeGoals = [];
                     if (!appData.finance) appData.finance = { transactions: [], goals: [], debts: [], budgetLimit: 5000 };
                     if (!appData.finance.budgetLimit) appData.finance.budgetLimit = 5000;
                     if (!appData.settings.theme) appData.settings.theme = 'emerald';
@@ -866,6 +930,95 @@
             homeList.innerHTML = homeHtml || `<p class="text-xs text-gray-400">أحسنت! أكملت جميع المهام.</p>`;
         }
 
+        // دوال قسم الأهداف الجديدة
+        function addLifeGoal(e) {
+            e.preventDefault();
+            const title = document.getElementById('lifeGoalTitle').value.trim();
+            const term = document.getElementById('lifeGoalTerm').value;
+            const category = document.getElementById('lifeGoalCategory').value;
+            const action = document.getElementById('lifeGoalAction').value.trim();
+            const progress = parseInt(document.getElementById('lifeGoalProgress').value) || 0;
+
+            if (!title) return;
+
+            appData.lifeGoals.push({ id: Date.now(), title, term, category, action, progress });
+            document.getElementById('lifeGoalForm').reset();
+            document.getElementById('lifeGoalProgress').value = "0";
+            saveData();
+            renderLifeGoals();
+        }
+
+        function deleteLifeGoal(id) {
+            appData.lifeGoals = appData.lifeGoals.filter(g => g.id !== id);
+            saveData();
+            renderLifeGoals();
+        }
+
+        function updateGoalProgress(id, newProgress) {
+            const goal = appData.lifeGoals.find(g => g.id === id);
+            if (goal) {
+                goal.progress = parseInt(newProgress) || 0;
+                saveData();
+                renderLifeGoals();
+            }
+        }
+
+        function renderLifeGoals() {
+            const shortContainer = document.getElementById('shortTermGoalsList');
+            const midContainer = document.getElementById('midTermGoalsList');
+            const longContainer = document.getElementById('longTermGoalsList');
+            if (!shortContainer || !midContainer || !longContainer) return;
+
+            let shortHtml = '', midHtml = '', longHtml = '';
+
+            const shortGoals = appData.lifeGoals.filter(g => g.term === 'قصير المدى');
+            const midGoals = appData.lifeGoals.filter(g => g.term === 'متوسط المدى');
+            const longGoals = appData.lifeGoals.filter(g => g.term === 'طويل المدى');
+
+            if (!shortGoals.length) shortContainer.innerHTML = `<p class="text-[11px] text-gray-400 text-center py-2">لا توجد أهداف قصيرة.</p>`;
+            if (!midGoals.length) midContainer.innerHTML = `<p class="text-[11px] text-gray-400 text-center py-2">لا توجد أهداف متوسطة.</p>`;
+            if (!longGoals.length) longContainer.innerHTML = `<p class="text-[11px] text-gray-400 text-center py-2">لا توجد أهداف طويلة.</p>`;
+
+            appData.lifeGoals.forEach(g => {
+                let badgeBg = "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300";
+                if (g.category === 'روحي وديني') badgeBg = "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300";
+                if (g.category === 'مالي واقتصادي') badgeBg = "bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300";
+                if (g.category === 'شخصي وتطوير ذات') badgeBg = "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300";
+
+                const cardContent = `
+                    <div class="bg-white dark:bg-gray-700 p-3 rounded-xl border border-gray-100 dark:border-gray-600 text-xs space-y-2 shadow-sm">
+                        <div class="flex justify-between items-center">
+                            <span class="px-2 py-0.5 rounded font-semibold text-[10px] ${badgeBg}">${g.category}</span>
+                            <button onclick="deleteLifeGoal(${g.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <h4 class="font-bold text-gray-900 dark:text-white text-sm">${g.title}</h4>
+                        ${g.action ? `<p class="text-[11px] text-gray-500 dark:text-gray-400 italic bg-gray-50 dark:bg-gray-800/50 p-1.5 rounded"><i class="fa-solid fa-shoe-prints ml-1"></i>${g.action}</p>` : ''}
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[11px] font-bold text-gray-600 dark:text-gray-300">
+                                <span>الإنجاز</span>
+                                <span>${g.progress}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-600 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-amber-600 h-full transition-all duration-300" style="width: ${g.progress}%"></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-[10px] text-gray-400">تحديث الإنجاز:</span>
+                            <input type="range" min="0" max="100" value="${g.progress}" onchange="updateGoalProgress(${g.id}, this.value)" class="w-28 accent-amber-600">
+                        </div>
+                    </div>
+                `;
+
+                if (g.term === 'قصير المدى') shortHtml += cardContent;
+                if (g.term === 'متوسط المدى') midHtml += cardContent;
+                if (g.term === 'طويل المدى') longHtml += cardContent;
+            });
+
+            if (shortGoals.length) shortContainer.innerHTML = shortHtml;
+            if (midGoals.length) midContainer.innerHTML = midHtml;
+            if (longGoals.length) longContainer.innerHTML = longHtml;
+        }
+
         function addPlannerItem() {
             const day = document.getElementById('plannerDay').value;
             const task = document.getElementById('plannerTask').value.trim();
@@ -935,12 +1088,10 @@
                 return;
             }
 
-            // ترتيب المواعيد حسب التاريخ الأقرب
             const sortedEvents = [...appData.events].sort((a,b) => new Date(a.date) - new Date(b.date));
             const today = new Date();
             today.setHours(0,0,0,0);
 
-            // تحديد الموعد القادم
             const upcoming = sortedEvents.find(ev => new Date(ev.date) >= today);
             if (upcoming && nextEventText) {
                 const diffDays = Math.ceil((new Date(upcoming.date) - today) / (1000 * 60 * 60 * 24));
@@ -1506,6 +1657,7 @@
             renderSubjects();
             renderFinance();
             renderLibrary();
+            renderLifeGoals(); // تفعيل عرض الأهداف عند التشغيل
             renderNotifications();
             updateStats();
             updateTimerDisplay();
@@ -1521,4 +1673,4 @@
     </script>
 </body>
 </html>
- 
+  
