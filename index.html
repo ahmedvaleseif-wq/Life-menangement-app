@@ -58,7 +58,7 @@
 </head>
 <body class="theme-emerald bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
 
-    <!-- شاشة الترحيب -->
+    <!-- شاشة الترحيب (Splash Screen) -->
     <div id="splash-screen" class="fixed inset-0 bg-gray-900 z-50 flex flex-col items-center justify-center text-white">
         <div class="animate-bounce mb-4 bg-emerald-600 p-5 rounded-3xl shadow-2xl">
             <i class="fa-solid fa-feather-pointed text-5xl"></i>
@@ -528,10 +528,9 @@
         </section>
 
     </main>
-
-    <!-- جافاسكريبت التطبيق الشامل والمحدث -->
+    <!-- جافاسكريبت التطبيق الشامل -->
     <script>
-        const STORAGE_KEY = 'midad_app_data_v6';
+        const STORAGE_KEY = 'midad_app_data_v8';
 
         const defaultWorshipItems = [
             { id: 'fajr', name: 'صلاة الفجر', done: false },
@@ -598,6 +597,14 @@
 
         function checkDailyWorshipReset() {
             const todayStr = new Date().toISOString().slice(0, 10);
+            if (!appData.worship) {
+                appData.worship = {
+                    lastResetDate: todayStr,
+                    prayers: JSON.parse(JSON.stringify(defaultWorshipItems)),
+                    sunnah: JSON.parse(JSON.stringify(defaultSunnahItems)),
+                    quranPage: 0, quranNote: '', hizbCount: 0, hizbNote: '', tasbihCount: 0, tasbihFormula: 'سبحان الله وبحمده'
+                };
+            }
             if (appData.worship.lastResetDate !== todayStr) {
                 appData.worship.prayers.forEach(p => p.done = false);
                 appData.worship.sunnah.forEach(s => s.done = false);
@@ -755,6 +762,7 @@
             const prayersList = document.getElementById('dailyPrayersList');
             const sunnahList = document.getElementById('sunnahList');
             const worshipProgressText = document.getElementById('worshipProgressText');
+            const statWorship = document.getElementById('statWorship');
             if (!prayersList || !sunnahList) return;
 
             let totalItems = appData.worship.prayers.length + appData.worship.sunnah.length;
@@ -786,6 +794,7 @@
 
             const worshipPercent = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
             if (worshipProgressText) worshipProgressText.textContent = `${worshipPercent}%`;
+            if (statWorship) statWorship.textContent = `${worshipPercent}%`;
 
             const qPage = appData.worship.quranPage || 0;
             const qPercent = Math.min(100, Math.round((qPage / 604) * 100));
