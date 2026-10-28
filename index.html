@@ -142,6 +142,15 @@
             <button onclick="switchTab('library'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-book w-5 text-purple-600"></i> المكتبة والمراجع
             </button>
+            <button onclick="switchTab('gamification'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-trophy w-5 text-yellow-500"></i> إنجازاتي ونقاط التحفيز ✨
+            </button>
+            <button onclick="switchTab('weeklyReview'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-chart-pie w-5 text-teal-600"></i> التقرير الأسبوعي الشامل 📊
+            </button>
+            <button onclick="switchTab('braindump'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-lightbulb w-5 text-amber-500"></i> بنك الأفكار السريعة 💡
+            </button>
             <button onclick="switchTab('notifications'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-bell w-5 text-amber-600"></i> الإشعارات
             </button>
@@ -170,8 +179,8 @@
             <div class="grid grid-cols-2 gap-3">
                 <button onclick="quickAction('worship');" class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 rounded-xl text-xs font-bold text-center hover:bg-emerald-100 transition"><i class="fa-solid fa-kaaba block text-lg mb-1"></i>جدول العبادات</button>
                 <button onclick="quickAction('tasks');" class="p-3 bg-teal-50 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300 rounded-xl text-xs font-bold text-center hover:bg-teal-100 transition"><i class="fa-solid fa-list-check block text-lg mb-1"></i>مهمة جديدة</button>
+                <button onclick="quickAction('braindump');" class="p-3 bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 rounded-xl text-xs font-bold text-center hover:bg-amber-100 transition"><i class="fa-solid fa-lightbulb block text-lg mb-1"></i>فكرة سريعة</button>
                 <button onclick="quickAction('time');" class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-xl text-xs font-bold text-center hover:bg-blue-100 transition"><i class="fa-solid fa-clock block text-lg mb-1"></i>جدول زمني</button>
-                <button onclick="quickAction('goals');" class="p-3 bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 rounded-xl text-xs font-bold text-center hover:bg-amber-100 transition"><i class="fa-solid fa-bullseye block text-lg mb-1"></i>هدف جديد</button>
             </div>
         </div>
     </div>
@@ -204,15 +213,15 @@
                 </div>
             </div>
 
-            <!-- بطاقات الإحصائيات الشاملة (تم إعادة إضافة الرصيد وأيام البكالوريا) -->
+            <!-- بطاقات الإحصائيات الشاملة -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="text-emerald-600 text-xs font-semibold mb-1">إنجاز طاعات اليوم</div>
                     <div id="statWorship" class="text-xl font-black">0%</div>
                 </div>
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                    <div class="text-emerald-600 text-xs font-semibold mb-1">مهام اليوم المنجزة</div>
-                    <div id="statTasks" class="text-xl font-black">0 / 0</div>
+                    <div class="text-emerald-600 text-xs font-semibold mb-1">نقاط التحفيز 🏆</div>
+                    <div id="statPoints" class="text-xl font-black text-amber-500">0 نقطة</div>
                 </div>
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="text-blue-600 text-xs font-semibold mb-1">صافي الرصيد المالي</div>
@@ -730,7 +739,97 @@
             </div>
         </section>
 
-        <!-- 10. الإشعارات -->
+        <!-- 10. إنجازاتي ونقاط التحفيز (Gamification) -->
+        <section id="tab-gamification" class="tab-content hidden space-y-6">
+            <div class="dynamic-header-bg text-white p-6 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="space-y-1 text-center md:text-right">
+                    <h2 class="text-2xl font-black">غرفة التتويج ونقاط المجد 🏆</h2>
+                    <p class="text-xs text-emerald-100">كل إنجاز تصنعه في العبادات أو الدراسة يكسبك نقاطاً ترفع من مستواك وترسخ عزيمتك.</p>
+                </div>
+                <div class="bg-black/30 backdrop-blur-md px-6 py-4 rounded-2xl text-center border border-white/20">
+                    <span class="text-xs text-emerald-200 block">إجمالي النقاط المكتسبة</span>
+                    <div id="totalPointsDisplay" class="text-3xl font-black text-amber-400">0 نقطة</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-4">
+                    <h3 class="font-bold text-sm text-gray-800 dark:text-gray-200 flex items-center gap-2">
+                        <i class="fa-solid fa-medal text-amber-500"></i> الشارات والأوسمة المحققة
+                    </h3>
+                    <div id="badgesContainer" class="grid grid-cols-1 gap-3"></div>
+                </div>
+
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-4">
+                    <h3 class="font-bold text-sm text-gray-800 dark:text-gray-200 flex items-center gap-2">
+                        <i class="fa-solid fa-fire text-red-500"></i> أيام المداومة المستمرة (Streak)
+                    </h3>
+                    <div class="p-4 bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-200 dark:border-amber-900 text-center space-y-2">
+                        <span class="text-xs text-amber-800 dark:text-amber-300 font-bold block">سلسلة الأيام المنتظمة دون انقطاع:</span>
+                        <div id="streakDaysDisplay" class="text-4xl font-black text-amber-600 dark:text-amber-400">1 يوم متواصل 🔥</div>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400">افتح التطبيق يومياً وأنجز مهامك للحفاظ على السلسلة متوهجة!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. التقرير الأسبوعي الشامل (Weekly Review) -->
+        <section id="tab-weeklyReview" class="tab-content hidden space-y-6">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-6 rounded-3xl shadow-sm border border-teal-200 dark:border-teal-900 space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 border-b pb-4 dark:border-gray-700">
+                    <div>
+                        <h2 class="text-xl font-bold text-teal-900 dark:text-teal-300 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-pie text-teal-600"></i> التقرير الأسبوعي الشامل والموجه الشخصي
+                        </h2>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">ملخص حيوي لأدائك العام خلال هذا الأسبوع لتعرف نقاط القوة وتصحح المسار:</p>
+                    </div>
+                    <span class="bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 px-3 py-1 rounded-full text-xs font-bold">تقرير دوري ذكي</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-4 rounded-2xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-900 space-y-1">
+                        <span class="text-xs font-bold text-teal-700 dark:text-teal-300">🕌 التزام العبادات</span>
+                        <div id="weeklyWorshipScore" class="text-xl font-black text-teal-900 dark:text-teal-100">0%</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 space-y-1">
+                        <span class="text-xs font-bold text-blue-700 dark:text-blue-300">📚 مهام ودراسة</span>
+                        <div id="weeklyTasksScore" class="text-xl font-black text-blue-900 dark:text-blue-100">0 منجز</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 space-y-1">
+                        <span class="text-xs font-bold text-purple-700 dark:text-purple-300">💰 المحفظة المالية</span>
+                        <div id="weeklyFinanceScore" class="text-xl font-black text-purple-900 dark:text-purple-100">0 MRU</div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-2xl border border-gray-200 dark:border-gray-600 space-y-2">
+                    <h4 class="font-bold text-sm text-gray-800 dark:text-gray-200"><i class="fa-solid fa-wand-magic-sparkles text-amber-500 ml-1"></i> توجيه وملاحظة الموجه الذكي:</h4>
+                    <p id="weeklyCoachAdvice" class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">جاري تحليل بياناتك الأسبوعية لإعطائك التوجيه الأنسب...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 12. بنك الأفكار السريعة (Brain Dump) -->
+        <section id="tab-braindump" class="tab-content hidden space-y-6">
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-4">
+                <h2 class="text-lg font-bold flex items-center gap-2 text-amber-800 dark:text-amber-300">
+                    <i class="fa-solid fa-lightbulb text-amber-500"></i> بنك الأفكار السريعة (Brain Dump)
+                </h2>
+                <p class="text-xs text-gray-500 dark:text-gray-400">لا تدع الأفكار العابرة أو خواطر الدراسة تتشتت. سجلها هنا فوراً لتعود إليها لاحقاً:</p>
+                
+                <form id="brainDumpForm" onsubmit="addBrainDump(event)" class="space-y-3">
+                    <input type="text" id="brainDumpTitle" placeholder="عنوان الفكرة أو الخاطرة العابرة..." required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm">
+                    <textarea id="brainDumpContent" placeholder="تفاصيل الفكرة..." rows="3" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"></textarea>
+                    <button type="submit" class="w-full bg-amber-600 text-white font-bold py-2.5 rounded-xl shadow hover:bg-amber-700 transition">حفظ في بنك الأفكار</button>
+                </form>
+            </div>
+
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-3">
+                <h3 class="font-bold text-sm text-gray-800 dark:text-gray-200">الأفكار والخواطر المدونة</h3>
+                <div id="brainDumpContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+            </div>
+        </section>
+
+        <!-- 13. الإشعارات -->
         <section id="tab-notifications" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm space-y-4 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-bell text-amber-600"></i> التنبيهات والإشعارات الذكية</h2>
@@ -738,7 +837,7 @@
             </div>
         </section>
 
-        <!-- 11. الإعدادات -->
+        <!-- 14. الإعدادات -->
         <section id="tab-settings" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm space-y-4 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-gear text-gray-700 dark:text-gray-300"></i> الإعدادات وخلفيات التطبيق</h2>
@@ -826,6 +925,12 @@
             books: [],
             lifeGoals: [],
             timeBlocks: [],
+            brainDump: [],
+            gamification: {
+                points: 0,
+                streakDays: 1,
+                lastActiveDate: new Date().toISOString().slice(0,10)
+            },
             worship: {
                 prayers: JSON.parse(JSON.stringify(defaultWorshipItems)),
                 sunnah: JSON.parse(JSON.stringify(defaultSunnahItems)),
@@ -854,6 +959,8 @@
                     if (!appData.events) appData.events = [];
                     if (!appData.lifeGoals) appData.lifeGoals = [];
                     if (!appData.timeBlocks) appData.timeBlocks = [];
+                    if (!appData.brainDump) appData.brainDump = [];
+                    if (!appData.gamification) appData.gamification = { points: 0, streakDays: 1, lastActiveDate: new Date().toISOString().slice(0,10) };
                     if (!appData.worship || !appData.worship.prayers) {
                         appData.worship = {
                             prayers: JSON.parse(JSON.stringify(defaultWorshipItems)),
@@ -879,6 +986,8 @@
             }
             updateStats();
             renderNotifications();
+            renderGamification();
+            renderWeeklyReview();
         }
 
         function toggleSidebar() {
@@ -966,6 +1075,8 @@
             const item = appData.worship.prayers.find(p => p.id === id);
             if (item) {
                 item.done = !item.done;
+                if (item.done) appData.gamification.points += 10;
+                else appData.gamification.points = Math.max(0, appData.gamification.points - 10);
                 saveData();
                 renderWorship();
             }
@@ -975,6 +1086,8 @@
             const item = appData.worship.sunnah.find(s => s.id === id);
             if (item) {
                 item.done = !item.done;
+                if (item.done) appData.gamification.points += 15;
+                else appData.gamification.points = Math.max(0, appData.gamification.points - 15);
                 saveData();
                 renderWorship();
             }
@@ -987,6 +1100,7 @@
                 const page = Math.min(604, Math.max(0, parseInt(pInput.value) || 0));
                 appData.worship.quranPage = page;
                 appData.worship.quranNote = nInput ? nInput.value.trim() : '';
+                appData.gamification.points += 5;
                 saveData();
                 renderWorship();
             }
@@ -1060,6 +1174,7 @@
             if (!slot || !objective) return;
 
             appData.timeBlocks.push({ id: Date.now(), slot, category, duration, objective, linkedGoal });
+            appData.gamification.points += 20;
             document.getElementById('timeBlockForm').reset();
             saveData();
             renderTimeBlocks();
@@ -1180,7 +1295,9 @@
                 } else {
                     clearInterval(timerInterval);
                     isTimerRunning = false;
-                    alert('انتهت جلسة التركيز! خذ قسطاً من الراحة.');
+                    appData.gamification.points += 30;
+                    saveData();
+                    alert('انتهت جلسة التركيز بنجاح! كسبت 30 نقطة.');
                 }
             }, 1000);
         }
@@ -1222,6 +1339,7 @@
             if (!input.value.trim()) return;
 
             appData.tasks.push({ id: Date.now(), text: input.value.trim(), priority, completed: false });
+            appData.gamification.points += 5;
             input.value = '';
             saveData();
             renderTasks();
@@ -1231,6 +1349,8 @@
             const task = appData.tasks.find(t => t.id === id);
             if (task) {
                 task.completed = !task.completed;
+                if (task.completed) appData.gamification.points += 15;
+                else appData.gamification.points = Math.max(0, appData.gamification.points - 15);
                 saveData();
                 renderTasks();
             }
@@ -1279,6 +1399,118 @@
             homeList.innerHTML = homeHtml || `<p class="text-xs text-gray-400">أحسنت! أكملت جميع المهام.</p>`;
         }
 
+        // --- بنك الأفكار السريعة (Brain Dump) ---
+        function addBrainDump(e) {
+            e.preventDefault();
+            const title = document.getElementById('brainDumpTitle').value.trim();
+            const content = document.getElementById('brainDumpContent').value.trim();
+            if (!title) return;
+
+            appData.brainDump.push({ id: Date.now(), title, content, date: new Date().toLocaleDateString('ar-MR') });
+            document.getElementById('brainDumpForm').reset();
+            appData.gamification.points += 10;
+            saveData();
+            renderBrainDump();
+        }
+
+        function deleteBrainDump(id) {
+            appData.brainDump = appData.brainDump.filter(b => b.id !== id);
+            saveData();
+            renderBrainDump();
+        }
+
+        function renderBrainDump() {
+            const container = document.getElementById('brainDumpContainer');
+            if (!container) return;
+
+            if (!appData.brainDump.length) {
+                container.innerHTML = `<p class="text-xs text-gray-400 text-center py-4 col-span-2">لا توجد أفكار مدونة حتى الآن.</p>`;
+                return;
+            }
+
+            let html = '';
+            appData.brainDump.slice().reverse().forEach(b => {
+                html += `
+                    <div class="bg-white dark:bg-gray-700 p-4 rounded-xl border border-amber-100 dark:border-amber-900/50 text-xs space-y-2 shadow-sm">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-amber-700 dark:text-amber-400 text-sm"><i class="fa-solid fa-lightbulb ml-1"></i>${b.title}</span>
+                            <button onclick="deleteBrainDump(${b.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        ${b.content ? `<p class="text-gray-600 dark:text-gray-300 leading-relaxed">${b.content}</p>` : ''}
+                        <div class="text-[10px] text-gray-400 text-left">${b.date}</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // --- نظام النقاط والشارات (Gamification) ---
+        function renderGamification() {
+            const pointsEl = document.getElementById('statPoints');
+            const totalPointsEl = document.getElementById('totalPointsDisplay');
+            const streakEl = document.getElementById('streakDaysDisplay');
+            const badgesContainer = document.getElementById('badgesContainer');
+
+            const points = appData.gamification.points || 0;
+            if (pointsEl) pointsEl.textContent = `${points} نقطة`;
+            if (totalPointsEl) totalPointsEl.textContent = `${points} نقطة`;
+            if (streakEl) streakEl.textContent = `${appData.gamification.streakDays || 1} يوم متواصل 🔥`;
+
+            if (badgesContainer) {
+                let badges = [
+                    { title: 'طالب مجتهد 📚', desc: 'أضف أول درس أو أنجز مهامك الدراسية', unlocked: appData.tasks.length > 0 || points >= 50 },
+                    { title: 'حافظ العبادات 🕌', desc: 'التزم بصلواتك ووردك اليومي', unlocked: points >= 100 },
+                    { title: 'بطل التركيز ⏳', desc: 'أتمم جلسات تركيز بالـ Pomodoro', unlocked: points >= 150 },
+                    { title: 'سيد الإنتاجية 🌟', desc: 'تخطي حاجز 300 نقطة إجمالية', unlocked: points >= 300 }
+                ];
+
+                let html = '';
+                badges.forEach(b => {
+                    html += `
+                        <div class="p-3 rounded-xl border flex items-center gap-3 ${b.unlocked ? 'bg-amber-50 dark:bg-amber-950/30 border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 font-bold' : 'bg-gray-50 dark:bg-gray-700/40 border-gray-200 dark:border-gray-600 opacity-50 text-gray-500'}">
+                            <div class="text-2xl">${b.unlocked ? '🏆' : '🔒'}</div>
+                            <div>
+                                <h4 class="text-xs font-bold">${b.title}</h4>
+                                <p class="text-[10px] font-normal">${b.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                badgesContainer.innerHTML = html;
+            }
+        }
+
+        // --- التقرير الأسبوعي الذكي (Weekly Review) ---
+        function renderWeeklyReview() {
+            const wScore = document.getElementById('weeklyWorshipScore');
+            const tScore = document.getElementById('weeklyTasksScore');
+            const fScore = document.getElementById('weeklyFinanceScore');
+            const coachAdvice = document.getElementById('weeklyCoachAdvice');
+
+            let worshipDone = 0;
+            appData.worship.prayers.forEach(p => { if (p.done) worshipDone++; });
+            const worshipRatio = appData.worship.prayers.length > 0 ? Math.round((worshipDone / appData.worship.prayers.length) * 100) : 0;
+
+            const completedTasks = appData.tasks.filter(t => t.completed).length;
+
+            let totalExp = 0;
+            appData.finance.transactions.forEach(t => { if (t.type === 'expense') totalExp += t.amount; });
+
+            if (wScore) wScore.textContent = `${worshipRatio}%`;
+            if (tScore) tScore.textContent = `${completedTasks} مهام منجزة`;
+            if (fScore) fScore.textContent = `${totalExp} MRU مصروفات`;
+
+            if (coachAdvice) {
+                if (worshipRatio >= 80 && completedTasks >= 3) {
+                    coachAdvice.innerHTML = `🌟 <strong>أداء أسبوعي استثنائي!</strong> أنت تجمع بين الروحانية والإنتاجية الدراسية بامتياز. حافظ على هذا النسق وستنال البكالوريا بتفوق باهر.`;
+                } else if (worshipRatio < 50) {
+                    coachAdvice.innerHTML = `⚡ <strong>توجيه الموجه:</strong> لاحظنا انخفاضاً طفيفاً في التزام الفرائض والعبادات. اجعل الصلاة والقرآن أولويتك الأولى لتنزل البركة والتركيز في وقت دراستك.`;
+                } else {
+                    coachAdvice.innerHTML = `🚀 <strong>أنت تسير في الطريق الصحيح!</strong> احرص على جدولة ساعات دراستك اليومية بانتظام ولا تترك المهام تتراكم عليك.`;
+                }
+            }
+        }
+
         function addLifeGoal(e) {
             e.preventDefault();
             const title = document.getElementById('lifeGoalTitle').value.trim();
@@ -1291,6 +1523,7 @@
             if (!title) return;
 
             appData.lifeGoals.push({ id: Date.now(), title, term, category, action, why, progress });
+            appData.gamification.points += 15;
             document.getElementById('lifeGoalForm').reset();
             document.getElementById('lifeGoalProgress').value = "0";
             saveData();
@@ -1509,8 +1742,14 @@
                 const lesson = subject.lessons.find(l => l.id === lessonId);
                 if (lesson) {
                     if (lesson.status === 'لم يبدأ') lesson.status = 'قيد الدراسة';
-                    else if (lesson.status === 'قيد الدراسة') lesson.status = 'تمت مراجعته';
-                    else lesson.status = 'لم يبدأ';
+                    else if (lesson.status === 'قيد الدراسة') {
+                        lesson.status = 'تمت مراجعته';
+                        appData.gamification.points += 25;
+                    }
+                    else {
+                        lesson.status = 'لم يبدأ';
+                        appData.gamification.points = Math.max(0, appData.gamification.points - 25);
+                    }
                     saveData();
                     renderSubjects();
                 }
@@ -1970,7 +2209,6 @@
             const statDays = document.getElementById('statDays');
             if (statDays) statDays.textContent = diffDays > 0 ? diffDays : 'قريب جداً';
 
-            // حساب وإظهار صافي الرصيد المالي في لوحة التحكم
             let totalIncome = 0, totalExpense = 0;
             appData.finance.transactions.forEach(t => {
                 if (t.type === 'income') totalIncome += t.amount;
@@ -2041,6 +2279,9 @@
                 renderLibrary();
                 renderLifeGoals();
                 renderTimeBlocks();
+                renderBrainDump();
+                renderGamification();
+                renderWeeklyReview();
                 renderNotifications();
                 updateStats();
                 updateTimerDisplay();
