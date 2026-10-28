@@ -170,7 +170,7 @@
     <!-- المحتوى الرئيسي -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
         
-        <!-- 1. الواجهة الترحيبية الفاخرة الجديدة -->
+        <!-- 1. لوحة التحكم -->
         <section id="tab-home" class="tab-content space-y-6">
             <div class="dynamic-header-bg text-white p-7 rounded-3xl shadow-2xl relative overflow-hidden border border-white/20">
                 <div class="absolute -left-10 -bottom-10 opacity-10 text-[140px] pointer-events-none">
@@ -259,10 +259,8 @@
             </div>
         </section>
 
-        <!-- 3. البكالوريا والتركيز (متضمنة الـ 3 ميزات الجديدة: عداد تفاعلي، ملاحظات الدروس، وحاسبة المعاملات) -->
+        <!-- 3. البكالوريا والتركيز -->
         <section id="tab-bac" class="tab-content hidden space-y-6">
-            
-            <!-- أ) مؤقت التركيز المطور والقابل للزيادة -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border-r-4 border-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/20 border border-gray-200 dark:border-gray-700">
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-base font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
@@ -290,7 +288,6 @@
                 </div>
             </div>
 
-            <!-- ب) حاسبة معاملات وتقدير معدل البكالوريا (شعبة الآداب الأصلية) -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border-r-4 border-blue-600 border border-gray-200 dark:border-gray-700 space-y-4">
                 <h2 class="text-lg font-bold flex items-center gap-2 text-blue-900 dark:text-blue-300">
                     <i class="fa-solid fa-calculator text-blue-600"></i> حاسبة وتقدير معدل البكالوريا (شعبة الآداب الأصلية)
@@ -348,7 +345,6 @@
                 <div id="plannerContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4"></div>
             </div>
 
-            <!-- ج) مواد البكالوريا مع ميزة إضافة الملاحظات وروابط الدروس -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold mb-2 flex items-center gap-2">
                     <i class="fa-solid fa-graduation-cap text-blue-600"></i> مواد شعبة الآداب الأصلية (مع الملاحظات والروابط)
@@ -361,8 +357,27 @@
             </div>
         </section>
 
-        <!-- 4. المالية -->
+        <!-- 4. المالية (المطورة بـ 3 ميزات: السقف المالي، التقرير التحليلي، وحاسبة الادخار) -->
         <section id="tab-finance" class="tab-content hidden space-y-6">
+            
+            <!-- أ) نظام السقف المالي الشهري والتنبيه -->
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-900 space-y-3">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-emerald-600"></i> مراقبة السقف المالي الشهري
+                    </h3>
+                    <button onclick="setMonthlyBudgetLimit()" class="text-xs bg-emerald-600 text-white px-3 py-1.5 rounded-lg font-bold">تحديد السقف</button>
+                </div>
+                <div class="flex justify-between text-xs font-semibold text-gray-600 dark:text-gray-300">
+                    <span>المصروف: <strong id="budgetSpentText">0 MRU</strong></span>
+                    <span>السقف المخصص: <strong id="budgetLimitText">5000 MRU</strong></span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-gray-700 h-2.5 rounded-full overflow-hidden">
+                    <div id="budgetProgressBar" class="bg-emerald-600 h-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <p id="budgetAlertMessage" class="text-[11px] text-gray-500 dark:text-gray-400"></p>
+            </div>
+
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-900">
                     <span class="text-xs text-emerald-600 font-bold">إجمالي الدخل</span>
@@ -382,8 +397,9 @@
                 </div>
             </div>
 
+            <!-- ب) التقرير البياني التحليلي للمصروفات -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
-                <h3 class="font-bold text-sm mb-3 text-gray-800 dark:text-gray-200"><i class="fa-solid fa-chart-bar text-emerald-600 ml-1"></i>تقرير توزيع المصروفات حسب المجالات</h3>
+                <h3 class="font-bold text-sm mb-3 text-gray-800 dark:text-gray-200"><i class="fa-solid fa-chart-pie text-emerald-600 ml-1"></i>التقرير التحليلي لتوزيع المصروفات والمجالات الأكثر استهلاكاً</h3>
                 <div id="categoryReportContainer" class="space-y-2"></div>
             </div>
 
@@ -416,15 +432,16 @@
             </div>
 
             <div class="grid md:grid-cols-2 gap-6">
+                <!-- ج) حاسبة الادخار التلقائي والوصول للأهداف -->
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
-                    <h3 class="font-bold text-sm mb-3 text-purple-800 dark:text-purple-300"><i class="fa-solid fa-bullseye"></i> الأهداف المالية</h3>
+                    <h3 class="font-bold text-sm mb-3 text-purple-800 dark:text-purple-300"><i class="fa-solid fa-bullseye"></i> الأهداف المالية وحاسبة الادخار</h3>
                     <form id="goalForm" onsubmit="addFinancialGoal(event)" class="space-y-2 mb-4">
-                        <input type="text" id="goalTitle" placeholder="عنوان الهدف..." required class="w-full px-3 py-1.5 border rounded-xl text-xs bg-white dark:bg-gray-700 dark:border-gray-600">
+                        <input type="text" id="goalTitle" placeholder="عنوان الهدف (مثلاً: شراء كتب)..." required class="w-full px-3 py-1.5 border rounded-xl text-xs bg-white dark:bg-gray-700 dark:border-gray-600">
                         <div class="flex gap-2">
                             <input type="number" id="goalTarget" placeholder="المبلغ المستهدف" required class="flex-1 px-3 py-1.5 border rounded-xl text-xs bg-white dark:bg-gray-700 dark:border-gray-600">
                             <input type="number" id="goalCurrent" placeholder="المدخر حالياً" class="flex-1 px-3 py-1.5 border rounded-xl text-xs bg-white dark:bg-gray-700 dark:border-gray-600">
                         </div>
-                        <button type="submit" class="w-full bg-purple-700 text-white py-1.5 rounded-xl text-xs font-bold">إضافة هدف</button>
+                        <button type="submit" class="w-full bg-purple-700 text-white py-1.5 rounded-xl text-xs font-bold">إضافة هدف وادخار</button>
                     </form>
                     <div id="financialGoalsList" class="space-y-2"></div>
                 </div>
@@ -588,7 +605,8 @@
             finance: {
                 transactions: [],
                 goals: [],
-                debts: []
+                debts: [],
+                budgetLimit: 5000
             },
             settings: { bg: 'default', darkMode: false, theme: 'emerald' }
         };
@@ -604,7 +622,8 @@
                     appData = { ...appData, ...parsed };
                     if (!appData.planner) appData.planner = [];
                     if (!appData.events) appData.events = [];
-                    if (!appData.finance) appData.finance = { transactions: [], goals: [], debts: [] };
+                    if (!appData.finance) appData.finance = { transactions: [], goals: [], debts: [], budgetLimit: 5000 };
+                    if (!appData.finance.budgetLimit) appData.finance.budgetLimit = 5000;
                     if (!appData.settings.theme) appData.settings.theme = 'emerald';
                 } catch (e) {
                     console.error('خطأ في قراءة البيانات', e);
@@ -745,7 +764,7 @@
             const gFrench = parseFloat(document.getElementById('gradeFrench').value) || 0;
 
             const totalPoints = (gArabic * 7) + (gFiqh * 7) + (gThought * 4) + (gHistory * 3) + (gQuran * 3) + (gFrench * 2);
-            const totalCoeffs = 7 + 7 + 4 + 3 + 3 + 2; // = 26
+            const totalCoeffs = 26;
 
             const avg = totalPoints / totalCoeffs;
             const resultEl = document.getElementById('bacAverageResult');
@@ -1026,6 +1045,15 @@
             });
         }
 
+        function setMonthlyBudgetLimit() {
+            const val = prompt('أدخل سقف المصروفات الشهري الجديد (MRU):', appData.finance.budgetLimit || 5000);
+            if (val !== null && !isNaN(val) && parseFloat(val) > 0) {
+                appData.finance.budgetLimit = parseFloat(val);
+                saveData();
+                renderFinance();
+            }
+        }
+
         function addTransaction(e) {
             e.preventDefault();
             const type = document.getElementById('transType').value;
@@ -1101,10 +1129,33 @@
             document.getElementById('financeExpenseSum').textContent = `${totalExpense} MRU`;
             document.getElementById('homeTotalBalance').textContent = `${netBalance} MRU`;
 
+            // تحديث السقف المالي ومؤشر التحذير
+            const limit = appData.finance.budgetLimit || 5000;
+            document.getElementById('budgetLimitText').textContent = `${limit} MRU`;
+            document.getElementById('budgetSpentText').textContent = `${totalExpense} MRU`;
+            const pctLimit = Math.min(100, Math.round((totalExpense / limit) * 100));
+            const bar = document.getElementById('budgetProgressBar');
+            const alertMsg = document.getElementById('budgetAlertMessage');
+            bar.style.width = `${pctLimit}%`;
+            
+            if (pctLimit >= 90) {
+                bar.className = "bg-red-600 h-full transition-all duration-300";
+                alertMsg.textContent = "⚠️ تنبيه خطير: لقد اقتربت أو تجاوزت سقف الميزانية المخصص لهذا الشهر!";
+                alertMsg.className = "text-[11px] text-red-600 font-bold";
+            } else if (pctLimit >= 70) {
+                bar.className = "bg-amber-500 h-full transition-all duration-300";
+                alertMsg.textContent = "⚡ تنبيه: لقد استهلكت الجزء الأكبر من سقف ميزانيتك الشهرية.";
+                alertMsg.className = "text-[11px] text-amber-600 font-bold";
+            } else {
+                bar.className = "bg-emerald-600 h-full transition-all duration-300";
+                alertMsg.textContent = "✅ وضعك المالي ممتاز ومستقر ضمن الحدود الآمنة.";
+                alertMsg.className = "text-[11px] text-emerald-600";
+            }
+
             const catReport = document.getElementById('categoryReportContainer');
             if (catReport) {
                 if (totalExpense === 0) {
-                    catReport.innerHTML = `<p class="text-xs text-gray-400 text-center py-2">لا توجد مصروفات مسجلة بعد لعرض التقرير.</p>`;
+                    catReport.innerHTML = `<p class="text-xs text-gray-400 text-center py-2">لا توجد مصروفات مسجلة بعد لعرض التقرير التحليلي.</p>`;
                 } else {
                     let html = '';
                     for (const [cat, sum] of Object.entries(categorySums)) {
@@ -1157,16 +1208,20 @@
                     appData.finance.goals.forEach(g => {
                         totalSavings += g.current;
                         const percent = Math.min(100, Math.round((g.current / g.target) * 100));
+                        const remaining = Math.max(0, g.target - g.current);
                         html += `
-                            <div class="bg-white dark:bg-gray-700 p-2.5 rounded-xl border border-gray-100 dark:border-gray-600 text-xs space-y-1">
+                            <div class="bg-white dark:bg-gray-700 p-3 rounded-xl border border-gray-100 dark:border-gray-600 text-xs space-y-1.5">
                                 <div class="flex justify-between font-bold">
                                     <span>${g.title}</span>
                                     <span>${g.current} / ${g.target} MRU (${percent}%)</span>
                                 </div>
-                                <div class="w-full bg-gray-200 dark:bg-gray-600 h-1.5 rounded-full overflow-hidden">
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 h-2 rounded-full overflow-hidden">
                                     <div class="bg-purple-600 h-full" style="width: ${percent}%"></div>
                                 </div>
-                                <div class="flex justify-end"><button onclick="deleteGoal(${g.id})" class="text-[10px] text-red-500 hover:underline">حذف</button></div>
+                                <div class="flex justify-between items-center text-[11px] text-gray-500 dark:text-gray-400">
+                                    <span>المتبقي للهدف: <strong>${remaining} MRU</strong></span>
+                                    <button onclick="deleteGoal(${g.id})" class="text-red-500 hover:underline">حذف</button>
+                                </div>
                             </div>
                         `;
                     });
