@@ -121,6 +121,9 @@
             <button onclick="switchTab('tasks'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-list-check w-5 text-emerald-600"></i> المهام اليومية
             </button>
+            <button onclick="switchTab('time'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-clock-rotate-left w-5 text-teal-600"></i> إدارة الوقت الدقيقة (Time Audit)
+            </button>
             <button onclick="switchTab('bac'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-graduation-cap w-5 text-blue-600"></i> البكالوريا والتركيز
             </button>
@@ -163,9 +166,9 @@
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <button onclick="quickAction('tasks');" class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 rounded-xl text-xs font-bold text-center hover:bg-emerald-100 transition"><i class="fa-solid fa-list-check block text-lg mb-1"></i>مهمة جديدة</button>
+                <button onclick="quickAction('time');" class="p-3 bg-teal-50 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300 rounded-xl text-xs font-bold text-center hover:bg-teal-100 transition"><i class="fa-solid fa-clock block text-lg mb-1"></i>جدول زمني</button>
                 <button onclick="quickAction('goals');" class="p-3 bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 rounded-xl text-xs font-bold text-center hover:bg-amber-100 transition"><i class="fa-solid fa-bullseye block text-lg mb-1"></i>هدف جديد</button>
                 <button onclick="quickAction('finance');" class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-xl text-xs font-bold text-center hover:bg-blue-100 transition"><i class="fa-solid fa-wallet block text-lg mb-1"></i>عملية مالية</button>
-                <button onclick="quickAction('calendar');" class="p-3 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300 rounded-xl text-xs font-bold text-center hover:bg-indigo-100 transition"><i class="fa-solid fa-calendar-days block text-lg mb-1"></i>موعد هام</button>
             </div>
         </div>
     </div>
@@ -262,7 +265,75 @@
             </div>
         </section>
 
-        <!-- 3. البكالوريا والتركيز -->
+        <!-- 3. قسم إدارة الوقت الدقيقة (المطور بـ 3 ميزات كبرى) -->
+        <section id="tab-time" class="tab-content hidden space-y-6">
+            
+            <!-- أ) مؤشر تحليل الكفاءة واستغلال الوقت -->
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-teal-200 dark:border-teal-900 space-y-3">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-base font-bold text-teal-900 dark:text-teal-300 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-teal-600"></i> تحليل كفاءة اليوم الزمني (Time Audit)
+                    </h2>
+                    <span id="totalLoggedHours" class="text-xs font-bold bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 px-3 py-1 rounded-full">0 ساعة مجدولة</span>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">تتبع أين تقضي كل دقيقة من يومك لضمان عدم ضياع الوقت:</p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="bg-teal-50 dark:bg-teal-950/40 p-3 rounded-xl border border-teal-200 dark:border-teal-900 text-xs">
+                        <span class="text-teal-700 dark:text-teal-300 font-bold block mb-1">📚 دراسة عميقة</span>
+                        <div id="timeStudySum" class="text-base font-black">0 ساعة</div>
+                    </div>
+                    <div class="bg-blue-50 dark:bg-blue-950/40 p-3 rounded-xl border border-blue-200 dark:border-blue-900 text-xs">
+                        <span class="text-blue-700 dark:text-blue-300 font-bold block mb-1">📖 مراجعة وحفظ</span>
+                        <div id="timeReviewSum" class="text-base font-black">0 ساعة</div>
+                    </div>
+                    <div class="bg-purple-50 dark:bg-purple-950/40 p-3 rounded-xl border border-purple-200 dark:border-purple-900 text-xs">
+                        <span class="text-purple-700 dark:text-purple-300 font-bold block mb-1">☕ راحة واسترخاء</span>
+                        <div id="timeRestSum" class="text-base font-black">0 ساعة</div>
+                    </div>
+                    <div class="bg-amber-50 dark:bg-amber-950/40 p-3 rounded-xl border border-amber-200 dark:border-amber-900 text-xs">
+                        <span class="text-amber-700 dark:text-amber-300 font-bold block mb-1">⚡ مهام وأنشطة أخرى</span>
+                        <div id="timeOtherSum" class="text-base font-black">0 ساعة</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ب) إضافة جدول الساعات اليومي -->
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-4">
+                <h3 class="font-bold text-sm text-gray-800 dark:text-gray-200 flex items-center gap-2">
+                    <i class="fa-solid fa-clock text-teal-600"></i> جدولة فترة أو ساعة جديدة
+                </h3>
+                
+                <form id="timeBlockForm" onsubmit="addTimeBlock(event)" class="space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
+                        <input type="text" id="timeSlot" placeholder="الوقت (مثلاً: 06:00 - 08:00 ص)..." required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                        
+                        <!-- ج) تصنيف أنواع الأوقات والأنشطة -->
+                        <select id="timeCategory" class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700 font-bold">
+                            <option value="دراسة عميقة">📚 دراسة عميقة</option>
+                            <option value="مراجعة وحفظ">📖 مراجعة وحفظ</option>
+                            <option value="راحة واسترخاء">☕ راحة واسترخاء</option>
+                            <option value="مهام وأنشطة أخرى">⚡ مهام وأنشطة أخرى</option>
+                        </select>
+
+                        <input type="number" id="timeDuration" step="0.5" min="0.5" max="12" placeholder="عدد الساعات (مثلا: 2)..." required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                        <input type="text" id="timeObjective" placeholder="الهدف أو الفائدة (ماذا ستستفيد؟)..." required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                    </div>
+                    <button type="submit" class="w-full bg-teal-600 text-white font-bold py-2.5 rounded-xl text-xs shadow hover:bg-teal-700 transition">تثبيت الفترة في جدول اليوم</button>
+                </form>
+            </div>
+
+            <!-- عرض جدول الفترات اليومية المسجلة -->
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-3">
+                <div class="flex justify-between items-center border-b pb-2 dark:border-gray-700">
+                    <h3 class="font-bold text-sm text-gray-800 dark:text-gray-200">جدول الساعات المخطط له اليوم</h3>
+                    <button onclick="clearTimeBlocks()" class="text-xs text-red-500 hover:underline">إعادة ضبط الجدول</button>
+                </div>
+                <div id="timeBlocksList" class="space-y-2"></div>
+            </div>
+        </section>
+
+        <!-- 4. البكالوريا والتركيز -->
         <section id="tab-bac" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border-r-4 border-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/20 border border-gray-200 dark:border-gray-700">
                 <div class="flex justify-between items-center mb-3">
@@ -360,7 +431,7 @@
             </div>
         </section>
 
-        <!-- 4. قسم الأهداف والطموحات الجديد كلياً (طويلة وقصيرة المدى وأنواع أخرى) -->
+        <!-- 5. الأهداف والطموحات -->
         <section id="tab-goals" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-amber-200 dark:border-amber-900 space-y-4">
                 <div class="flex justify-between items-center">
@@ -373,19 +444,15 @@
                 <form id="lifeGoalForm" onsubmit="addLifeGoal(event)" class="space-y-3">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                         <input type="text" id="lifeGoalTitle" placeholder="عنوان الهدف (مثلاً: التفوق في البكالوريا بتقدير)..." required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
-                        
-                        <!-- الميزة 1: التقسيم الزمني المتقدم -->
                         <select id="lifeGoalTerm" class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700 font-bold">
                             <option value="قصير المدى">⚡ هدف قصير المدى (أيام/أسابيع)</option>
                             <option value="متوسط المدى">⏳ هدف متوسط المدى (أشهر)</option>
                             <option value="طويل المدى">🌟 هدف استراتيجي طويل المدى (سنوات)</option>
                         </select>
-
-                        <!-- الميزة 3: تصنيف مجالات الحياة للأهداف -->
                         <select id="lifeGoalCategory" class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700 font-bold">
                             <option value="دراسي وعلمي">📚 دراسي وعلمي</option>
                             <option value="روحي وديني">🕌 روحي وديني</option>
-                            <option value="شاتي وتطوير ذات">💡 شخصي وتطوير ذات</option>
+                            <option value="شخصي وتطوير ذات">💡 شخصي وتطوير ذات</option>
                             <option value="مالي واقتصادي">💰 مالي واقتصادي</option>
                         </select>
                     </div>
@@ -403,9 +470,7 @@
                 </form>
             </div>
 
-            <!-- عرض الأهداف المبوبة حسب المدى -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- أهداف قصيرة المدى -->
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-3">
                     <h3 class="font-bold text-sm text-emerald-700 dark:text-emerald-400 flex items-center gap-2 border-b pb-2 dark:border-gray-700">
                         <i class="fa-solid fa-bolt"></i> أهداف قصيرة المدى
@@ -413,7 +478,6 @@
                     <div id="shortTermGoalsList" class="space-y-2"></div>
                 </div>
 
-                <!-- أهداف متوسطة المدى -->
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-3">
                     <h3 class="font-bold text-sm text-blue-700 dark:text-blue-400 flex items-center gap-2 border-b pb-2 dark:border-gray-700">
                         <i class="fa-solid fa-hourglass-half"></i> أهداف متوسطة المدى
@@ -421,7 +485,6 @@
                     <div id="midTermGoalsList" class="space-y-2"></div>
                 </div>
 
-                <!-- أهداف طويلة المدى -->
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-3">
                     <h3 class="font-bold text-sm text-amber-700 dark:text-amber-400 flex items-center gap-2 border-b pb-2 dark:border-gray-700">
                         <i class="fa-solid fa-star"></i> أهداف طويلة المدى
@@ -431,7 +494,7 @@
             </div>
         </section>
 
-        <!-- 5. المالية -->
+        <!-- 6. المالية -->
         <section id="tab-finance" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-900 space-y-3">
                 <div class="flex justify-between items-center">
@@ -534,7 +597,7 @@
             </div>
         </section>
 
-        <!-- 6. التقويم والمواعيد -->
+        <!-- 7. التقويم والمواعيد -->
         <section id="tab-calendar" class="tab-content hidden space-y-6">
             <div id="calendarAlertCard" class="bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900 p-4 rounded-2xl flex items-center justify-between text-indigo-900 dark:text-indigo-200 text-xs shadow-sm">
                 <div class="flex items-center gap-3">
@@ -570,7 +633,7 @@
             </div>
         </section>
 
-        <!-- 7. المكتبة -->
+        <!-- 8. المكتبة -->
         <section id="tab-library" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-book text-purple-600"></i> المكتبة الدراسية والثقافية</h2>
@@ -615,7 +678,7 @@
             </div>
         </section>
 
-        <!-- 8. الإشعارات -->
+        <!-- 9. الإشعارات -->
         <section id="tab-notifications" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm space-y-4 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-bell text-amber-600"></i> التنبيهات والإشعارات الذكية</h2>
@@ -623,7 +686,7 @@
             </div>
         </section>
 
-        <!-- 9. الإعدادات -->
+        <!-- 10. الإعدادات -->
         <section id="tab-settings" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm space-y-4 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-gear text-gray-700 dark:text-gray-300"></i> الإعدادات وخلفيات التطبيق</h2>
@@ -693,7 +756,8 @@
             planner: [],
             events: [],
             books: [],
-            lifeGoals: [], // قسم الأهداف الجديدة
+            lifeGoals: [],
+            timeBlocks: [], // قسم إدارة الوقت الجديد
             finance: {
                 transactions: [],
                 goals: [],
@@ -715,6 +779,7 @@
                     if (!appData.planner) appData.planner = [];
                     if (!appData.events) appData.events = [];
                     if (!appData.lifeGoals) appData.lifeGoals = [];
+                    if (!appData.timeBlocks) appData.timeBlocks = [];
                     if (!appData.finance) appData.finance = { transactions: [], goals: [], debts: [], budgetLimit: 5000 };
                     if (!appData.finance.budgetLimit) appData.finance.budgetLimit = 5000;
                     if (!appData.settings.theme) appData.settings.theme = 'emerald';
@@ -752,10 +817,12 @@
         }
 
         function openQuickAddModal() {
+            document.getElementById('quickAddModal').classList.add('flex');
             document.getElementById('quickAddModal').classList.remove('hidden');
         }
         function closeQuickAddModal() {
             document.getElementById('quickAddModal').classList.add('hidden');
+            document.getElementById('quickAddModal').classList.remove('flex');
         }
         function quickAction(tabId) {
             closeQuickAddModal();
@@ -797,6 +864,85 @@
             const dateEl = document.getElementById('currentDateDisplay');
             if (dateEl) dateEl.textContent = todayStr;
             updateCategories();
+        }
+
+        // دوال قسم إدارة الوقت الجديدة
+        function addTimeBlock(e) {
+            e.preventDefault();
+            const slot = document.getElementById('timeSlot').value.trim();
+            const category = document.getElementById('timeCategory').value;
+            const duration = parseFloat(document.getElementById('timeDuration').value) || 1;
+            const objective = document.getElementById('timeObjective').value.trim();
+
+            if (!slot || !objective) return;
+
+            appData.timeBlocks.push({ id: Date.now(), slot, category, duration, objective });
+            document.getElementById('timeBlockForm').reset();
+            saveData();
+            renderTimeBlocks();
+        }
+
+        function deleteTimeBlock(id) {
+            appData.timeBlocks = appData.timeBlocks.filter(tb => tb.id !== id);
+            saveData();
+            renderTimeBlocks();
+        }
+
+        function clearTimeBlocks() {
+            if (confirm('هل تريد مسح وإعادة ضبط جدول الوقت اليومي؟')) {
+                appData.timeBlocks = [];
+                saveData();
+                renderTimeBlocks();
+            }
+        }
+
+        function renderTimeBlocks() {
+            const container = document.getElementById('timeBlocksList');
+            if (!container) return;
+
+            let studySum = 0, reviewSum = 0, restSum = 0, otherSum = 0, totalHours = 0;
+
+            appData.timeBlocks.forEach(tb => {
+                totalHours += tb.duration;
+                if (tb.category === 'دراسة عميقة') studySum += tb.duration;
+                if (tb.category === 'مراجعة وحفظ') reviewSum += tb.duration;
+                if (tb.category === 'راحة واسترخاء') restSum += tb.duration;
+                if (tb.category === 'مهام وأنشطة أخرى') otherSum += tb.duration;
+            });
+
+            document.getElementById('totalLoggedHours').textContent = `${totalHours} ساعة مجدولة`;
+            document.getElementById('timeStudySum').textContent = `${studySum} ساعة`;
+            document.getElementById('timeReviewSum').textContent = `${reviewSum} ساعة`;
+            document.getElementById('timeRestSum').textContent = `${restSum} ساعة`;
+            document.getElementById('timeOtherSum').textContent = `${otherSum} ساعة`;
+
+            if (!appData.timeBlocks.length) {
+                container.innerHTML = `<p class="text-xs text-gray-400 text-center py-3">لم يتم جدول أي ساعات لليوم بعد. ابدأ بتنظيم وقتك!</p>`;
+                return;
+            }
+
+            let html = '';
+            appData.timeBlocks.forEach(tb => {
+                let badgeClass = "bg-teal-100 text-teal-800 dark:bg-teal-900/50 dark:text-teal-300";
+                if (tb.category === 'مراجعة وحفظ') badgeClass = "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300";
+                if (tb.category === 'راحة واسترخاء') badgeClass = "bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300";
+                if (tb.category === 'مهام وأنشطة أخرى') badgeClass = "bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300";
+
+                html += `
+                    <div class="bg-white dark:bg-gray-700 p-3 rounded-xl border border-gray-200 dark:border-gray-600 text-xs flex justify-between items-center shadow-sm">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded font-bold ${badgeClass}">${tb.category}</span>
+                                <span class="font-bold text-teal-900 dark:text-teal-300">${tb.slot}</span>
+                                <span class="text-gray-400">(${tb.duration} ساعات)</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300"><i class="fa-solid fa-bullseye ml-1 text-teal-600"></i><strong>الهدف والاستفادة:</strong> ${tb.objective}</p>
+                        </div>
+                        <button onclick="deleteTimeBlock(${tb.id})" class="text-gray-400 hover:text-red-500 p-1"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
         }
 
         let timerInterval = null;
@@ -930,7 +1076,6 @@
             homeList.innerHTML = homeHtml || `<p class="text-xs text-gray-400">أحسنت! أكملت جميع المهام.</p>`;
         }
 
-        // دوال قسم الأهداف الجديدة
         function addLifeGoal(e) {
             e.preventDefault();
             const title = document.getElementById('lifeGoalTitle').value.trim();
@@ -970,7 +1115,6 @@
             if (!shortContainer || !midContainer || !longContainer) return;
 
             let shortHtml = '', midHtml = '', longHtml = '';
-
             const shortGoals = appData.lifeGoals.filter(g => g.term === 'قصير المدى');
             const midGoals = appData.lifeGoals.filter(g => g.term === 'متوسط المدى');
             const longGoals = appData.lifeGoals.filter(g => g.term === 'طويل المدى');
@@ -1657,7 +1801,8 @@
             renderSubjects();
             renderFinance();
             renderLibrary();
-            renderLifeGoals(); // تفعيل عرض الأهداف عند التشغيل
+            renderLifeGoals();
+            renderTimeBlocks(); // تفعيل عرض جدول الوقت عند التشغيل
             renderNotifications();
             updateStats();
             updateTimerDisplay();
@@ -1673,4 +1818,3 @@
     </script>
 </body>
 </html>
-  
