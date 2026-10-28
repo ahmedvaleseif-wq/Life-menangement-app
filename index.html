@@ -251,24 +251,27 @@
             </div>
         </section>
 
-        <!-- 2. قسم محراب العبادات والطاعات (المطور كلياً) -->
+        <!-- 2. قسم محراب العبادات والطاعات (المحدث بالتدوير التلقائي اليومي) -->
         <section id="tab-worship" class="tab-content hidden space-y-6">
             <div class="dynamic-header-bg text-white p-6 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="space-y-1 text-center md:text-right">
-                    <h2 class="text-2xl font-black"><i class="fa-solid fa-kaaba ml-2"></i> محراب العبادات والصلات المتقدم</h2>
-                    <p class="text-xs text-emerald-100">أساس التوفيق والبركة والصفاء الذهني لرحلة تفوقك في البكالوريا والحياة.</p>
+                    <h2 class="text-2xl font-black"><i class="fa-solid fa-kaaba ml-2"></i> محراب العبادات والصلات المتجدد</h2>
+                    <p class="text-xs text-emerald-100">أساس التوفيق والبركة والصفاء الذهني لرحلة تفوقك. تتجدد الفرائض يومياً تلقائياً لتبدأ صفحة جديدة.</p>
                 </div>
                 <div class="bg-black/30 backdrop-blur-md px-6 py-4 rounded-2xl text-center border border-white/20">
-                    <span class="text-xs text-emerald-200 block">نسبة الالتزام الإيماني اليومي</span>
+                    <span class="text-xs text-emerald-200 block">نسبة إنجاز طاعات اليوم</span>
                     <div id="worshipProgressText" class="text-3xl font-black text-amber-400">0%</div>
                 </div>
             </div>
 
-            <!-- أ. الفرائض اليومية -->
+            <!-- أ. الفرائض اليومية المتجددة تلقائياً -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-950 space-y-4">
-                <h3 class="font-bold text-sm text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
-                    <i class="fa-solid fa-mosque text-emerald-600"></i> أولاً: متابعة الصلوات والفرائض اليومية
-                </h3>
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
+                        <i class="fa-solid fa-mosque text-emerald-600"></i> أولاً: الصلوات والفرائض اليومية (تتجدد مع كل يوم جديد)
+                    </h3>
+                    <span id="worshipDateLabel" class="text-[11px] bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-2.5 py-1 rounded-lg"></span>
+                </div>
                 <div id="dailyPrayersList" class="grid grid-cols-1 md:grid-cols-5 gap-3"></div>
             </div>
 
@@ -277,7 +280,7 @@
                 <h3 class="font-bold text-sm text-indigo-900 dark:text-indigo-300 flex items-center gap-2">
                     <i class="fa-solid fa-star-and-crescent text-indigo-600"></i> ثانياً: السنن الرواتب والنوافل (الضحى، الوتر، الراتب)
                 </h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400">تقرب إلى الله بالسنن الرواتب وصلاة الضحى وقيام الليل لتنال عظيم الأجر:</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">تقرب إلى الله بالسنن اليومية المتجددة لتنال عظيم الأجر:</p>
                 <div id="sunnahList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
             </div>
 
@@ -973,7 +976,7 @@
 
     <!-- جافاسكريبت التطبيق الشامل والمُحدث بالكامل -->
     <script>
-        const STORAGE_KEY = 'midad_app_data_v3';
+        const STORAGE_KEY = 'midad_app_data_v4';
 
         const defaultWorshipItems = [
             { id: 'fajr', name: 'صلاة الفجر', done: false },
@@ -1017,6 +1020,7 @@
                 lastActiveDate: new Date().toISOString().slice(0,10)
             },
             worship: {
+                lastResetDate: '',
                 prayers: JSON.parse(JSON.stringify(defaultWorshipItems)),
                 sunnah: JSON.parse(JSON.stringify(defaultSunnahItems)),
                 quranPage: 0,
@@ -1052,6 +1056,7 @@
                     if (!appData.gamification) appData.gamification = { points: 0, streakDays: 1, lastActiveDate: new Date().toISOString().slice(0,10) };
                     if (!appData.worship || !appData.worship.prayers) {
                         appData.worship = {
+                            lastResetDate: '',
                             prayers: JSON.parse(JSON.stringify(defaultWorshipItems)),
                             sunnah: JSON.parse(JSON.stringify(defaultSunnahItems)),
                             quranPage: 0,
@@ -1077,9 +1082,22 @@
                     console.error('خطأ في قراءة البيانات', e);
                 }
             }
+            checkDailyWorshipReset();
         }
 
-        function saveData() {
+        // --- التحقق من بداية يوم جديد وتصفير الصلوات تلقائياً ---
+        function checkDailyWorshipReset() {
+            const todayStr = new Date().toISOString().slice(0, 10);
+            if (appData.worship.lastResetDate !== todayStr) {
+                // إذا كان اليوم جديداً، نقوم بتصفير حالة إنجاز الصلوات والسنن لليوم الجديد
+                appData.worship.prayers.forEach(p => p.done = false);
+                appData.worship.sunnah.forEach(s => s.done = false);
+                appData.worship.lastResetDate = todayStr;
+                saveDataWithoutResetCheck();
+            }
+        }
+
+        function saveDataWithoutResetCheck() {
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
             } catch (e) {
@@ -1089,6 +1107,10 @@
             renderNotifications();
             renderGamification();
             renderWeeklyReview();
+        }
+
+        function saveData() {
+            saveDataWithoutResetCheck();
         }
 
         function toggleSidebar() {
@@ -1169,10 +1191,12 @@
             const todayStr = new Date().toLocaleDateString('ar-MR', options);
             const dateEl = document.getElementById('currentDateDisplay');
             if (dateEl) dateEl.textContent = todayStr;
+            const dateLabel = document.getElementById('worshipDateLabel');
+            if (dateLabel) dateLabel.textContent = `تاريخ اليوم: ${todayStr}`;
             updateCategories();
         }
 
-        // --- محراب العبادات والطاعات المطور ---
+        // --- محراب العبادات والطاعات المطور مع التدوير والتحديث اللحظي للنسبة ---
         function toggleWorshipItem(id) {
             const item = appData.worship.prayers.find(p => p.id === id);
             if (item) {
@@ -1249,7 +1273,6 @@
             const worshipProgressText = document.getElementById('worshipProgressText');
             if (!prayersList || !sunnahList) return;
 
-            // حساب النسبة المئوية الشاملة للفرائض والسنن
             let totalItems = appData.worship.prayers.length + appData.worship.sunnah.length;
             let completedCount = 0;
 
