@@ -241,10 +241,8 @@
             </div>
         </section>
 
-        <!-- 2. قسم محراب العبادات والطاعات (القسم الجديد كلياً) -->
+        <!-- 2. قسم محراب العبادات والطاعات -->
         <section id="tab-worship" class="tab-content hidden space-y-6">
-            
-            <!-- أ) مؤشر الالتزام الإيماني والفرائض اليومية -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-900 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-base font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
@@ -253,11 +251,9 @@
                     <span id="worshipProgressText" class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-3 py-1 rounded-full">0% منجز</span>
                 </div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">"أحب الأعمال إلى الله أدومها وإن قل".. حافظ على فرائضك وسننك اليومية لتنال التوفيق البركة:</p>
-                
                 <div id="dailyPrayersList" class="grid grid-cols-1 md:grid-cols-5 gap-3"></div>
             </div>
 
-            <!-- ب) متابع الورد والختمة القرآنية -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-teal-200 dark:border-teal-900 space-y-4">
                 <div class="flex justify-between items-center">
                     <h3 class="font-bold text-sm text-teal-900 dark:text-teal-300 flex items-center gap-2">
@@ -283,13 +279,11 @@
                 </div>
             </div>
 
-            <!-- ج) واحة النوافل والفضائل والأذكار -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-indigo-200 dark:border-indigo-900 space-y-4">
                 <h3 class="font-bold text-sm text-indigo-900 dark:text-indigo-300 flex items-center gap-2">
                     <i class="fa-solid fa-hands-praying text-indigo-600"></i> واحة النوافل والفضائل الأسبوعية واليومية
                 </h3>
                 <p class="text-xs text-gray-500 dark:text-gray-400">سجل مشاركاتك في النوافل لتقوية صلتك بالله وزيادة منسوب إيمانك:</p>
-                
                 <div id="sunnahList" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
             </div>
         </section>
@@ -796,7 +790,7 @@
 
     </main>
 
-    <!-- جافاسكريبت التطبيق الشامل -->
+    <!-- جافاسكريبت التطبيق الشامل (المؤمن والمصحح) -->
     <script>
         const STORAGE_KEY = 'midad_app_data_v2';
 
@@ -859,7 +853,7 @@
                     if (!appData.events) appData.events = [];
                     if (!appData.lifeGoals) appData.lifeGoals = [];
                     if (!appData.timeBlocks) appData.timeBlocks = [];
-                    if (!appData.worship) {
+                    if (!appData.worship || !appData.worship.prayers) {
                         appData.worship = {
                             prayers: JSON.parse(JSON.stringify(defaultWorshipItems)),
                             sunnah: JSON.parse(JSON.stringify(defaultSunnahItems)),
@@ -871,13 +865,17 @@
                     if (!appData.finance.budgetLimit) appData.finance.budgetLimit = 5000;
                     if (!appData.settings.theme) appData.settings.theme = 'emerald';
                 } catch (e) {
-                    console.error('خطأ في قراءة البيانات', e);
+                    console.error('خطأ في قراءة البيانات، إعادة ضبط الطوارئ', e);
                 }
             }
         }
 
         function saveData() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+            } catch (e) {
+                console.error('فشل الحفظ', e);
+            }
             updateStats();
             renderNotifications();
         }
@@ -885,6 +883,7 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
+            if (!sidebar || !overlay) return;
             if (sidebar.style.transform === 'translateX(0px)') {
                 sidebar.style.transform = 'translateX(100%)';
                 overlay.classList.add('hidden');
@@ -907,12 +906,18 @@
         }
 
         function openQuickAddModal() {
-            document.getElementById('quickAddModal').classList.add('flex');
-            document.getElementById('quickAddModal').classList.remove('hidden');
+            const modal = document.getElementById('quickAddModal');
+            if (modal) {
+                modal.classList.add('flex');
+                modal.classList.remove('hidden');
+            }
         }
         function closeQuickAddModal() {
-            document.getElementById('quickAddModal').classList.add('hidden');
-            document.getElementById('quickAddModal').classList.remove('flex');
+            const modal = document.getElementById('quickAddModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
         }
         function quickAction(tabId) {
             closeQuickAddModal();
@@ -956,7 +961,6 @@
             updateCategories();
         }
 
-        // دوال قسم محراب العبادات
         function toggleWorshipItem(id) {
             const item = appData.worship.prayers.find(p => p.id === id);
             if (item) {
@@ -993,7 +997,6 @@
             const worshipProgressText = document.getElementById('worshipProgressText');
             if (!prayersList || !sunnahList) return;
 
-            // الفرائض والواجبات اليومية
             let completedPrayers = 0;
             let prayersHtml = '';
             appData.worship.prayers.forEach(p => {
@@ -1007,10 +1010,9 @@
             });
             prayersList.innerHTML = prayersHtml;
 
-            const worshipPercent = Math.round((completedPrayers / appData.worship.prayers.length) * 100);
+            const worshipPercent = appData.worship.prayers.length > 0 ? Math.round((completedPrayers / appData.worship.prayers.length) * 100) : 0;
             if (worshipProgressText) worshipProgressText.textContent = `${worshipPercent}% منجز`;
 
-            // النوافل والفضائل
             let sunnahHtml = '';
             appData.worship.sunnah.forEach(s => {
                 sunnahHtml += `
@@ -1022,7 +1024,6 @@
             });
             sunnahList.innerHTML = sunnahHtml;
 
-            // الورد القرآني
             const qPage = appData.worship.quranPage || 0;
             const qNote = appData.worship.quranNote || '';
             const qPercent = Math.min(100, Math.round((qPage / 604) * 100));
@@ -1034,8 +1035,8 @@
 
             if (qBadge) qBadge.textContent = `الصفحة ${qPage} من 604 (${qPercent}%)`;
             if (qBar) qBar.style.width = `${qPercent}%`;
-            if (qInput && !qInput.value) qInput.value = qPage;
-            if (qNoteInput && !qNoteInput.value) qNoteInput.value = qNote;
+            if (qInput && document.activeElement !== qInput) qInput.value = qPage;
+            if (qNoteInput && document.activeElement !== qNoteInput) qNoteInput.value = qNote;
         }
 
         function populateGoalDropdownInTime() {
@@ -1152,7 +1153,8 @@
         function updateTimerDisplay() {
             const mins = Math.floor(timerSeconds / 60);
             const secs = timerSeconds % 60;
-            document.getElementById('timerDisplay').textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            const disp = document.getElementById('timerDisplay');
+            if (disp) disp.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
         function setTimerMinutes(mins) {
@@ -1593,11 +1595,11 @@
         }
 
         function updateCategories() {
-            const type = document.getElementById('transType').value;
+            const type = document.getElementById('transType');
             const catSelect = document.getElementById('transCategory');
-            if (!catSelect) return;
+            if (!type || !catSelect) return;
             catSelect.innerHTML = '';
-            const cats = type === 'expense' ? expenseCategories : incomeCategories;
+            const cats = type.value === 'expense' ? expenseCategories : incomeCategories;
             cats.forEach(c => {
                 catSelect.innerHTML += `<option value="${c}">${c}</option>`;
             });
@@ -1693,20 +1695,22 @@
             const pctLimit = Math.min(100, Math.round((totalExpense / limit) * 100));
             const bar = document.getElementById('budgetProgressBar');
             const alertMsg = document.getElementById('budgetAlertMessage');
-            bar.style.width = `${pctLimit}%`;
+            if (bar) bar.style.width = `${pctLimit}%`;
             
-            if (pctLimit >= 90) {
-                bar.className = "bg-red-600 h-full transition-all duration-300";
-                alertMsg.textContent = "⚠️ تنبيه خطير: لقد اقتربت أو تجاوزت سقف الميزانية المخصص لهذا الشهر!";
-                alertMsg.className = "text-[11px] text-red-600 font-bold";
-            } else if (pctLimit >= 70) {
-                bar.className = "bg-amber-500 h-full transition-all duration-300";
-                alertMsg.textContent = "⚡ تنبيه: لقد استهلكت الجزء الأكبر من سقف ميزانيتك الشهرية.";
-                alertMsg.className = "text-[11px] text-amber-600 font-bold";
-            } else {
-                bar.className = "bg-emerald-600 h-full transition-all duration-300";
-                alertMsg.textContent = "✅ وضعك المالي ممتاز ومستقر ضمن الحدود الآمنة.";
-                alertMsg.className = "text-[11px] text-emerald-600";
+            if (alertMsg) {
+                if (pctLimit >= 90) {
+                    if (bar) bar.className = "bg-red-600 h-full transition-all duration-300";
+                    alertMsg.textContent = "⚠️ تنبيه خطير: لقد اقتربت أو تجاوزت سقف الميزانية المخصص لهذا الشهر!";
+                    alertMsg.className = "text-[11px] text-red-600 font-bold";
+                } else if (pctLimit >= 70) {
+                    if (bar) bar.className = "bg-amber-500 h-full transition-all duration-300";
+                    alertMsg.textContent = "⚡ تنبيه: لقد استهلكت الجزء الأكبر من سقف ميزانيتك الشهرية.";
+                    alertMsg.className = "text-[11px] text-amber-600 font-bold";
+                } else {
+                    if (bar) bar.className = "bg-emerald-600 h-full transition-all duration-300";
+                    alertMsg.textContent = "✅ وضعك المالي ممتاز ومستقر ضمن الحدود الآمنة.";
+                    alertMsg.className = "text-[11px] text-emerald-600";
+                }
             }
 
             const catReport = document.getElementById('categoryReportContainer');
@@ -1886,9 +1890,11 @@
                 notifs.push({ title: 'مواعيد التقويم', desc: `لديك ${appData.events.length} مواعيد مسجلة قادمة.` });
             }
 
-            badge.textContent = notifs.length;
-            if (notifs.length > 0) badge.classList.remove('hidden');
-            else badge.classList.add('hidden');
+            if (badge) {
+                badge.textContent = notifs.length;
+                if (notifs.length > 0) badge.classList.remove('hidden');
+                else badge.classList.add('hidden');
+            }
 
             let html = '';
             if (notifs.length === 0) {
@@ -1944,7 +1950,7 @@
             appData.worship.prayers.forEach(p => { if (p.done) worshipDoneCount++; });
             const statWorship = document.getElementById('statWorship');
             if (statWorship) {
-                const pct = Math.round((worshipDoneCount / appData.worship.prayers.length) * 100);
+                const pct = appData.worship.prayers.length > 0 ? Math.round((worshipDoneCount / appData.worship.prayers.length) * 100) : 0;
                 statWorship.textContent = `${pct}%`;
             }
 
@@ -1992,37 +1998,39 @@
         function hideSplashScreen() {
             const splash = document.getElementById('splash-screen');
             if (splash) {
-                setTimeout(() => {
-                    splash.style.opacity = '0';
-                    splash.style.visibility = 'hidden';
-                }, 1000);
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
             }
         }
 
         function initApp() {
-            loadData();
-            initHeader();
-            applyBgStyle();
-            applyThemeClass();
-            applyTheme();
-            renderWorship();
-            renderTasks();
-            renderPlanner();
-            renderEvents();
-            renderSubjects();
-            renderFinance();
-            renderLibrary();
-            renderLifeGoals();
-            renderTimeBlocks();
-            renderNotifications();
-            updateStats();
-            updateTimerDisplay();
-            switchTab('home');
-            
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar) sidebar.style.transform = 'translateX(100%)';
-            
-            hideSplashScreen();
+            try {
+                loadData();
+                initHeader();
+                applyBgStyle();
+                applyThemeClass();
+                applyTheme();
+                renderWorship();
+                renderTasks();
+                renderPlanner();
+                renderEvents();
+                renderSubjects();
+                renderFinance();
+                renderLibrary();
+                renderLifeGoals();
+                renderTimeBlocks();
+                renderNotifications();
+                updateStats();
+                updateTimerDisplay();
+                switchTab('home');
+                
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) sidebar.style.transform = 'translateX(100%)';
+            } catch (err) {
+                console.error("خطأ أثناء التهيئة:", err);
+            } finally {
+                hideSplashScreen();
+            }
         }
 
         window.onload = initApp;
