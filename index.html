@@ -357,10 +357,8 @@
             </div>
         </section>
 
-        <!-- 4. المالية (المطورة بـ 3 ميزات: السقف المالي، التقرير التحليلي، وحاسبة الادخار) -->
+        <!-- 4. المالية -->
         <section id="tab-finance" class="tab-content hidden space-y-6">
-            
-            <!-- أ) نظام السقف المالي الشهري والتنبيه -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-900 space-y-3">
                 <div class="flex justify-between items-center">
                     <h3 class="font-bold text-sm text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
@@ -397,7 +395,6 @@
                 </div>
             </div>
 
-            <!-- ب) التقرير البياني التحليلي للمصروفات -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <h3 class="font-bold text-sm mb-3 text-gray-800 dark:text-gray-200"><i class="fa-solid fa-chart-pie text-emerald-600 ml-1"></i>التقرير التحليلي لتوزيع المصروفات والمجالات الأكثر استهلاكاً</h3>
                 <div id="categoryReportContainer" class="space-y-2"></div>
@@ -432,7 +429,6 @@
             </div>
 
             <div class="grid md:grid-cols-2 gap-6">
-                <!-- ج) حاسبة الادخار التلقائي والوصول للأهداف -->
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                     <h3 class="font-bold text-sm mb-3 text-purple-800 dark:text-purple-300"><i class="fa-solid fa-bullseye"></i> الأهداف المالية وحاسبة الادخار</h3>
                     <form id="goalForm" onsubmit="addFinancialGoal(event)" class="space-y-2 mb-4">
@@ -464,18 +460,45 @@
             </div>
         </section>
 
-        <!-- 5. التقويم والمواعيد -->
+        <!-- 5. التقويم والمواعيد (المطور بـ 3 ميزات: عداد المواعيد، تصنيف ملون، وملاحظات المواعيد) -->
         <section id="tab-calendar" class="tab-content hidden space-y-6">
-            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
-                <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-calendar-days text-indigo-600"></i> التقويم والمواعيد الهامة</h2>
-                <form id="eventForm" onsubmit="addEvent(event)" class="space-y-3 mb-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <input type="text" id="eventTitle" placeholder="عنوان الموعد..." required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
-                        <input type="date" id="eventDate" required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+            
+            <!-- أ) عداد المواعيد والامتحانات القادمة -->
+            <div id="calendarAlertCard" class="bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900 p-4 rounded-2xl flex items-center justify-between text-indigo-900 dark:text-indigo-200 text-xs shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow">
+                        <i class="fa-solid fa-hourglass-half text-lg"></i>
                     </div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2 rounded-xl text-xs shadow">إضافة موعد للتقويم</button>
+                    <div>
+                        <span class="font-bold text-sm block">الموعد القادم:</span>
+                        <p id="nextEventCountdownText" class="text-gray-600 dark:text-gray-300">لا توجد مواعيد قادمة مسجلة حالياً.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-4">
+                <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-calendar-days text-indigo-600"></i> التقويم والمواعيد الهامة</h2>
+                
+                <form id="eventForm" onsubmit="addEvent(event)" class="space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                        <input type="text" id="eventTitle" placeholder="عنوان الموعد أو الاختبار..." required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                        <input type="date" id="eventDate" required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                        
+                        <!-- ب) تصنيف المواعيد بالألوان والأنواع -->
+                        <select id="eventType" class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700 font-bold">
+                            <option value="امتحان تجريبي">🔴 امتحان / اختبار تجريبي</option>
+                            <option value="حصة دعم">🔵 حصة دعم / دراسة</option>
+                            <option value="مراجعة نهائية">🟢 مراجعة نهائية</option>
+                            <option value="موعد شخصي">🟡 موعد شخصي</option>
+                        </select>
+                    </div>
+                    <!-- ج) تدوين ملاحظات سريعة للموعد -->
+                    <input type="text" id="eventNote" placeholder="ملاحظات أو متطلبات خاصة (مثلاً: إحضار كتاب الفقه والملخصات)..." class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                    
+                    <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-xl text-xs shadow">إضافة موعد للتقويم</button>
                 </form>
-                <div id="eventsList" class="space-y-2"></div>
+
+                <div id="eventsList" class="space-y-2 mt-4"></div>
             </div>
         </section>
 
@@ -622,6 +645,12 @@
                     appData = { ...appData, ...parsed };
                     if (!appData.planner) appData.planner = [];
                     if (!appData.events) appData.events = [];
+                    // توافق مع هيكل المواعيد القديم في حال وجد
+                    appData.events = appData.events.map(ev => ({
+                        ...ev,
+                        type: ev.type || 'موعد شخصي',
+                        note: ev.note || ''
+                    }));
                     if (!appData.finance) appData.finance = { transactions: [], goals: [], debts: [], budgetLimit: 5000 };
                     if (!appData.finance.budgetLimit) appData.finance.budgetLimit = 5000;
                     if (!appData.settings.theme) appData.settings.theme = 'emerald';
@@ -879,8 +908,11 @@
             e.preventDefault();
             const title = document.getElementById('eventTitle').value.trim();
             const date = document.getElementById('eventDate').value;
+            const type = document.getElementById('eventType').value;
+            const note = document.getElementById('eventNote').value.trim();
             if (!title || !date) return;
-            appData.events.push({ id: Date.now(), title, date });
+
+            appData.events.push({ id: Date.now(), title, date, type, note });
             document.getElementById('eventForm').reset();
             saveData();
             renderEvents();
@@ -894,20 +926,49 @@
 
         function renderEvents() {
             const container = document.getElementById('eventsList');
+            const nextEventText = document.getElementById('nextEventCountdownText');
             if (!container) return;
+
             if (!appData.events.length) {
                 container.innerHTML = `<p class="text-xs text-gray-400 text-center py-2">لا توجد مواعيد مضافة في التقويم.</p>`;
+                if (nextEventText) nextEventText.textContent = "لا توجد مواعيد قادمة مسجلة حالياً.";
                 return;
             }
+
+            // ترتيب المواعيد حسب التاريخ الأقرب
+            const sortedEvents = [...appData.events].sort((a,b) => new Date(a.date) - new Date(b.date));
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            // تحديد الموعد القادم
+            const upcoming = sortedEvents.find(ev => new Date(ev.date) >= today);
+            if (upcoming && nextEventText) {
+                const diffDays = Math.ceil((new Date(upcoming.date) - today) / (1000 * 60 * 60 * 24));
+                nextEventText.innerHTML = `<strong>${upcoming.title}</strong> (${upcoming.type}) — باقي على الموعد <strong>${diffDays === 0 ? 'اليوم!' : diffDays + ' أيام'}</strong> (${upcoming.date})`;
+            } else if (nextEventText) {
+                nextEventText.textContent = "لا توجد مواعيد قادمة قريبة.";
+            }
+
             let html = '';
-            appData.events.sort((a,b) => new Date(a.date) - new Date(b.date)).forEach(ev => {
+            sortedEvents.forEach(ev => {
+                let badgeClass = "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-300";
+                if (ev.type === 'امتحان تجريبي') badgeClass = "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300";
+                if (ev.type === 'حصة دعم') badgeClass = "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300";
+                if (ev.type === 'مراجعة نهائية') badgeClass = "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300";
+
                 html += `
-                    <div class="flex justify-between items-center bg-white dark:bg-gray-700 p-3 rounded-xl border border-gray-200 dark:border-gray-600 text-xs">
-                        <div>
-                            <span class="font-bold text-indigo-800 dark:text-indigo-300">${ev.title}</span>
-                            <p class="text-[11px] text-gray-500 dark:text-gray-400"><i class="fa-solid fa-clock ml-1"></i>${ev.date}</p>
+                    <div class="bg-white dark:bg-gray-700 p-3.5 rounded-xl border border-gray-200 dark:border-gray-600 text-xs space-y-1.5 shadow-sm">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2.5 py-0.5 rounded-md font-bold ${badgeClass}">${ev.type}</span>
+                                <span class="font-bold text-gray-900 dark:text-white text-sm">${ev.title}</span>
+                            </div>
+                            <button onclick="deleteEvent(${ev.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
                         </div>
-                        <button onclick="deleteEvent(${ev.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                        <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                            <span><i class="fa-solid fa-clock ml-1"></i>${ev.date}</span>
+                        </div>
+                        ${ev.note ? `<p class="text-[11px] text-gray-600 dark:text-gray-300 italic bg-gray-50 dark:bg-gray-800/60 p-2 rounded border border-gray-100 dark:border-gray-700"><i class="fa-solid fa-note-sticky ml-1"></i>${ev.note}</p>` : ''}
                     </div>
                 `;
             });
@@ -1129,7 +1190,6 @@
             document.getElementById('financeExpenseSum').textContent = `${totalExpense} MRU`;
             document.getElementById('homeTotalBalance').textContent = `${netBalance} MRU`;
 
-            // تحديث السقف المالي ومؤشر التحذير
             const limit = appData.finance.budgetLimit || 5000;
             document.getElementById('budgetLimitText').textContent = `${limit} MRU`;
             document.getElementById('budgetSpentText').textContent = `${totalExpense} MRU`;
