@@ -42,13 +42,13 @@
         }
 
         /* الثيمات اللونية المخصصة */
-        body.theme-emerald { --accent-bg: #059669; --accent-gradient: linear-gradient(to right, #047857, #0f766e); }
-        body.theme-olive { --accent-bg: #4d7c0f; --accent-gradient: linear-gradient(to right, #3f6212, #365314); }
-        body.theme-royal { --accent-bg: #1d4ed8; --accent-gradient: linear-gradient(to right, #1e40af, #1e3a8a); }
-        body.theme-warm { --accent-bg: #9a3412; --accent-gradient: linear-gradient(to right, #7c2d12, #431407); }
+        body.theme-emerald { --accent-bg: #059669; --accent-gradient: linear-gradient(135deg, #047857 0%, #065f46 100%); }
+        body.theme-olive { --accent-bg: #4d7c0f; --accent-gradient: linear-gradient(135deg, #3f6212 0%, #365314 100%); }
+        body.theme-royal { --accent-bg: #1d4ed8; --accent-gradient: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); }
+        body.theme-warm { --accent-bg: #9a3412; --accent-gradient: linear-gradient(135deg, #7c2d12 0%, #431407 100%); }
 
         .dynamic-header-bg {
-            background: var(--accent-gradient, linear-gradient(to right, #047857, #0f766e));
+            background: var(--accent-gradient, linear-gradient(135deg, #047857 0%, #065f46 100%));
         }
 
         /* شاشة الترحيب */
@@ -170,27 +170,28 @@
     <!-- المحتوى الرئيسي -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
         
-        <!-- 1. لوحة التحكم المطورة -->
+        <!-- 1. الواجهة الترحيبية الفاخرة الجديدة -->
         <section id="tab-home" class="tab-content space-y-6">
-            <div class="dynamic-header-bg text-white p-6 rounded-3xl shadow-xl relative overflow-hidden border border-white/10">
-                <div class="absolute -left-6 -bottom-6 opacity-10 text-9xl">
+            <div class="dynamic-header-bg text-white p-7 rounded-3xl shadow-2xl relative overflow-hidden border border-white/20">
+                <div class="absolute -left-10 -bottom-10 opacity-10 text-[140px] pointer-events-none">
                     <i class="fa-solid fa-feather-pointed"></i>
                 </div>
-                <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="bg-white/25 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md">شعبة الآداب الأصلية 📚</span>
-                            <span class="bg-black/20 px-3 py-1 rounded-full text-xs backdrop-blur-md" id="currentDateDisplay"></span>
+                <div class="relative z-10 space-y-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2 bg-black/20 px-3.5 py-1.5 rounded-full backdrop-blur-md text-xs font-medium border border-white/10">
+                            <i class="fa-solid fa-graduation-cap text-emerald-300"></i>
+                            <span>طالب بكالوريا موريتانيا — شعبة الآداب الأصلية</span>
                         </div>
-                        <h2 class="text-2xl md:text-3xl font-black mb-1">أهلاً بك، بطل البكالوريا! ✨</h2>
-                        <p class="text-emerald-100 text-xs md:text-sm font-medium">كل خطوة خطوتها اليوم تقربك أكثر من منصة النجاح والتميز.</p>
+                        <div id="currentDateDisplay" class="bg-white/15 px-3 py-1.5 rounded-full backdrop-blur-md text-xs"></div>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-black tracking-wide mb-1">أهلاً بك يا بطل المجد ✨</h2>
+                        <p class="text-emerald-100 text-sm font-light">"إن الله يحب إذا عمل أحدكم عملًا أن يتقنه".. اجعل كل دقيقة اليوم خطوة ثابتة نحو منصة التتويج.</p>
                     </div>
                 </div>
-                <div class="mt-4 pt-4 border-t border-white/15">
-                    <blockquote class="text-xs md:text-sm italic font-light text-emerald-50 flex items-center gap-2">
-                        <i class="fa-solid fa-quote-right text-emerald-300 text-base"></i>
-                        "من طلب العلا سهر الليالي.. اصبر وتنظم، فما بقي إلا القليل لتنال البكالوريا وتستقر حياتك."
-                    </blockquote>
+                <div class="mt-5 pt-4 border-t border-white/20 flex items-center justify-between text-xs text-emerald-100">
+                    <span class="italic"><i class="fa-solid fa-quote-right ml-1 text-emerald-300"></i> اصبر وتنظم، فما بقي إلا القليل لتنال البكالوريا وتستقر حياتك.</span>
+                    <span class="hidden md:inline bg-black/20 px-3 py-1 rounded-lg">نظام مِداد الذكي 🚀</span>
                 </div>
             </div>
 
@@ -258,38 +259,72 @@
             </div>
         </section>
 
-        <!-- 3. البكالوريا والتركيز (المؤقت المطور والقابل للزيادة) -->
+        <!-- 3. البكالوريا والتركيز (متضمنة الـ 3 ميزات الجديدة: عداد تفاعلي، ملاحظات الدروس، وحاسبة المعاملات) -->
         <section id="tab-bac" class="tab-content hidden space-y-6">
+            
+            <!-- أ) مؤقت التركيز المطور والقابل للزيادة -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border-r-4 border-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/20 border border-gray-200 dark:border-gray-700">
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-base font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
-                        <i class="fa-solid fa-stopwatch text-emerald-600"></i> مؤقت التركيز الدراسي (قابل للزيادة والتخصيص)
+                        <i class="fa-solid fa-stopwatch text-emerald-600"></i> مؤقت التركيز الدراسي (قابل للتخصيص)
                     </h2>
                 </div>
-                
-                <!-- أزرار اختيار سريع للوقت -->
                 <div class="flex flex-wrap justify-center gap-2 mb-3">
                     <button onclick="setTimerMinutes(15)" class="px-3 py-1 bg-white dark:bg-gray-700 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 rounded-lg text-xs font-bold hover:bg-emerald-100 transition">15 دقيقة</button>
                     <button onclick="setTimerMinutes(25)" class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow hover:bg-emerald-700 transition">25 دقيقة (قياسي)</button>
                     <button onclick="setTimerMinutes(45)" class="px-3 py-1 bg-white dark:bg-gray-700 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 rounded-lg text-xs font-bold hover:bg-emerald-100 transition">45 دقيقة</button>
                     <button onclick="setTimerMinutes(60)" class="px-3 py-1 bg-white dark:bg-gray-700 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 rounded-lg text-xs font-bold hover:bg-emerald-100 transition">ساعة كاملة</button>
                 </div>
-
                 <div class="text-center py-2">
                     <div id="timerDisplay" class="text-4xl font-black text-gray-800 dark:text-white tracking-wider">25:00</div>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">اختر الوقت المناسب لجلستك الدراسية</p>
                 </div>
-
-                <!-- أزرار الزيادة والنقصان اليدوي -->
                 <div class="flex justify-center items-center gap-2 mb-4">
                     <button onclick="adjustTimer(5)" class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 rounded-lg text-xs font-bold hover:bg-emerald-200 transition"><i class="fa-solid fa-plus ml-1"></i> 5 دقائق</button>
                     <button onclick="adjustTimer(-5)" class="px-3 py-1 bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 rounded-lg text-xs font-bold hover:bg-red-200 transition"><i class="fa-solid fa-minus ml-1"></i> 5 دقائق</button>
                 </div>
-
                 <div class="flex justify-center gap-2">
                     <button onclick="startTimer()" class="bg-emerald-600 text-white px-5 py-2 rounded-xl text-xs font-bold shadow hover:bg-emerald-700">تشغيل</button>
                     <button onclick="pauseTimer()" class="bg-amber-500 text-white px-5 py-2 rounded-xl text-xs font-bold shadow hover:bg-amber-600">إيقاف مؤقت</button>
                     <button onclick="resetTimer()" class="bg-gray-400 text-white px-4 py-2 rounded-xl text-xs font-bold shadow hover:bg-gray-500">إعادة ضبط</button>
+                </div>
+            </div>
+
+            <!-- ب) حاسبة معاملات وتقدير معدل البكالوريا (شعبة الآداب الأصلية) -->
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border-r-4 border-blue-600 border border-gray-200 dark:border-gray-700 space-y-4">
+                <h2 class="text-lg font-bold flex items-center gap-2 text-blue-900 dark:text-blue-300">
+                    <i class="fa-solid fa-calculator text-blue-600"></i> حاسبة وتقدير معدل البكالوريا (شعبة الآداب الأصلية)
+                </h2>
+                <p class="text-xs text-gray-500 dark:text-gray-400">أدخل درجاتك التقديرية (على 20) لكل مادة لمعرفة معدلك المتوقع:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 p-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-xs">
+                        <span>اللغة العربية (معامل 7)</span>
+                        <input type="number" id="gradeArabic" min="0" max="20" placeholder="0-20" oninput="calculateBacAverage()" class="w-20 px-2 py-1 rounded-lg border bg-white dark:bg-gray-600 dark:border-gray-500 text-center font-bold">
+                    </div>
+                    <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 p-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-xs">
+                        <span>التشريع / فقه وأصول (معامل 7)</span>
+                        <input type="number" id="gradeFiqh" min="0" max="20" placeholder="0-20" oninput="calculateBacAverage()" class="w-20 px-2 py-1 rounded-lg border bg-white dark:bg-gray-600 dark:border-gray-500 text-center font-bold">
+                    </div>
+                    <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 p-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-xs">
+                        <span>الفكر الإسلامي (معامل 4)</span>
+                        <input type="number" id="gradeThought" min="0" max="20" placeholder="0-20" oninput="calculateBacAverage()" class="w-20 px-2 py-1 rounded-lg border bg-white dark:bg-gray-600 dark:border-gray-500 text-center font-bold">
+                    </div>
+                    <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 p-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-xs">
+                        <span>التاريخ والجغرافيا (معامل 3)</span>
+                        <input type="number" id="gradeHistory" min="0" max="20" placeholder="0-20" oninput="calculateBacAverage()" class="w-20 px-2 py-1 rounded-lg border bg-white dark:bg-gray-600 dark:border-gray-500 text-center font-bold">
+                    </div>
+                    <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 p-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-xs">
+                        <span>القرآن والحديث (معامل 3)</span>
+                        <input type="number" id="gradeQuran" min="0" max="20" placeholder="0-20" oninput="calculateBacAverage()" class="w-20 px-2 py-1 rounded-lg border bg-white dark:bg-gray-600 dark:border-gray-500 text-center font-bold">
+                    </div>
+                    <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 p-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-xs">
+                        <span>اللغة الفرنسية (معامل 2)</span>
+                        <input type="number" id="gradeFrench" min="0" max="20" placeholder="0-20" oninput="calculateBacAverage()" class="w-20 px-2 py-1 rounded-lg border bg-white dark:bg-gray-600 dark:border-gray-500 text-center font-bold">
+                    </div>
+                </div>
+                <div class="p-3 bg-blue-50 dark:bg-blue-950/40 rounded-xl text-center border border-blue-200 dark:border-blue-900">
+                    <span class="text-xs text-blue-700 dark:text-blue-300 font-bold">المعدل التقديري المتوقع في البكالوريا:</span>
+                    <div id="bacAverageResult" class="text-2xl font-black text-blue-800 dark:text-blue-200 mt-1">-- / 20</div>
                 </div>
             </div>
 
@@ -313,9 +348,10 @@
                 <div id="plannerContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4"></div>
             </div>
 
+            <!-- ج) مواد البكالوريا مع ميزة إضافة الملاحظات وروابط الدروس -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-graduation-cap text-blue-600"></i> مواد شعبة الآداب الأصلية
+                    <i class="fa-solid fa-graduation-cap text-blue-600"></i> مواد شعبة الآداب الأصلية (مع الملاحظات والروابط)
                 </h2>
                 <div class="flex gap-2 mb-4">
                     <input type="text" id="newSubjectInput" placeholder="اسم المادة..." class="flex-grow px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm">
@@ -484,7 +520,6 @@
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm space-y-4 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-gear text-gray-700 dark:text-gray-300"></i> الإعدادات وخلفيات التطبيق</h2>
                 
-                <!-- قسم اختيار الثيمات اللونية الواجهية -->
                 <div class="space-y-2">
                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">اختر النمط المفضل لونيًا للواجهة:</label>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -701,6 +736,24 @@
             updateTimerDisplay();
         }
 
+        function calculateBacAverage() {
+            const gArabic = parseFloat(document.getElementById('gradeArabic').value) || 0;
+            const gFiqh = parseFloat(document.getElementById('gradeFiqh').value) || 0;
+            const gThought = parseFloat(document.getElementById('gradeThought').value) || 0;
+            const gHistory = parseFloat(document.getElementById('gradeHistory').value) || 0;
+            const gQuran = parseFloat(document.getElementById('gradeQuran').value) || 0;
+            const gFrench = parseFloat(document.getElementById('gradeFrench').value) || 0;
+
+            const totalPoints = (gArabic * 7) + (gFiqh * 7) + (gThought * 4) + (gHistory * 3) + (gQuran * 3) + (gFrench * 2);
+            const totalCoeffs = 7 + 7 + 4 + 3 + 3 + 2; // = 26
+
+            const avg = totalPoints / totalCoeffs;
+            const resultEl = document.getElementById('bacAverageResult');
+            if (resultEl) {
+                resultEl.textContent = `${avg.toFixed(2)} / 20`;
+            }
+        }
+
         function addTask(e) {
             e.preventDefault();
             const input = document.getElementById('taskInput');
@@ -853,11 +906,18 @@
 
         function addLesson(subjectId) {
             const input = document.getElementById(`lesson-input-${subjectId}`);
+            const noteInput = document.getElementById(`lesson-note-${subjectId}`);
             if (!input || !input.value.trim()) return;
             const subject = appData.subjects.find(s => s.id === subjectId);
             if (subject) {
-                subject.lessons.push({ id: Date.now(), name: input.value.trim(), status: 'لم يبدأ' });
+                subject.lessons.push({ 
+                    id: Date.now(), 
+                    name: input.value.trim(), 
+                    note: noteInput ? noteInput.value.trim() : '', 
+                    status: 'لم يبدأ' 
+                });
                 input.value = '';
+                if (noteInput) noteInput.value = '';
                 saveData();
                 renderSubjects();
             }
@@ -918,12 +978,15 @@
                     if (l.status === 'تمت مراجعته') badgeColor = 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300';
 
                     lessonsHtml += `
-                        <div class="flex items-center justify-between bg-white dark:bg-gray-700 p-2.5 rounded-xl border border-gray-100 dark:border-gray-600 text-xs">
-                            <span class="font-medium">${l.name}</span>
-                            <div class="flex items-center gap-2">
-                                <button onclick="cycleLessonStatus(${sub.id}, ${l.id})" class="px-2.5 py-1 rounded-lg ${badgeColor} font-semibold transition">${l.status}</button>
-                                <button onclick="deleteLesson(${sub.id}, ${l.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                        <div class="bg-white dark:bg-gray-700 p-3 rounded-xl border border-gray-100 dark:border-gray-600 text-xs space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-gray-800 dark:text-gray-200">${l.name}</span>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="cycleLessonStatus(${sub.id}, ${l.id})" class="px-2.5 py-1 rounded-lg ${badgeColor} font-semibold transition">${l.status}</button>
+                                    <button onclick="deleteLesson(${sub.id}, ${l.id})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                                </div>
                             </div>
+                            ${l.note ? `<p class="text-[11px] text-gray-500 dark:text-gray-400 italic bg-gray-50 dark:bg-gray-800/50 p-1.5 rounded border border-gray-100 dark:border-gray-700"><i class="fa-solid fa-note-sticky ml-1"></i>${l.note}</p>` : ''}
                         </div>
                     `;
                 });
@@ -936,11 +999,12 @@
                                 <span class="text-xs font-normal text-gray-500 dark:text-gray-400">(${completedLessons}/${totalLessons})</span>
                             </h3>
                         </div>
-                        <div class="flex gap-2">
-                            <input type="text" id="lesson-input-${sub.id}" placeholder="إضافة درس..." class="flex-grow px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-600">
-                            <button onclick="addLesson(${sub.id})" class="bg-blue-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold">إضافة</button>
+                        <div class="space-y-2">
+                            <input type="text" id="lesson-input-${sub.id}" placeholder="عنوان الدرس..." class="w-full px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-600">
+                            <input type="text" id="lesson-note-${sub.id}" placeholder="ملاحظة أو رابط مرجعي اختياري..." class="w-full px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-600">
+                            <button onclick="addLesson(${sub.id})" class="w-full bg-blue-600 text-white py-1.5 rounded-xl text-xs font-bold shadow">إضافة الدرس للمادة</button>
                         </div>
-                        <div class="space-y-1.5 mt-2">
+                        <div class="space-y-2 mt-3">
                             ${lessonsHtml || '<p class="text-xs text-gray-400 text-center py-2">لا توجد دروس مضافة.</p>'}
                         </div>
                     </div>
