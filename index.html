@@ -65,7 +65,7 @@
             <i class="fa-solid fa-feather-pointed text-5xl"></i>
         </div>
         <h1 class="text-3xl font-black tracking-widest mb-2">مِـدَاد</h1>
-        <p class="text-xs text-gray-400 font-light">نظام إدارة الحياة • البكالوريا • المالية</p>
+        <p class="text-xs text-gray-400 font-light">نظام إدارة الحياة • البكالوريا • المالية • العبادات</p>
         <div class="mt-8 w-16 h-1 bg-emerald-500 rounded-full animate-pulse"></div>
     </div>
 
@@ -81,7 +81,7 @@
                 </div>
                 <div>
                     <h1 class="text-base font-bold text-gray-900 dark:text-white leading-tight">مشروع مِداد</h1>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">إدارة الحياة • البكالوريا • المالية</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">إدارة الحياة • البكالوريا • المالية • العبادات</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
@@ -117,6 +117,9 @@
         <div class="flex flex-col space-y-2 flex-grow overflow-y-auto">
             <button onclick="switchTab('home'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-house w-5 text-emerald-600"></i> الرئيسية
+            </button>
+            <button onclick="switchTab('worship'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
+                <i class="fa-solid fa-kaaba w-5 text-emerald-600"></i> محراب العبادات والطاعات
             </button>
             <button onclick="switchTab('tasks'); toggleSidebar();" class="flex items-center gap-3 px-4 py-3 rounded-xl text-right font-bold text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 transition">
                 <i class="fa-solid fa-list-check w-5 text-emerald-600"></i> المهام اليومية
@@ -165,10 +168,10 @@
                 <button onclick="closeQuickAddModal()" class="text-gray-400 hover:text-red-500 text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="grid grid-cols-2 gap-3">
-                <button onclick="quickAction('tasks');" class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 rounded-xl text-xs font-bold text-center hover:bg-emerald-100 transition"><i class="fa-solid fa-list-check block text-lg mb-1"></i>مهمة جديدة</button>
-                <button onclick="quickAction('time');" class="p-3 bg-teal-50 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300 rounded-xl text-xs font-bold text-center hover:bg-teal-100 transition"><i class="fa-solid fa-clock block text-lg mb-1"></i>جدول زمني</button>
+                <button onclick="quickAction('worship');" class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 rounded-xl text-xs font-bold text-center hover:bg-emerald-100 transition"><i class="fa-solid fa-kaaba block text-lg mb-1"></i>جدول العبادات</button>
+                <button onclick="quickAction('tasks');" class="p-3 bg-teal-50 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300 rounded-xl text-xs font-bold text-center hover:bg-teal-100 transition"><i class="fa-solid fa-list-check block text-lg mb-1"></i>مهمة جديدة</button>
+                <button onclick="quickAction('time');" class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-xl text-xs font-bold text-center hover:bg-blue-100 transition"><i class="fa-solid fa-clock block text-lg mb-1"></i>جدول زمني</button>
                 <button onclick="quickAction('goals');" class="p-3 bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 rounded-xl text-xs font-bold text-center hover:bg-amber-100 transition"><i class="fa-solid fa-bullseye block text-lg mb-1"></i>هدف جديد</button>
-                <button onclick="quickAction('finance');" class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-xl text-xs font-bold text-center hover:bg-blue-100 transition"><i class="fa-solid fa-wallet block text-lg mb-1"></i>عملية مالية</button>
             </div>
         </div>
     </div>
@@ -203,16 +206,16 @@
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="text-emerald-600 text-xs font-semibold mb-1">إنجاز طاعات اليوم</div>
+                    <div id="statWorship" class="text-xl font-black">0%</div>
+                </div>
+                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="text-emerald-600 text-xs font-semibold mb-1">مهام اليوم المنجزة</div>
                     <div id="statTasks" class="text-xl font-black">0 / 0</div>
                 </div>
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="text-blue-600 text-xs font-semibold mb-1">دروس البكالوريا المكتملة</div>
                     <div id="statLessons" class="text-xl font-black">0</div>
-                </div>
-                <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                    <div class="text-emerald-700 text-xs font-semibold mb-1">الرصيد المتاح</div>
-                    <div id="homeTotalBalance" class="text-xl font-black text-emerald-600">0 MRU</div>
                 </div>
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div class="text-amber-600 text-xs font-semibold mb-1">أيام للبكالوريا</div>
@@ -238,7 +241,60 @@
             </div>
         </section>
 
-        <!-- 2. المهام -->
+        <!-- 2. قسم محراب العبادات والطاعات (القسم الجديد كلياً) -->
+        <section id="tab-worship" class="tab-content hidden space-y-6">
+            
+            <!-- أ) مؤشر الالتزام الإيماني والفرائض اليومية -->
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-900 space-y-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-base font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
+                        <i class="fa-solid fa-kaaba text-emerald-600"></i> متابعة الصلوات والفرائض اليومية
+                    </h2>
+                    <span id="worshipProgressText" class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-3 py-1 rounded-full">0% منجز</span>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">"أحب الأعمال إلى الله أدومها وإن قل".. حافظ على فرائضك وسننك اليومية لتنال التوفيق البركة:</p>
+                
+                <div id="dailyPrayersList" class="grid grid-cols-1 md:grid-cols-5 gap-3"></div>
+            </div>
+
+            <!-- ب) متابع الورد والختمة القرآنية -->
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-teal-200 dark:border-teal-900 space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-teal-900 dark:text-teal-300 flex items-center gap-2">
+                        <i class="fa-solid fa-quran text-teal-600"></i> الورد القرآني والختمة المباركة
+                    </h3>
+                    <span id="quranProgressBadge" class="text-xs font-bold bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 px-3 py-1 rounded-full">الصفحة 0 من 604</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300">الصفحة الحالية من المصحف:</label>
+                        <input type="number" id="quranPageInput" min="0" max="604" placeholder="أدخل رقم الصفحة..." class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300">ملاحظة الورد الحالي (سورة/حزب):</label>
+                        <input type="text" id="quranNoteInput" placeholder="مثلاً: سورة البقرة - الجزء الأول..." class="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
+                    </div>
+                    <button onclick="updateQuranProgress()" class="bg-teal-600 text-white font-bold py-2 px-4 rounded-xl text-xs shadow hover:bg-teal-700 transition md:mt-5">تحديث الورد القرآني</button>
+                </div>
+
+                <div class="w-full bg-gray-200 dark:bg-gray-700 h-2.5 rounded-full overflow-hidden">
+                    <div id="quranProgressBar" class="bg-teal-600 h-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- ج) واحة النوافل والفضائل والأذكار -->
+            <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-indigo-200 dark:border-indigo-900 space-y-4">
+                <h3 class="font-bold text-sm text-indigo-900 dark:text-indigo-300 flex items-center gap-2">
+                    <i class="fa-solid fa-hands-praying text-indigo-600"></i> واحة النوافل والفضائل الأسبوعية واليومية
+                </h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400">سجل مشاركاتك في النوافل لتقوية صلتك بالله وزيادة منسوب إيمانك:</p>
+                
+                <div id="sunnahList" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
+            </div>
+        </section>
+
+        <!-- 3. المهام -->
         <section id="tab-tasks" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
@@ -265,10 +321,8 @@
             </div>
         </section>
 
-        <!-- 3. قسم إدارة الوقت المطور بالميزتين الجديدتين -->
+        <!-- 4. قسم إدارة الوقت -->
         <section id="tab-time" class="tab-content hidden space-y-6">
-            
-            <!-- أ) مؤشر تحليل الكفاءة ورصد التشتت (الميزة 2 المطورة) -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-teal-200 dark:border-teal-900 space-y-3">
                 <div class="flex justify-between items-center">
                     <h2 class="text-base font-bold text-teal-900 dark:text-teal-300 flex items-center gap-2">
@@ -296,11 +350,9 @@
                         <div id="timeOtherSum" class="text-base font-black">0 ساعة</div>
                     </div>
                 </div>
-                <!-- تنبيه كفاءة التشتت الذكي -->
                 <div id="timeEfficiencyAlert" class="p-3 rounded-xl text-xs font-bold border hidden"></div>
             </div>
 
-            <!-- ب) إضافة جدول الساعات اليومي (مع ربط الفترات بالأهداف الكبرى - الميزة 1 المطورة) -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-4">
                 <h3 class="font-bold text-sm text-gray-800 dark:text-gray-200 flex items-center gap-2">
                     <i class="fa-solid fa-clock text-teal-600"></i> جدولة فترة أو ساعة جديدة (وربطها بالأهداف)
@@ -320,7 +372,6 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                         <input type="text" id="timeObjective" placeholder="الهدف أو الفائدة (ماذا ستستفيد؟)..." required class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
-                        <!-- ربط الوقت بهدف من بوصلة الأهداف -->
                         <select id="timeLinkedGoal" class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700 font-bold text-teal-700 dark:text-teal-300">
                             <option value="">🔗 ربط هذه الفترة بهدف من بوصلة الأهداف (اختياري)</option>
                         </select>
@@ -329,7 +380,6 @@
                 </form>
             </div>
 
-            <!-- عرض جدول الفترات اليومية المسجلة -->
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-3">
                 <div class="flex justify-between items-center border-b pb-2 dark:border-gray-700">
                     <h3 class="font-bold text-sm text-gray-800 dark:text-gray-200">جدول الساعات المخطط له اليوم</h3>
@@ -339,7 +389,7 @@
             </div>
         </section>
 
-        <!-- 4. البكالوريا والتركيز -->
+        <!-- 5. البكالوريا والتركيز -->
         <section id="tab-bac" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border-r-4 border-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/20 border border-gray-200 dark:border-gray-700">
                 <div class="flex justify-between items-center mb-3">
@@ -437,7 +487,7 @@
             </div>
         </section>
 
-        <!-- 5. قسم الأهداف المطور بالميزتين الجديدتين -->
+        <!-- 6. الأهداف والطموحات -->
         <section id="tab-goals" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-amber-200 dark:border-amber-900 space-y-4">
                 <div class="flex justify-between items-center">
@@ -465,7 +515,6 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                         <input type="text" id="lifeGoalAction" placeholder="خطوات التنفيذ الأساسية..." class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
-                        <!-- الميزة 2 المطورة: بطاقة التحفيز الذاتي وسبب الهدف -->
                         <input type="text" id="lifeGoalWhy" placeholder="🔥 لماذا تريد هذا الهدف؟ (دافعك الأقوى)..." class="px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-600 text-xs bg-white dark:bg-gray-700">
                         <div class="flex items-center gap-2">
                             <span class="text-xs text-gray-600 dark:text-gray-300 font-semibold">نسبة الإنجاز:</span>
@@ -478,7 +527,6 @@
                 </form>
             </div>
 
-            <!-- عرض الأهداف المبوبة حسب المدى مع محطات التنفيذ -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-white/90 dark:bg-gray-800/90 card-box p-4 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-3">
                     <h3 class="font-bold text-sm text-emerald-700 dark:text-emerald-400 flex items-center gap-2 border-b pb-2 dark:border-gray-700">
@@ -503,7 +551,7 @@
             </div>
         </section>
 
-        <!-- 6. المالية -->
+        <!-- 7. المالية -->
         <section id="tab-finance" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-emerald-200 dark:border-emerald-900 space-y-3">
                 <div class="flex justify-between items-center">
@@ -606,7 +654,7 @@
             </div>
         </section>
 
-        <!-- 7. التقويم والمواعيد -->
+        <!-- 8. التقويم والمواعيد -->
         <section id="tab-calendar" class="tab-content hidden space-y-6">
             <div id="calendarAlertCard" class="bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900 p-4 rounded-2xl flex items-center justify-between text-indigo-900 dark:text-indigo-200 text-xs shadow-sm">
                 <div class="flex items-center gap-3">
@@ -642,7 +690,7 @@
             </div>
         </section>
 
-        <!-- 8. المكتبة -->
+        <!-- 9. المكتبة -->
         <section id="tab-library" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-book text-purple-600"></i> المكتبة الدراسية والثقافية</h2>
@@ -687,7 +735,7 @@
             </div>
         </section>
 
-        <!-- 9. الإشعارات -->
+        <!-- 10. الإشعارات -->
         <section id="tab-notifications" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm space-y-4 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-bell text-amber-600"></i> التنبيهات والإشعارات الذكية</h2>
@@ -695,7 +743,7 @@
             </div>
         </section>
 
-        <!-- 10. الإعدادات -->
+        <!-- 11. الإعدادات -->
         <section id="tab-settings" class="tab-content hidden space-y-6">
             <div class="bg-white/90 dark:bg-gray-800/90 card-box p-5 rounded-2xl shadow-sm space-y-4 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-gear text-gray-700 dark:text-gray-300"></i> الإعدادات وخلفيات التطبيق</h2>
@@ -752,6 +800,22 @@
     <script>
         const STORAGE_KEY = 'midad_app_data_v2';
 
+        const defaultWorshipItems = [
+            { id: 'fajr', name: 'صلاة الفجر والسنّة', done: false },
+            { id: 'dhuhr', name: 'صلاة الظهر والسنن', done: false },
+            { id: 'asr', name: 'صلاة العصر', done: false },
+            { id: 'maghrib', name: 'صلاة المغرب والسنّة', done: false },
+            { id: 'isha', name: 'صلاة العشاء والوتر', done: false },
+            { id: 'azkar_morning', name: 'أذكار الصباح', done: false },
+            { id: 'azkar_evening', name: 'أذكار المساء', done: false }
+        ];
+
+        const defaultSunnahItems = [
+            { id: 'duha', name: 'صلاة الضحى (ركعتان على الأقل)', done: false },
+            { id: 'qiyam', name: 'قيام الليل ( ولو بركعتين)', done: false },
+            { id: 'fasting', name: 'صيام التطوع (الإثنين/الخميس/الأيام البيض)', done: false }
+        ];
+
         let appData = {
             tasks: [],
             subjects: [
@@ -767,6 +831,12 @@
             books: [],
             lifeGoals: [],
             timeBlocks: [],
+            worship: {
+                prayers: JSON.parse(JSON.stringify(defaultWorshipItems)),
+                sunnah: JSON.parse(JSON.stringify(defaultSunnahItems)),
+                quranPage: 0,
+                quranNote: ''
+            },
             finance: {
                 transactions: [],
                 goals: [],
@@ -789,6 +859,14 @@
                     if (!appData.events) appData.events = [];
                     if (!appData.lifeGoals) appData.lifeGoals = [];
                     if (!appData.timeBlocks) appData.timeBlocks = [];
+                    if (!appData.worship) {
+                        appData.worship = {
+                            prayers: JSON.parse(JSON.stringify(defaultWorshipItems)),
+                            sunnah: JSON.parse(JSON.stringify(defaultSunnahItems)),
+                            quranPage: 0,
+                            quranNote: ''
+                        };
+                    }
                     if (!appData.finance) appData.finance = { transactions: [], goals: [], debts: [], budgetLimit: 5000 };
                     if (!appData.finance.budgetLimit) appData.finance.budgetLimit = 5000;
                     if (!appData.settings.theme) appData.settings.theme = 'emerald';
@@ -878,6 +956,88 @@
             updateCategories();
         }
 
+        // دوال قسم محراب العبادات
+        function toggleWorshipItem(id) {
+            const item = appData.worship.prayers.find(p => p.id === id);
+            if (item) {
+                item.done = !item.done;
+                saveData();
+                renderWorship();
+            }
+        }
+
+        function toggleSunnahItem(id) {
+            const item = appData.worship.sunnah.find(s => s.id === id);
+            if (item) {
+                item.done = !item.done;
+                saveData();
+                renderWorship();
+            }
+        }
+
+        function updateQuranProgress() {
+            const pInput = document.getElementById('quranPageInput');
+            const nInput = document.getElementById('quranNoteInput');
+            if (pInput) {
+                const page = Math.min(604, Math.max(0, parseInt(pInput.value) || 0));
+                appData.worship.quranPage = page;
+                appData.worship.quranNote = nInput ? nInput.value.trim() : '';
+                saveData();
+                renderWorship();
+            }
+        }
+
+        function renderWorship() {
+            const prayersList = document.getElementById('dailyPrayersList');
+            const sunnahList = document.getElementById('sunnahList');
+            const worshipProgressText = document.getElementById('worshipProgressText');
+            if (!prayersList || !sunnahList) return;
+
+            // الفرائض والواجبات اليومية
+            let completedPrayers = 0;
+            let prayersHtml = '';
+            appData.worship.prayers.forEach(p => {
+                if (p.done) completedPrayers++;
+                prayersHtml += `
+                    <div onclick="toggleWorshipItem('${p.id}')" class="cursor-pointer p-3 rounded-xl border flex items-center justify-between transition ${p.done ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-300 font-bold' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300'}">
+                        <span class="text-xs">${p.name}</span>
+                        <i class="${p.done ? 'fa-solid fa-circle-check text-emerald-600 text-base' : 'fa-regular fa-circle text-gray-300 text-base'}"></i>
+                    </div>
+                `;
+            });
+            prayersList.innerHTML = prayersHtml;
+
+            const worshipPercent = Math.round((completedPrayers / appData.worship.prayers.length) * 100);
+            if (worshipProgressText) worshipProgressText.textContent = `${worshipPercent}% منجز`;
+
+            // النوافل والفضائل
+            let sunnahHtml = '';
+            appData.worship.sunnah.forEach(s => {
+                sunnahHtml += `
+                    <div onclick="toggleSunnahItem('${s.id}')" class="cursor-pointer p-3 rounded-xl border flex items-center justify-between transition ${s.done ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-800 text-indigo-900 dark:text-indigo-300 font-bold' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300'}">
+                        <span class="text-xs">${s.name}</span>
+                        <i class="${s.done ? 'fa-solid fa-circle-check text-indigo-600 text-base' : 'fa-regular fa-circle text-gray-300 text-base'}"></i>
+                    </div>
+                `;
+            });
+            sunnahList.innerHTML = sunnahHtml;
+
+            // الورد القرآني
+            const qPage = appData.worship.quranPage || 0;
+            const qNote = appData.worship.quranNote || '';
+            const qPercent = Math.min(100, Math.round((qPage / 604) * 100));
+
+            const qBadge = document.getElementById('quranProgressBadge');
+            const qBar = document.getElementById('quranProgressBar');
+            const qInput = document.getElementById('quranPageInput');
+            const qNoteInput = document.getElementById('quranNoteInput');
+
+            if (qBadge) qBadge.textContent = `الصفحة ${qPage} من 604 (${qPercent}%)`;
+            if (qBar) qBar.style.width = `${qPercent}%`;
+            if (qInput && !qInput.value) qInput.value = qPage;
+            if (qNoteInput && !qNoteInput.value) qNoteInput.value = qNote;
+        }
+
         function populateGoalDropdownInTime() {
             const select = document.getElementById('timeLinkedGoal');
             if (!select) return;
@@ -887,7 +1047,6 @@
             });
         }
 
-        // دوال قسم إدارة الوقت
         function addTimeBlock(e) {
             e.preventDefault();
             const slot = document.getElementById('timeSlot').value.trim();
@@ -939,7 +1098,6 @@
             document.getElementById('timeRestSum').textContent = `${restSum} ساعة`;
             document.getElementById('timeOtherSum').textContent = `${otherSum} ساعة`;
 
-            // تنبيه التشتت وكفاءة الوقت الذكي
             if (alertBox) {
                 if (totalHours === 0) {
                     alertBox.classList.add('hidden');
@@ -1118,7 +1276,6 @@
             homeList.innerHTML = homeHtml || `<p class="text-xs text-gray-400">أحسنت! أكملت جميع المهام.</p>`;
         }
 
-        // دوال قسم الأهداف المطور بالدوافع ومحطات التنفيذ
         function addLifeGoal(e) {
             e.preventDefault();
             const title = document.getElementById('lifeGoalTitle').value.trim();
@@ -1783,6 +1940,14 @@
             const statLessons = document.getElementById('statLessons');
             if (statLessons) statLessons.textContent = completedLessonsCount;
 
+            let worshipDoneCount = 0;
+            appData.worship.prayers.forEach(p => { if (p.done) worshipDoneCount++; });
+            const statWorship = document.getElementById('statWorship');
+            if (statWorship) {
+                const pct = Math.round((worshipDoneCount / appData.worship.prayers.length) * 100);
+                statWorship.textContent = `${pct}%`;
+            }
+
             const bacDate = new Date('2027-06-01');
             const diffTime = bacDate - new Date();
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -1840,6 +2005,7 @@
             applyBgStyle();
             applyThemeClass();
             applyTheme();
+            renderWorship();
             renderTasks();
             renderPlanner();
             renderEvents();
